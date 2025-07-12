@@ -1,0 +1,2 @@
+Starting Flask + Docker:    docker compose up
+Start React:                cd/frontend -> npm start

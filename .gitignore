@@ -1,0 +1,48 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Node/React
+node_modules/
+build/
+dist/
+
+# Database
+*.sqlite3
+*.db
+*.psql
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Docker
+*.pid
+docker-compose.override.yml
+
+# VSCode
+.vscode/
+
+# Coverage
+coverage/
+.coverage
+
+# Misc
+*.bak
+*.swp
+
+# Docker local config and data
+.docker/
+docker-data/
+docker-logs/
+*.tar
