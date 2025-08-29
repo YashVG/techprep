@@ -1,4 +1,4 @@
-# 🚀 Tech Prep Blog - Helping UBC Students Prepare for Tech Interviews
+# 🚀 Tech Prep - Helping UBC Students Prepare for Tech Interviews
 
 A modern, full-stack blog application built with React.js frontend and Flask backend, featuring a complete authentication system, code editor integration, and real-time commenting.
 
