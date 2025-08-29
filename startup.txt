@@ -1,2 +1,24 @@
 Starting Flask + Docker:    docker compose up
-Start React:                cd/frontend -> npm start
+Start React:                cd frontend -> npm start
+
+AUTHENTICATION SYSTEM:
+- Backend runs on http://localhost:5001
+- Frontend runs on http://localhost:3000
+- JWT-based authentication with secure password hashing
+- Password requirements: 8+ chars, uppercase, lowercase, number
+- Users can register, login, and manage their profile
+- Posts and comments require authentication
+- Users can only delete their own posts
+
+API ENDPOINTS:
+- POST /auth/register - User registration
+- POST /auth/login - User login  
+- GET /auth/profile - Get user profile (protected)
+- PUT /auth/profile - Update user profile (protected)
+- POST /auth/change-password - Change password (protected)
+- POST /auth/logout - Logout (protected)
+- GET /posts - View all posts (public)
+- POST /posts - Create post (protected)
+- DELETE /posts/:id - Delete post (protected, owner only)
+- POST /comments - Add comment (protected)
+- GET /posts/:id/comments - View post comments (public)

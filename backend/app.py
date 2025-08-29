@@ -3,12 +3,14 @@
 '''
 
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, g
 from sqlalchemy.exc import IntegrityError
 from config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS
 from models import db, Post, User, Comment
 from flask_cors import CORS
 from flask_migrate import Migrate
+from functools import wraps
+import re
 
 app = Flask(__name__)
 CORS(app)
@@ -17,7 +19,40 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = SQLALCHEMY_TRACK_MODIFICATIONS
 
 db.init_app(app)
 migrate = Migrate(app, db)
- 
+
+# Authentication decorator
+def login_required(f):
+    """Decorator to require authentication for protected routes."""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if not token:
+            return jsonify({"error": "Authorization token required"}), 401
+        
+        # Remove 'Bearer ' prefix if present
+        if token.startswith('Bearer '):
+            token = token[7:]
+        
+        user = User.verify_token(token)
+        if not user:
+            return jsonify({"error": "Invalid or expired token"}), 401
+        
+        g.current_user = user
+        return f(*args, **kwargs)
+    return decorated_function
+
+# Password validation function
+def validate_password(password):
+    """Validate password strength."""
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters long"
+    if not re.search(r"[A-Z]", password):
+        return False, "Password must contain at least one uppercase letter"
+    if not re.search(r"[a-z]", password):
+        return False, "Password must contain at least one lowercase letter"
+    if not re.search(r"\d", password):
+        return False, "Password must contain at least one number"
+    return True, "Password is valid"
 
 @app.route("/", methods=["GET"])
 def home():
@@ -27,6 +62,181 @@ def home():
     Returns a welcome message to confirm the API is running.
     """
     return jsonify({"message": "Welcome to the Cloud Blog API"})
+
+@app.route("/auth/register", methods=["POST"])
+def register():
+    """
+    Register a new user with password validation.
+
+    Accepts JSON with 'username', 'email', and 'password'.
+    Returns user data and JWT token upon successful registration.
+    """
+    data = request.get_json()
+    
+    # Validate required fields
+    if not all(key in data for key in ['username', 'email', 'password']):
+        return jsonify({"error": "Username, email, and password are required"}), 400
+    
+    # Validate password strength
+    is_valid, message = validate_password(data['password'])
+    if not is_valid:
+        return jsonify({"error": message}), 400
+    
+    # Validate email format
+    email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    if not re.match(email_pattern, data['email']):
+        return jsonify({"error": "Invalid email format"}), 400
+    
+    # Validate username format (alphanumeric and underscores only)
+    username_pattern = r'^[a-zA-Z0-9_]+$'
+    if not re.match(username_pattern, data['username']):
+        return jsonify({"error": "Username can only contain letters, numbers, and underscores"}), 400
+    
+    try:
+        user = User(
+            username=data["username"], 
+            email=data["email"], 
+            password=data["password"]
+        )
+        db.session.add(user)
+        db.session.commit()
+        
+        # Generate JWT token
+        token = user.generate_token()
+        
+        return jsonify({
+            "message": "User registered successfully",
+            "user": user.to_dict(),
+            "token": token
+        }), 201
+        
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({"error": "Username or email already exists"}), 400
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Registration failed"}), 500
+
+@app.route("/auth/login", methods=["POST"])
+def login():
+    """
+    Authenticate user and return JWT token.
+
+    Accepts JSON with 'username' and 'password'.
+    Returns user data and JWT token upon successful authentication.
+    """
+    data = request.get_json()
+    
+    if not all(key in data for key in ['username', 'password']):
+        return jsonify({"error": "Username and password are required"}), 400
+    
+    user = User.query.filter_by(username=data["username"]).first()
+    
+    if not user or not user.check_password(data["password"]):
+        return jsonify({"error": "Invalid username or password"}), 401
+    
+    if not user.is_active:
+        return jsonify({"error": "Account is deactivated"}), 401
+    
+    # Update last login time
+    from datetime import datetime
+    user.last_login = datetime.utcnow()
+    db.session.commit()
+    
+    # Generate JWT token
+    token = user.generate_token()
+    
+    return jsonify({
+        "message": "Login successful",
+        "user": user.to_dict(),
+        "token": token
+    })
+
+@app.route("/auth/profile", methods=["GET"])
+@login_required
+def get_profile():
+    """
+    Get current user's profile information.
+
+    Requires valid JWT token in Authorization header.
+    Returns user profile data.
+    """
+    return jsonify({
+        "user": g.current_user.to_dict()
+    })
+
+@app.route("/auth/profile", methods=["PUT"])
+@login_required
+def update_profile():
+    """
+    Update current user's profile information.
+
+    Requires valid JWT token in Authorization header.
+    Accepts JSON with optional 'email' field.
+    Returns updated user data.
+    """
+    data = request.get_json()
+    
+    if 'email' in data:
+        # Validate email format
+        email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_pattern, data['email']):
+            return jsonify({"error": "Invalid email format"}), 400
+        
+        try:
+            g.current_user.email = data['email']
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify({"error": "Email already exists"}), 400
+    
+    return jsonify({
+        "message": "Profile updated successfully",
+        "user": g.current_user.to_dict()
+    })
+
+@app.route("/auth/change-password", methods=["POST"])
+@login_required
+def change_password():
+    """
+    Change current user's password.
+
+    Requires valid JWT token in Authorization header.
+    Accepts JSON with 'current_password' and 'new_password'.
+    Returns success message.
+    """
+    data = request.get_json()
+    
+    if not all(key in data for key in ['current_password', 'new_password']):
+        return jsonify({"error": "Current password and new password are required"}), 400
+    
+    # Verify current password
+    if not g.current_user.check_password(data['current_password']):
+        return jsonify({"error": "Current password is incorrect"}), 401
+    
+    # Validate new password strength
+    is_valid, message = validate_password(data['new_password'])
+    if not is_valid:
+        return jsonify({"error": message}), 400
+    
+    # Set new password
+    g.current_user.set_password(data['new_password'])
+    db.session.commit()
+    
+    return jsonify({"message": "Password changed successfully"})
+
+@app.route("/auth/logout", methods=["POST"])
+@login_required
+def logout():
+    """
+    Logout user (client should discard token).
+
+    Requires valid JWT token in Authorization header.
+    Returns success message.
+    """
+    # In a stateless JWT system, logout is handled client-side
+    # by discarding the token. This endpoint provides confirmation.
+    return jsonify({"message": "Logout successful"})
 
 
 @app.route("/posts", methods=["GET"])
@@ -48,21 +258,23 @@ def get_posts():
     } for p in posts])
 
 @app.route("/posts", methods=["POST"])
+@login_required
 def add_post():
     """
     Creates a new blog post.
 
-    Accepts JSON with 'title', 'content', 'username', optional 'tags', 'course', and 'code'.
+    Requires authentication. Accepts JSON with 'title', 'content', optional 'tags', 'course', and 'code'.
     Returns the ID of the created post.
     """
     data = request.get_json()
-    user = User.query.filter_by(username=data["username"]).first()
-    if not user:
-        return jsonify({"error": "User not found"}), 404
+    
+    if not all(key in data for key in ['title', 'content']):
+        return jsonify({"error": "Title and content are required"}), 400
+    
     post = Post(
         title=data["title"],
         content=data["content"],
-        user_id=user.id,
+        user_id=g.current_user.id,
         tags=data.get("tags", []),
         course=data.get("course"),
         code=data.get("code")
@@ -73,40 +285,31 @@ def add_post():
         "id": post.id,
         "title": post.title,
         "content": post.content,
-        "author": user.username,
+        "author": g.current_user.username,
         "tags": post.tags,
         "course": post.course,
         "code": post.code
     }), 201
 
 
-@app.route("/users", methods=["POST"])
-def add_user():
-    """
-    Creates a new user.
 
-    Accepts JSON with 'username' and 'email'.
-    Returns the ID of the created user or an error message if user exists.
-    """
-    data = request.get_json()
-    user = User(username=data["username"], email=data["email"])
-    db.session.add(user)
-    try:
-        db.session.commit()
-        return jsonify({"message": "User created", "id": user.id}), 201
-    except IntegrityError:
-        db.session.rollback()
-        return jsonify({"error": "Username or email already exists"}), 400
 
 # test using Postman or curl, browser only supports GET + PUT
 @app.route("/posts/<int:post_id>", methods=["DELETE"])
+@login_required
 def delete_post(post_id):
     """
     Deletes a post by ID.
 
+    Requires authentication. Users can only delete their own posts.
     Returns a confirmation message upon successful deletion.
     """
     post = Post.query.get_or_404(post_id)
+    
+    # Check if user owns the post
+    if post.user_id != g.current_user.id:
+        return jsonify({"error": "You can only delete your own posts"}), 403
+    
     db.session.delete(post)
     db.session.commit()
     return jsonify({"message": "Post deleted"})
@@ -168,21 +371,24 @@ def get_user(user_id):
     return jsonify(user_data)
 
 @app.route("/comments", methods=["POST"])
+@login_required
 def add_comment():
     """
-    Adds a comment to a post using username.
+    Adds a comment to a post.
 
-    Accepts JSON with 'content', 'username', and 'post_id'.
-    Resolves the username to user_id internally.
+    Requires authentication. Accepts JSON with 'content' and 'post_id'.
+    Returns the created comment data.
     """
     data = request.get_json()
-    user = User.query.filter_by(username=data["username"]).first()
-    if not user:
-        return jsonify({"error": "User not found"}), 404
-
+    
+    if not all(key in data for key in ['content', 'post_id']):
+        return jsonify({"error": "Content and post_id are required"}), 400
+    
+    post = Post.query.get_or_404(data["post_id"])
+    
     comment = Comment(
         content=data["content"],
-        user_id=user.id,
+        user_id=g.current_user.id,
         post_id=data["post_id"]
     )
     db.session.add(comment)
@@ -190,9 +396,10 @@ def add_comment():
     return jsonify({
         "message": "Comment added",
         "id": comment.id,
-        "user": user.username,
+        "user": g.current_user.username,
         "post_id": comment.post_id,
-        "content": comment.content
+        "content": comment.content,
+        "created_at": comment.created_at.isoformat() if comment.created_at else None
     }), 201
 
 
