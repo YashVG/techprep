@@ -279,3 +279,10 @@ This is a full-stack web application built with React.js frontend and Flask back
 - Status: **MAJOR UPDATE** - Complete authentication system implemented
 - Next Priority: User choice (UI enhancements, search functionality, or new features)
 - Authentication Status: **PRODUCTION READY** ✅
+
+## Repository Structure Changes
+
+- **Frontend Integration**: Moved frontend folder from separate GitHub repository to main repository
+- **Monorepo Structure**: Now using single repository for full-stack application
+- **Git Submodule Removal**: Eliminated submodule complexity for simpler development workflow
+- **Unified Version Control**: All frontend and backend changes now tracked in single repository
