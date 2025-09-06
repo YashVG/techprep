@@ -32,7 +32,6 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions }) => {
     // State for all post fields
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [username, setUsername] = useState('');
     const [tags, setTags] = useState('');
     const [course, setCourse] = useState('');
     const [language, setLanguage] = useState('python');
@@ -57,7 +56,6 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions }) => {
         onSubmit({
             title,
             content,
-            username,
             tags: tags.split(',').map(tag => tag.trim()),
             course,
             code,
@@ -92,15 +90,6 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions }) => {
                         onChange={e => setContent(e.target.value)}
                         className="block-centered-input"
                         style={{ width: '100%', maxWidth: 400, minHeight: 80 }}
-                        required
-                    />
-                    <input
-                        type="text"
-                        placeholder="Username"
-                        value={username}
-                        onChange={e => setUsername(e.target.value)}
-                        className="block-centered-input"
-                        style={{ width: '100%', maxWidth: 400 }}
                         required
                     />
                     <input

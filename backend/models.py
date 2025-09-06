@@ -135,3 +135,34 @@ class Comment(db.Model):
         self.content = content
         self.user_id = user_id
         self.post_id = post_id
+
+class Course(db.Model):
+    """
+    Represents a course that posts can be associated with.
+    
+    - Mapped to the 'courses' table in PostgreSQL.
+    - Each course has a unique code and optional name.
+    - No tracking of who created the course.
+    """
+    __tablename__ = "courses"
+
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(20), unique=True, nullable=False)  # e.g., "CPSC221"
+    name = db.Column(db.String(100), nullable=True)  # e.g., "Data Structures and Algorithms"
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Remove this line - it's causing the error:
+    # posts = db.relationship("Post", backref="course_ref", lazy=True)
+
+    def __init__(self, code, name=None):
+        self.code = code.upper()  # Store course codes in uppercase
+        self.name = name
+
+    def to_dict(self):
+        """Convert course to dictionary."""
+        return {
+            'id': self.id,
+            'code': self.code,
+            'name': self.name,
+            'created_at': self.created_at.isoformat() if self.created_at else None
+        }

@@ -217,6 +217,7 @@ const Post = ({
                                         post_id: post.id
                                     });
                                 }
+                                setShowSidebarCommentForm(false);
                             }}
                             className="comment-form"
                             style={{ margin: 'auto', width: '100%' }}

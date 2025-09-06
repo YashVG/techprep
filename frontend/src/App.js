@@ -10,10 +10,27 @@ function AppContent() {
   const [posts, setPosts] = useState([]);
   const [visibleComments, setVisibleComments] = useState(null); // holds postId
   const [comments, setComments] = useState([]);                 // holds fetched comments
-  const [courseOptions, setCourseOptions] = useState(["CPSC221", "MATH200", "STAT200"]);
+  const [courseOptions, setCourseOptions] = useState([]); // Remove hardcoded courses
   const [showCommentFormFor, setShowCommentFormFor] = useState(null);
   const [showAddPost, setShowAddPost] = useState(false);
-  const { user, token, isAuthenticated } = useAuth();
+  const { user, token, isAuthenticated, logout } = useAuth();
+
+  // Fetch courses on component mount
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/courses');
+      if (response.ok) {
+        const courses = await response.json();
+        setCourseOptions(courses);
+      }
+    } catch (error) {
+      console.error('Failed to fetch courses:', error);
+    }
+  };
 
   useEffect(() => {
     fetch('http://localhost:5001/posts')
@@ -40,31 +57,18 @@ function AppContent() {
     }
   };
 
-  const handleDeletePost = async (postId) => {
-    if (!isAuthenticated) {
-      alert('Please login to delete posts');
-      return;
+  // Enhanced error handling for API calls
+  const handleApiError = (response, errorMessage) => {
+    if (response.status === 401) {
+      // Token expired or invalid
+      alert('Your session has expired. Please login again.');
+      logout();
+      return true; // Indicates authentication error
     }
-
-    try {
-      const response = await fetch(`http://localhost:5001/posts/${postId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      if (response.ok) {
-        setPosts(posts.filter(post => post.id !== postId));
-      } else {
-        const errorData = await response.json();
-        alert(errorData.error || 'Failed to delete post');
-      }
-    } catch (err) {
-      console.error('Error deleting post:', err);
-    }
+    return false;
   };
 
-  // Handler for submitting a new post
+  // Enhanced post submission with better error handling
   const handleAddPostSubmit = async (postData) => {
     if (!isAuthenticated) {
       alert('Please login to create posts');
@@ -80,19 +84,25 @@ function AppContent() {
         },
         body: JSON.stringify(postData)
       });
+
       if (response.ok) {
         const createdPost = await response.json();
         setPosts([...posts, createdPost]);
         setShowAddPost(false);
       } else {
+        if (handleApiError(response, 'Failed to create post')) {
+          return; // Authentication error handled
+        }
         const errorData = await response.json();
         alert(errorData.error || 'Failed to create post');
       }
     } catch (err) {
       console.error('Error submitting post:', err);
+      alert('Network error. Please try again.');
     }
   };
 
+  // Enhanced comment submission with better error handling
   const handleAddComment = async (commentData) => {
     if (!isAuthenticated) {
       alert('Please login to add comments');
@@ -114,11 +124,45 @@ function AppContent() {
         setComments([...comments, newComment]);
         setShowCommentFormFor(null);
       } else {
+        if (handleApiError(response, 'Failed to add comment')) {
+          return; // Authentication error handled
+        }
         const errorData = await response.json();
         alert(errorData.error || 'Failed to add comment');
       }
     } catch (err) {
       console.error('Error adding comment:', err);
+      alert('Network error. Please try again.');
+    }
+  };
+
+  // Enhanced post deletion with better error handling
+  const handleDeletePost = async (postId) => {
+    if (!isAuthenticated) {
+      alert('Please login to delete posts');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5001/posts/${postId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        setPosts(posts.filter(post => post.id !== postId));
+      } else {
+        if (handleApiError(response, 'Failed to delete post')) {
+          return; // Authentication error handled
+        }
+        const errorData = await response.json();
+        alert(errorData.error || 'Failed to delete post');
+      }
+    } catch (err) {
+      console.error('Error deleting post:', err);
+      alert('Network error. Please try again.');
     }
   };
 

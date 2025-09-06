@@ -6,11 +6,12 @@
 from flask import Flask, request, jsonify, g
 from sqlalchemy.exc import IntegrityError
 from config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS
-from models import db, Post, User, Comment
+from models import db, Post, User, Comment, Course
 from flask_cors import CORS
 from flask_migrate import Migrate
 from functools import wraps
 import re
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -139,7 +140,6 @@ def login():
         return jsonify({"error": "Account is deactivated"}), 401
     
     # Update last login time
-    from datetime import datetime
     user.last_login = datetime.utcnow()
     db.session.commit()
     
@@ -421,6 +421,57 @@ def get_comments_for_post(post_id):
             "post_id": c.post_id
         } for c in comments
     ])
+
+@app.route("/courses", methods=["GET"])
+def get_courses():
+    """
+    Fetches all available courses.
+    
+    Returns a list of course dictionaries.
+    """
+    courses = Course.query.all()
+    return jsonify([course.to_dict() for course in courses])
+
+@app.route("/courses", methods=["POST"])
+@login_required
+def add_course():
+    """
+    Creates a new course if it doesn't exist.
+    
+    Requires authentication. Accepts JSON with 'code' and optional 'name'.
+    Returns the course data (existing or newly created).
+    """
+    data = request.get_json()
+    
+    if not data.get('code'):
+        return jsonify({"error": "Course code is required"}), 400
+    
+    # Validate course code format (alphanumeric, 3-10 characters)
+    code_pattern = r'^[A-Za-z0-9]{3,10}$'
+    if not re.match(code_pattern, data['code']):
+        return jsonify({"error": "Course code must be 3-10 alphanumeric characters"}), 400
+    
+    try:
+        # Check if course already exists
+        course = Course.query.filter_by(code=data['code'].upper()).first()
+        
+        if not course:
+            # Create new course
+            course = Course(
+                code=data['code'],
+                name=data.get('name')
+            )
+            db.session.add(course)
+            db.session.commit()
+        
+        return jsonify({
+            "message": "Course available",
+            "course": course.to_dict()
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Failed to add course"}), 500
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
