@@ -166,6 +166,11 @@ function AppContent() {
     }
   };
 
+  // Handle adding new course from AddPost component
+  const handleAddCourse = (newCourse) => {
+    setCourseOptions([...courseOptions, newCourse]);
+  };
+
   return (
     <div className="App">
       <AuthHeader />
@@ -186,6 +191,8 @@ function AppContent() {
         onCancel={() => setShowAddPost(false)}
         onSubmit={handleAddPostSubmit}
         courseOptions={courseOptions}
+        onAddCourse={handleAddCourse}
+        token={token}
       />
 
       {posts.length === 0 ? (

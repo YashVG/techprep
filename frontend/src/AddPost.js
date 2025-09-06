@@ -28,7 +28,7 @@ const LANGUAGE_LABELS = {
  *   - onSubmit: function (called with post data on submit)
  *   - courseOptions: array of course strings
  */
-const AddPost = ({ show, onCancel, onSubmit, courseOptions }) => {
+const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }) => {
     // State for all post fields
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
@@ -36,6 +36,11 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions }) => {
     const [course, setCourse] = useState('');
     const [language, setLanguage] = useState('python');
     const [code, setCode] = useState(LANGUAGE_SNIPPETS['python']);
+
+    // State for adding new course
+    const [showAddCourse, setShowAddCourse] = useState(false);
+    const [newCourseCode, setNewCourseCode] = useState('');
+    const [newCourseName, setNewCourseName] = useState('');
 
     if (!show) return null;
 
@@ -46,6 +51,47 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions }) => {
         const lang = e.target.value;
         setLanguage(lang);
         setCode(LANGUAGE_SNIPPETS[lang]);
+    };
+
+    /**
+     * Handles adding a new course.
+     */
+    const handleAddNewCourse = async () => {
+        if (!newCourseCode.trim()) return;
+
+        try {
+            const response = await fetch('http://localhost:5001/courses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    code: newCourseCode.toUpperCase(),
+                    name: newCourseName.trim() || null
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                // Call the parent's onAddCourse function to update the course list
+                if (onAddCourse) {
+                    onAddCourse(result.course);
+                }
+                // Select the newly added course
+                setCourse(result.course.code);
+                // Reset form and hide add course section
+                setNewCourseCode('');
+                setNewCourseName('');
+                setShowAddCourse(false);
+            } else {
+                const errorData = await response.json();
+                alert(errorData.error || 'Failed to add course');
+            }
+        } catch (err) {
+            console.error('Error adding course:', err);
+            alert('Network error. Please try again.');
+        }
     };
 
     /**
@@ -100,17 +146,115 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions }) => {
                         className="block-centered-input"
                         style={{ width: '100%', maxWidth: 400 }}
                     />
-                    <select
-                        value={course}
-                        onChange={e => setCourse(e.target.value)}
-                        className="block-centered-input"
-                        style={{ width: '100%', maxWidth: 400 }}
-                    >
-                        <option value="">Select Course</option>
-                        {courseOptions.map(course => (
-                            <option key={course} value={course}>{course}</option>
-                        ))}
-                    </select>
+                    {/* Course Selection with Add Button */}
+                    <div style={{ width: '100%', maxWidth: 400, margin: '1em 0' }}>
+                        <label style={{ color: '#ffd700', fontWeight: 600, marginRight: '1em', display: 'block', marginBottom: '0.5em' }}>Course:</label>
+                        <div style={{ display: 'flex', gap: '0.5em', alignItems: 'center' }}>
+                            <select
+                                value={course}
+                                onChange={e => setCourse(e.target.value)}
+                                className="block-centered-input"
+                                style={{ flex: 1 }}
+                            >
+                                <option value="">Select Course</option>
+                                {courseOptions.map(courseOption => (
+                                    <option key={courseOption.id || courseOption} value={courseOption.code || courseOption}>
+                                        {courseOption.code || courseOption} - {courseOption.name || 'No name'}
+                                    </option>
+                                ))}
+                            </select>
+                            <button
+                                type="button"
+                                onClick={() => setShowAddCourse(!showAddCourse)}
+                                style={{
+                                    background: '#ffd700',
+                                    color: '#2e2e2e',
+                                    fontWeight: 700,
+                                    borderRadius: '4px',
+                                    border: 'none',
+                                    padding: '0.5em',
+                                    cursor: 'pointer',
+                                    fontSize: '0.9em',
+                                    minWidth: '40px'
+                                }}
+                                title="Add New Course"
+                            >
+                                +
+                            </button>
+                        </div>
+
+                        {/* Add New Course Form */}
+                        {showAddCourse && (
+                            <div style={{
+                                marginTop: '1em',
+                                padding: '1em',
+                                background: '#2e2e2e',
+                                borderRadius: '6px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '0.5em'
+                            }}>
+                                <h4 style={{ color: '#ffd700', margin: 0, marginBottom: '0.5em', fontSize: '1em' }}>Add New Course</h4>
+                                <input
+                                    type="text"
+                                    placeholder="Course Code (e.g., CPSC221)"
+                                    value={newCourseCode}
+                                    onChange={e => setNewCourseCode(e.target.value)}
+                                    className="block-centered-input"
+                                    style={{ width: '100%' }}
+                                    pattern="[A-Za-z0-9]{3,10}"
+                                    title="3-10 alphanumeric characters"
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Course Name (optional)"
+                                    value={newCourseName}
+                                    onChange={e => setNewCourseName(e.target.value)}
+                                    className="block-centered-input"
+                                    style={{ width: '100%' }}
+                                />
+                                <div style={{ display: 'flex', gap: '0.5em' }}>
+                                    <button
+                                        type="button"
+                                        onClick={handleAddNewCourse}
+                                        style={{
+                                            background: '#1db954',
+                                            color: '#fff',
+                                            fontWeight: 700,
+                                            borderRadius: '4px',
+                                            border: 'none',
+                                            padding: '0.5em 1em',
+                                            cursor: 'pointer',
+                                            fontSize: '0.9em'
+                                        }}
+                                    >
+                                        Add Course
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setShowAddCourse(false);
+                                            setNewCourseCode('');
+                                            setNewCourseName('');
+                                        }}
+                                        style={{
+                                            background: '#888',
+                                            color: '#fff',
+                                            fontWeight: 700,
+                                            borderRadius: '4px',
+                                            border: 'none',
+                                            padding: '0.5em 1em',
+                                            cursor: 'pointer',
+                                            fontSize: '0.9em'
+                                        }}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
                     {/* Language Selector for Code Editor */}
                     <div style={{ width: '100%', maxWidth: 400, margin: '1em 0' }}>
                         <label htmlFor="code-language-select" style={{ color: '#ffd700', fontWeight: 600, marginRight: '1em' }}>Code Language:</label>
