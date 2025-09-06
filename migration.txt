@@ -1,0 +1,181 @@
+# Database Migration Guide - Tech Prep Project
+# Adding Course Model to Existing Database
+
+## Overview
+This guide will help you migrate your existing database to include the new Course model while preserving all existing data.
+
+## Current Database State
+- ✅ Users table (with authentication fields)
+- ✅ Posts table (with course field as string)
+- ✅ Comments table
+- ❌ Courses table (needs to be created)
+
+## Migration Steps
+
+### Step 1: Stop the Application
+```bash
+# Navigate to project root
+cd /Users/yash/Desktop/techprep
+
+# Stop all containers
+docker compose down
+```
+
+### Step 2: Backup Your Data (IMPORTANT!)
+```bash
+# Create backup of your database
+docker compose up -d db
+docker exec techprep-db-1 pg_dump -U postgres blog > backup_$(date +%Y%m%d_%H%M%S).sql
+
+# Verify backup was created
+ls -la backup_*.sql
+```
+
+### Step 3: Start the Application
+```bash
+# Start all containers
+docker compose up -d
+```
+
+### Step 4: Create the Migration
+```bash
+# Navigate to backend directory
+cd backend
+
+# Create migration for Course model
+docker compose exec web flask db migrate -m "Add Course model - fix relationship"
+
+# This should create a new migration file in migrations/versions/
+```
+
+### Step 5: Apply the Migration
+```bash
+# Apply the migration to create the courses table
+docker compose exec web flask db upgrade
+```
+
+### Step 6: Verify the Migration
+```bash
+# Check that the courses table was created
+docker compose exec db psql -U postgres -d blog -c "\dt"
+
+# You should see: users, posts, comments, courses, alembic_version
+```
+
+### Step 7: Test the New Functionality
+```bash
+# Test the courses API endpoint
+curl http://localhost:5001/courses
+
+# Should return: [] (empty array initially)
+
+# Test the posts endpoint
+curl http://localhost:5001/posts
+
+# Should return your existing posts without errors
+```
+
+### Step 8: Populate Initial Courses (Optional)
+```bash
+# Add some initial courses to the database
+docker compose exec db psql -U postgres -d blog -c "
+INSERT INTO courses (code, name, created_at) VALUES 
+('CPSC221', 'Data Structures and Algorithms', NOW()),
+('MATH200', 'Calculus III', NOW()),
+('STAT200', 'Elementary Statistics', NOW());
+"
+
+# Verify courses were added
+docker compose exec db psql -U postgres -d blog -c "SELECT * FROM courses;"
+```
+
+## Troubleshooting
+
+### If Migration Fails:
+1. **Check container logs:**
+   ```bash
+   docker compose logs web
+   ```
+
+2. **Check database connection:**
+   ```bash
+   docker compose exec db psql -U postgres -d blog -c "SELECT version();"
+   ```
+
+3. **Reset migration state (if needed):**
+   ```bash
+   # Only if migration is completely broken
+   docker compose exec web flask db stamp head
+   ```
+
+### If You Get Relationship Errors:
+The Course model has been updated to remove the problematic relationship. If you still get errors:
+
+1. **Restart the containers:**
+   ```bash
+   docker compose down
+   docker compose up --build -d
+   ```
+
+2. **Check the models.py file** - ensure the Course class doesn't have the `posts` relationship line
+
+### If You Need to Rollback:
+```bash
+# Restore from backup
+docker compose down
+docker compose up -d db
+docker exec -i techprep-db-1 psql -U postgres blog < backup_YYYYMMDD_HHMMSS.sql
+```
+
+## Expected Results After Migration
+
+### Database Tables:
+- `users` - User accounts with authentication
+- `posts` - Blog posts (course field as string)
+- `comments` - Post comments
+- `courses` - Available course codes and names
+- `alembic_version` - Migration tracking
+
+### API Endpoints Available:
+- `GET /courses` - List all courses
+- `POST /courses` - Add new course (requires authentication)
+- `GET /posts` - List all posts (existing)
+- `POST /posts` - Create post (existing, now with course support)
+
+### Frontend Features:
+- Dynamic course dropdown in Add Post form
+- Ability to add new courses on-the-fly
+- Course selection when creating posts
+
+## Verification Checklist
+
+- [ ] Migration completed without errors
+- [ ] All existing data preserved
+- [ ] Courses table created successfully
+- [ ] API endpoints responding correctly
+- [ ] Frontend can fetch and display courses
+- [ ] Users can add new courses when creating posts
+
+## Next Steps After Migration
+
+1. **Test the frontend:**
+   ```bash
+   cd frontend
+   npm start
+   ```
+
+2. **Create a test post with a course** to verify the full workflow
+
+3. **Add some initial courses** through the API or database
+
+## Support
+
+If you encounter any issues:
+1. Check the Docker logs: `docker compose logs`
+2. Verify database state: `docker compose exec db psql -U postgres -d blog -c "\dt"`
+3. Test API endpoints individually
+4. Check that all containers are running: `docker compose ps`
+
+---
+Migration Guide Created: $(date)
+Project: Tech Prep - UBC Student Tech Interview Preparation Platform
