@@ -473,5 +473,17 @@ def add_course():
         db.session.rollback()
         return jsonify({"error": "Failed to add course"}), 500
 
+@app.route("/courses/<int:course_id>", methods=["DELETE"])
+@login_required
+def delete_course(course_id):
+    """
+    Deletes a course by ID.
+    """
+    course = Course.query.get_or_404(course_id)
+    db.session.delete(course)
+    db.session.commit()
+    return jsonify({"message": "Course deleted"})
+
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
