@@ -473,6 +473,14 @@ def add_course():
         db.session.rollback()
         return jsonify({"error": "Failed to add course"}), 500
 
+# @app.route("/coursesShowAll", methods=["GET"])
+# def show_all_courses():
+#     """
+#     Shows all courses.
+#     """
+#     courses = Course.query.all()
+#     return jsonify([course.to_dict() for course in courses])
+
 @app.route("/courses/<int:course_id>", methods=["DELETE"])
 @login_required
 def delete_course(course_id):
