@@ -13,6 +13,7 @@ function AppContent() {
   const [courseOptions, setCourseOptions] = useState([]); // Remove hardcoded courses
   const [showCommentFormFor, setShowCommentFormFor] = useState(null);
   const [showAddPost, setShowAddPost] = useState(false);
+  const [showUserPosts, setShowUserPosts] = useState(false); // shows user's posts when "My Posts" is clicked
   const { user, token, isAuthenticated, logout } = useAuth();
 
   // Fetch courses on component mount
@@ -29,6 +30,47 @@ function AppContent() {
       }
     } catch (error) {
       console.error('Failed to fetch courses:', error);
+    }
+  };
+
+  const fetchUserPosts = async () => {
+    if (!isAuthenticated || !user) {
+      alert('Please login to view your posts');
+      return;
+    }
+    try {
+      const response = await fetch(`http://localhost:5001/users/${user.id}/posts`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.ok) {
+        const userPosts = await response.json();
+        setPosts(userPosts);
+      } else {
+        if (handleApiError(response, 'Failed to fetch user posts')) {
+          return; // Authentication error handled
+        }
+        const errorData = await response.json();
+        alert(errorData.error || 'Failed to fetch user posts');
+      }
+    } catch (error) {
+      console.error('Failed to fetch user posts:', error);
+      alert('Network error. Please try again.');
+    }
+  };
+
+  // Fetch all posts
+  const fetchAllPosts = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/posts');
+      if (response.ok) {
+        const allPosts = await response.json();
+        setPosts(allPosts);
+      }
+    } catch (err) {
+      console.error('Error fetching all posts:', err);
+      alert('Network error. Please try again.');
     }
   };
 
@@ -185,6 +227,27 @@ function AppContent() {
           </p>
         )}
       </div>
+      <div className="button-bar">
+        {isAuthenticated ? (
+          <button onClick={() => {
+            if (showUserPosts) {
+              // If currently showing user posts, go back to all posts
+              setShowUserPosts(false);
+              fetchAllPosts();
+            } else {
+              // Show user's posts
+              setShowUserPosts(true);
+              fetchUserPosts();
+            }
+          }}>
+            {showUserPosts ? "Show All Posts" : "My Posts"}
+          </button>
+        ) : (
+          <p style={{ color: '#666', fontStyle: 'italic' }}>
+            Please login to view your posts
+          </p>
+        )}
+      </div>
 
       <AddPost
         show={showAddPost}
@@ -196,9 +259,14 @@ function AppContent() {
       />
 
       {posts.length === 0 ? (
-        <p>No posts found.</p>
+        <p>{showUserPosts ? "You haven't created any posts yet." : "No posts found."}</p>
       ) : (
         <div>
+          {showUserPosts && (
+            <h2 style={{ color: '#ffd700', textAlign: 'center', marginBottom: '1em' }}>
+              Your Posts ({posts.length})
+            </h2>
+          )}
           {posts.map(post => (
             <Post
               key={post.id}

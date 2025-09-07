@@ -484,6 +484,26 @@ def delete_course(course_id):
     db.session.commit()
     return jsonify({"message": "Course deleted"})
 
+# Route to get all posts for a specific user, using username instead of user_id``
+@app.route("/users/<int:user_id>/posts", methods=["GET"])
+def get_user_posts(user_id):
+    """
+    Fetches all posts for a specific user.
+    """
+    user = User.query.get_or_404(user_id)
+    posts = user.posts
+    return jsonify([{
+        "id": post.id,
+        "title": post.title,
+        "content": post.content,
+        "tags": post.tags,
+        "course": post.course,
+        "code": post.code,
+        "user_id": post.user_id,
+        "author": post.author.username if post.author else None,
+        "created_at": post.created_at.isoformat() if post.created_at else None,
+        "updated_at": post.updated_at.isoformat() if post.updated_at else None
+    } for post in posts])
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
