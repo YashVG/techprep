@@ -75,7 +75,7 @@ This is a full-stack web application built with React.js frontend and Flask back
   - Replaced comments view with form when adding new comments
   - Improved user experience with inline comment creation
 
-### Comprehensive Authentication System (Phase 4) - CURRENT
+### Comprehensive Authentication System (Phase 4)
 
 - **Backend Authentication Infrastructure**:
   - **User Model Enhancement**: Added `password_hash`, `is_active`, `created_at`, `last_login` fields
@@ -119,6 +119,44 @@ This is a full-stack web application built with React.js frontend and Flask back
   - **Error Handling**: Proper error responses for unauthorized access
   - **User Context**: Current user information available throughout the app
 
+### Dynamic Course Management System (Phase 5) - CURRENT
+
+- **Database Schema Enhancement**:
+  - **Course Model**: Added `Course` model with `id`, `code`, `name`, `created_at` fields
+  - **Database Migration**: Created migration for courses table with proper relationships
+  - **No Foreign Key Dependencies**: Courses stored as strings in posts for simplicity
+
+- **Backend API Endpoints**:
+  - **`GET /courses`**: Fetch all available courses (public)
+  - **`POST /courses`**: Add new course (authenticated, creates if doesn't exist)
+  - **`DELETE /courses/:id`**: Delete course (authenticated, creator only)
+  - **`GET /users/:id/posts`**: Get all posts by specific user (public)
+
+- **Frontend Course Management**:
+  - **Dynamic Course Loading**: Courses fetched from API instead of hardcoded
+  - **Add Course on-the-fly**: Users can add new courses when creating posts
+  - **Course Selection UI**: Enhanced dropdown with course codes and names
+  - **Real-time Updates**: New courses immediately appear in dropdown and get selected
+
+- **User Posts Management**:
+  - **"My Posts" Button**: Toggle between all posts and user's own posts
+  - **User Posts API**: Integrated with `/users/:id/posts` endpoint
+  - **Dynamic Post Filtering**: Seamless switching between all posts and user posts
+  - **Post Count Display**: Shows number of user's posts
+
+- **Courses Display System**:
+  - **"Courses" Button**: Opens popup modal to view all available courses
+  - **Modal Interface**: Consistent with Add Post modal design
+  - **Grid Layout**: Responsive course cards with hover effects
+  - **Course Information**: Displays course code, name, and creation date
+  - **Empty State**: Helpful message when no courses exist
+
+- **UI/UX Improvements**:
+  - **Modal Consistency**: All popups use same styling and behavior
+  - **Responsive Design**: Course grid adapts to different screen sizes
+  - **Hover Effects**: Subtle animations on course cards
+  - **Clean Code**: Removed unnecessary comments and improved formatting
+
 ### Component Architecture
 
 - **Modular Components**:
@@ -127,7 +165,7 @@ This is a full-stack web application built with React.js frontend and Flask back
   - `LoginModal.js`: User authentication interface
   - `AuthHeader.js`: Navigation with authentication controls
   - `AuthContext.js`: Authentication state management
-  - `AddPost.js`: Post creation with code editor (now protected)
+  - `AddPost.js`: Post creation with code editor and dynamic course selection (protected)
   - `TestingPage.js`: Development/testing page (deleted)
 
 ### Database Management
@@ -136,6 +174,7 @@ This is a full-stack web application built with React.js frontend and Flask back
   - Implemented Flask-Migrate for schema changes
   - Created migrations for code column addition
   - **NEW**: Added authentication fields migration
+  - **NEW**: Added courses table migration
   - Handled Docker vs local database differences
   - Fixed schema mismatch errors
   - **NEW**: Clean migration system after corrupted migration cleanup
@@ -150,6 +189,9 @@ This is a full-stack web application built with React.js frontend and Flask back
   users: id, username, email, password_hash, is_active, created_at, last_login
   posts: id, title, content, code, user_id, tags, course, created_at, updated_at
   comments: id, content, user_id, post_id, created_at
+  
+  -- After Course Management Implementation
+  courses: id, code, name, created_at
   ```
 
 ### Error Handling & Fixes
@@ -171,6 +213,7 @@ This is a full-stack web application built with React.js frontend and Flask back
   - **NEW**: Fixed corrupted migration causing `relation "post" does not exist` error
   - **NEW**: Cleaned up migration history and recreated proper schema
   - **NEW**: Resolved `password_hash` NOT NULL constraint violations
+  - **NEW**: Fixed Course model relationship issues
 
 - **Authentication Issues**:
   - **NEW**: Fixed JWT token verification and user context
@@ -198,6 +241,10 @@ This is a full-stack web application built with React.js frontend and Flask back
   - **NEW**: JWT token-based session management
   - **NEW**: Protected post creation and comment system
   - **NEW**: User profile management
+  - **NEW**: Dynamic course management system
+  - **NEW**: User posts filtering ("My Posts" functionality)
+  - **NEW**: Courses display popup modal
+  - **NEW**: On-the-fly course creation during post creation
   - Post creation with code editor integration (now protected)
   - Comments system with scrollable sidebar (now protected)
   - Responsive layout with stable post widths
@@ -209,26 +256,35 @@ This is a full-stack web application built with React.js frontend and Flask back
   users: id, username, email, password_hash, is_active, created_at, last_login
   posts: id, title, content, code, user_id, tags, course, created_at, updated_at
   comments: id, content, user_id, post_id, created_at
+  courses: id, code, name, created_at
   ```
 
 - **API Endpoints**:
-  - **NEW**: POST /auth/register - User registration
-  - **NEW**: POST /auth/login - User authentication
-  - **NEW**: GET /auth/profile - Get user profile (protected)
-  - **NEW**: PUT /auth/profile - Update user profile (protected)
-  - **NEW**: POST /auth/change-password - Change password (protected)
-  - **NEW**: POST /auth/logout - Logout (protected)
-  - GET /posts - View all posts (public)
-  - POST /posts - Create post (protected)
-  - DELETE /posts/<id> - Delete post (protected, owner only)
-  - POST /comments - Add comment (protected)
-  - GET /posts/<id>/comments - View post comments (public)
+  - **Authentication**:
+    - POST /auth/register - User registration
+    - POST /auth/login - User authentication
+    - GET /auth/profile - Get user profile (protected)
+    - PUT /auth/profile - Update user profile (protected)
+    - POST /auth/change-password - Change password (protected)
+    - POST /auth/logout - Logout (protected)
+  - **Content**:
+    - GET /posts - View all posts (public)
+    - POST /posts - Create post (protected)
+    - DELETE /posts/:id - Delete post (protected, owner only)
+    - POST /comments - Add comment (protected)
+    - GET /posts/:id/comments - View post comments (public)
+    - GET /users/:id/posts - Get user's posts (public)
+  - **Courses**:
+    - GET /courses - View all courses (public)
+    - POST /courses - Add new course (protected)
+    - DELETE /courses/:id - Delete course (protected, creator only)
 
 ## Known Issues & Technical Debt
 
 - ~~No user authentication (intentionally simplified)~~ ✅ **RESOLVED**
 - ~~No password protection for user accounts~~ ✅ **RESOLVED**
 - ~~Limited user profile functionality~~ ✅ **RESOLVED**
+- ~~No dynamic course management~~ ✅ **RESOLVED**
 - No search or filtering capabilities
 - No post categories or tags management
 - No password reset functionality
@@ -238,6 +294,7 @@ This is a full-stack web application built with React.js frontend and Flask back
 
 - ~~User authentication with proper security~~ ✅ **IMPLEMENTED**
 - ~~User profiles and avatars~~ ✅ **PARTIALLY IMPLEMENTED**
+- ~~Dynamic course management~~ ✅ **IMPLEMENTED**
 - Password reset and email verification
 - Post search and filtering
 - Post categories and tags
@@ -256,6 +313,7 @@ This is a full-stack web application built with React.js frontend and Flask back
 - **NEW**: Authentication requires valid JWT tokens in Authorization headers
 - **NEW**: Protected routes automatically redirect unauthenticated users
 - **NEW**: User registration includes password strength validation
+- **NEW**: Courses are managed dynamically through API endpoints
 
 ## Authentication System Usage
 
@@ -273,12 +331,29 @@ This is a full-stack web application built with React.js frontend and Flask back
 - Protected UI elements only visible to authenticated users
 - Automatic token inclusion in API requests
 
+## Course Management System Usage
+
+### Backend
+
+- Courses are stored in separate `courses` table
+- Course codes are automatically converted to uppercase
+- Duplicate course codes are prevented
+- Course deletion requires authentication and ownership
+
+### Frontend
+
+- Courses are fetched dynamically from API
+- Users can add new courses when creating posts
+- Course selection shows both code and name
+- Courses display in popup modal with grid layout
+
 ## Last Updated
 
-- Date: August 29, 2025
-- Status: **MAJOR UPDATE** - Complete authentication system implemented
-- Next Priority: User choice (UI enhancements, search functionality, or new features)
+- Date: September 6, 2025
+- Status: **MAJOR UPDATE** - Dynamic course management and user posts system implemented
+- Next Priority: Search functionality, post filtering, or advanced features
 - Authentication Status: **PRODUCTION READY** ✅
+- Course Management Status: **PRODUCTION READY** ✅
 
 ## Repository Structure Changes
 

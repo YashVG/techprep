@@ -8,16 +8,15 @@ import AuthHeader from './components/AuthHeader';
 
 function AppContent() {
   const [posts, setPosts] = useState([]);
-  const [visibleComments, setVisibleComments] = useState(null); // holds postId
-  const [comments, setComments] = useState([]);                 // holds fetched comments
-  const [courseOptions, setCourseOptions] = useState([]); // Remove hardcoded courses
+  const [visibleComments, setVisibleComments] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [courseOptions, setCourseOptions] = useState([]);
   const [showCommentFormFor, setShowCommentFormFor] = useState(null);
   const [showAddPost, setShowAddPost] = useState(false);
-  const [showUserPosts, setShowUserPosts] = useState(false); // shows user's posts when "My Posts" is clicked
-  const [showCourses, setShowCourses] = useState(false); // shows all courses when "Show Courses" is clicked
+  const [showUserPosts, setShowUserPosts] = useState(false);
+  const [showCourses, setShowCourses] = useState(false);
   const { user, token, isAuthenticated, logout } = useAuth();
 
-  // Fetch courses on component mount
   useEffect(() => {
     fetchCourses();
   }, []);
@@ -61,7 +60,6 @@ function AppContent() {
     }
   };
 
-  // Fetch all posts
   const fetchAllPosts = async () => {
     try {
       const response = await fetch('http://localhost:5001/posts');
@@ -83,7 +81,6 @@ function AppContent() {
   }, []);
 
   const handleViewComments = async (postId) => {
-    // Toggle off if same post is clicked
     if (visibleComments === postId) {
       setVisibleComments(null);
       setComments([]);
@@ -100,18 +97,15 @@ function AppContent() {
     }
   };
 
-  // Enhanced error handling for API calls
   const handleApiError = (response, errorMessage) => {
     if (response.status === 401) {
-      // Token expired or invalid
       alert('Your session has expired. Please login again.');
       logout();
-      return true; // Indicates authentication error
+      return true;
     }
     return false;
   };
 
-  // Enhanced post submission with better error handling
   const handleAddPostSubmit = async (postData) => {
     if (!isAuthenticated) {
       alert('Please login to create posts');
@@ -134,7 +128,7 @@ function AppContent() {
         setShowAddPost(false);
       } else {
         if (handleApiError(response, 'Failed to create post')) {
-          return; // Authentication error handled
+          return;
         }
         const errorData = await response.json();
         alert(errorData.error || 'Failed to create post');
@@ -145,7 +139,6 @@ function AppContent() {
     }
   };
 
-  // Enhanced comment submission with better error handling
   const handleAddComment = async (commentData) => {
     if (!isAuthenticated) {
       alert('Please login to add comments');
@@ -168,7 +161,7 @@ function AppContent() {
         setShowCommentFormFor(null);
       } else {
         if (handleApiError(response, 'Failed to add comment')) {
-          return; // Authentication error handled
+          return;
         }
         const errorData = await response.json();
         alert(errorData.error || 'Failed to add comment');
@@ -179,7 +172,6 @@ function AppContent() {
     }
   };
 
-  // Enhanced post deletion with better error handling
   const handleDeletePost = async (postId) => {
     if (!isAuthenticated) {
       alert('Please login to delete posts');
@@ -198,7 +190,7 @@ function AppContent() {
         setPosts(posts.filter(post => post.id !== postId));
       } else {
         if (handleApiError(response, 'Failed to delete post')) {
-          return; // Authentication error handled
+          return;
         }
         const errorData = await response.json();
         alert(errorData.error || 'Failed to delete post');
@@ -209,7 +201,6 @@ function AppContent() {
     }
   };
 
-  // Handle adding new course from AddPost component
   const handleAddCourse = (newCourse) => {
     setCourseOptions([...courseOptions, newCourse]);
   };
@@ -232,11 +223,9 @@ function AppContent() {
         {isAuthenticated ? (
           <button onClick={() => {
             if (showUserPosts) {
-              // If currently showing user posts, go back to all posts
               setShowUserPosts(false);
               fetchAllPosts();
             } else {
-              // Show user's posts
               setShowUserPosts(true);
               fetchUserPosts();
             }
@@ -251,7 +240,7 @@ function AppContent() {
       </div>
       <div className="button-bar">
         <button onClick={() => setShowCourses(true)}>
-          Show Courses
+          Courses
         </button>
       </div>
 
@@ -264,7 +253,6 @@ function AppContent() {
         token={token}
       />
 
-      {/* Courses Popup Modal */}
       {showCourses && (
         <div className="modal-overlay" style={{ zIndex: 2000, alignItems: 'flex-start', overflowY: 'auto' }}>
           <div className="signup-modal-popup" style={{

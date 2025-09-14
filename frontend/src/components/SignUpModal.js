@@ -21,8 +21,8 @@ const SignUpModal = ({ show, onClose, onSwitchToLogin }) => {
 
         if (!formData.email.trim()) {
             newErrors.email = 'Email is required';
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-            newErrors.email = 'Please enter a valid email address';
+        } else if (!/^[^\s@]+@student\.ubc\.ca$/.test(formData.email)) {
+            newErrors.email = 'Please enter a valid UBC student email address';
         }
 
         if (!formData.password) {
@@ -130,7 +130,7 @@ const SignUpModal = ({ show, onClose, onSwitchToLogin }) => {
                     <input
                         type="email"
                         name="email"
-                        placeholder="Email"
+                        placeholder="Please enter your UBC student email"
                         value={formData.email}
                         onChange={handleInputChange}
                         className="block-centered-input"
