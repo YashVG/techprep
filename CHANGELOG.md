@@ -14,6 +14,54 @@ This is a full-stack web application built with React.js frontend and Flask back
 
 ## Development History
 
+### Course Management & Filtering (Latest)
+
+- **Course Creation in Courses Modal**:
+  - Added "+ Add New Course" button in Courses modal (requires authentication)
+  - Inline course creation form with course code and optional name fields
+  - Course code validation: 3-10 alphanumeric characters
+  - API integration with `POST /courses` endpoint
+  - Real-time course list updates after creation
+  - Handles duplicate courses gracefully (returns existing course)
+  - Form validation with required field indicators
+  - Cancel button to hide form without submission
+  - Auto-closes form when modal is closed
+
+- **Course-Based Post Filtering**:
+  - Click courses in the Courses modal to filter posts by that course
+  - Active filter indicator banner shows current course filter with post count
+  - Clear filter button to return to all posts view
+  - Course filter state management with `selectedCourse` and `allPosts` states
+  - Smart filtering that clears user posts view when course filter is applied
+  - Empty state messages show appropriate text when no posts match filter
+  - Responsive heading shows "Posts for [COURSE]" when filtered
+  - Toggle filter by clicking same course again
+
+- **UI/UX Improvements**:
+  - Course badges displayed as static green pills with 📚 icon on posts
+  - Gold "+ Add New Course" button with hover effects in Courses modal
+  - Dark form background (#2e2e2e) with gold border for visibility
+  - "Click to filter posts" hint on each course card
+  - Consistent color scheme throughout course management
+
+### Database Management & Password Recovery
+
+- **PostgreSQL Collation Fix**:
+  - Resolved collation version mismatch warnings (2.36 → 2.41)
+  - Updated both `blog` and `template1` databases using `ALTER DATABASE ... REFRESH COLLATION VERSION`
+  - Eliminated system library version conflicts
+
+- **Test Account Password Recovery**:
+  - **Found existing test accounts**:
+    - `testuser` (<test@example.com>) - ID: 1
+    - `YashVG` (<garg.yashvardhan@gmail.com>) - ID: 2  
+    - `testUser` (<test@gmail.com>) - ID: 3
+  - **Reset passwords for test accounts**:
+    - `testuser`: Password reset to `TestPass123`
+    - `testUser`: Password reset to `TestPass123`
+  - **Database utility script created** (`reset_password.py`) for future password management
+  - All test accounts now use consistent password: `TestPass123`
+
 ### Initial Setup & Core Features
 
 - Created React frontend with basic post display

@@ -13,7 +13,8 @@ const Post = ({
     setVisibleComments,
     onAddComment,
     isAuthenticated,
-    currentUser
+    currentUser,
+    onCourseClick
 }) => {
     const [showFullscreenCode, setShowFullscreenCode] = useState(false);
     const [showSidebarCommentForm, setShowSidebarCommentForm] = useState(false);
@@ -63,6 +64,27 @@ const Post = ({
                 </div>
                 <h2 className="post-title">{post.title}</h2>
                 <h4 className="post-content">{post.content}</h4>
+
+                {/* Course Badge - Display Only */}
+                {post.course && (
+                    <div style={{ marginBottom: '1em' }}>
+                        <span
+                            style={{
+                                display: 'inline-block',
+                                background: '#1db954',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: '20px',
+                                padding: '0.5em 1.2em',
+                                fontSize: '0.95em',
+                                fontWeight: 700,
+                                boxShadow: '0 2px 8px rgba(29, 185, 84, 0.3)'
+                            }}
+                        >
+                            📚 {post.course}
+                        </span>
+                    </div>
+                )}
 
                 <div className="post-row-flex">
                     <div className="post-tags-box">
