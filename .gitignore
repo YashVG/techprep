@@ -1,4 +1,5 @@
 # Python
+.startup.txt
 venv/
 __pycache__/
 *.pyc
@@ -47,4 +48,3 @@ docker-data/
 docker-logs/
 *.tar
 
-./startup.txt

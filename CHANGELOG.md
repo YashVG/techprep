@@ -14,7 +14,282 @@ This is a full-stack web application built with React.js frontend and Flask back
 
 ## Development History
 
-### Course Management & Filtering (Latest)
+### Security & Maintainability Overhaul (October 5, 2025) ⭐ MAJOR UPDATE
+
+This update implements comprehensive best practices for production-ready security and maintainability.
+
+#### 🔐 Security Enhancements
+
+**Environment Variable Management:**
+
+- Implemented `python-dotenv` for secure environment variable handling
+- Created `.env.example` template with all configuration options
+- Moved sensitive data (SECRET_KEY, JWT_SECRET_KEY, DB_PASSWORD) to environment variables
+- Added validation warnings for default/insecure keys on startup
+- Updated docker-compose.yml to use environment variables with secure defaults
+
+**Input Validation & Sanitization:**
+
+- Created comprehensive validation utilities (`backend/utils/validation.py`):
+  - `validate_password()` - Enforces strong password requirements
+  - `validate_email()` - Email format and length validation
+  - `validate_username()` - Username format validation
+  - `validate_course_code()` - Course code format validation
+  - `validate_string_length()` - Generic length validation with custom limits
+- Created sanitization utilities (`backend/utils/sanitization.py`):
+  - `sanitize_html()` - Prevents XSS attacks while allowing safe HTML
+  - `sanitize_plain_text()` - Strips all HTML for plain text fields
+  - `sanitize_code()` - Escapes code snippets for safe display
+  - Configurable allowed HTML tags, attributes, and protocols
+- Applied sanitization to all user inputs:
+  - Usernames, emails (plain text)
+  - Post titles, course codes (plain text)
+  - Post content, comments (sanitized HTML)
+  - Code snippets (escaped)
+
+**Rate Limiting:**
+
+- Integrated `Flask-Limiter` for API rate limiting
+- Configured per-endpoint rate limits:
+  - Registration: 5 attempts per hour
+  - Login: 10 attempts per minute
+  - Password change: 3 attempts per hour
+  - General API: 100 requests per hour (configurable)
+- Rate limits applied per IP address
+- Custom error handler for 429 (Too Many Requests)
+- Configurable via `RATE_LIMIT_ENABLED` and `RATE_LIMIT_DEFAULT` env vars
+
+**Security Headers:**
+
+- Created security middleware (`backend/middlewares/security.py`)
+- Added comprehensive security headers to all responses:
+  - `X-Content-Type-Options: nosniff` - Prevents MIME type sniffing
+  - `X-Frame-Options: DENY` - Prevents clickjacking
+  - `X-XSS-Protection: 1; mode=block` - Browser XSS protection
+  - `Content-Security-Policy` - Restricts resource loading
+  - `Strict-Transport-Security` - Ready for HTTPS (commented, enable in production)
+
+**CORS Configuration:**
+
+- Restricted CORS to specific origins only
+- Configurable via `CORS_ORIGINS` environment variable
+- No more wildcard (*) origins - production-ready
+- Credentials support with `supports_credentials=True`
+
+**Authentication Improvements:**
+
+- Updated JWT token generation to use configurable expiration
+- Token verification moved to use centralized config
+- Added type hints for better code safety
+- Improved error messages for authentication failures
+
+#### 📊 Logging & Monitoring
+
+**Comprehensive Logging System:**
+
+- Created logging utilities (`backend/utils/logger.py`):
+  - `setup_logger()` - Configurable logger with file and console handlers
+  - `log_security_event()` - Dedicated security event logging
+  - `get_request_info()` - Extract request metadata (IP, path, user agent)
+  - `log_api_call()` - Decorator for API call logging
+- Configurable log level and file location via environment variables
+- Structured log format with timestamp, level, and message
+- Security event tracking:
+  - Failed login attempts
+  - Invalid token usage
+  - Rate limit violations
+  - Password change attempts
+  - Registration duplicates
+
+**What Gets Logged:**
+
+- User registrations (username, user ID)
+- Successful logins (username, user ID)
+- Failed login attempts (username, IP)
+- Post/comment creation (user ID, resource ID)
+- Course creation (code, user ID)
+- Profile updates (user ID)
+- Password changes (user ID)
+- All errors with full context
+- Security violations
+
+#### 🏗️ Code Organization & Maintainability
+
+**Modular Backend Structure:**
+
+- Created `backend/utils/` package for utility functions:
+  - `validation.py` - All validation logic
+  - `sanitization.py` - Input sanitization
+  - `logger.py` - Logging utilities
+- Created `backend/middlewares/` package:
+  - `security.py` - Security headers and middleware
+- Separated concerns for better testability and reusability
+- Added comprehensive docstrings to all functions
+- Type hints for better code documentation
+
+**Error Handling:**
+
+- Global error handlers for common HTTP errors:
+  - 404 Not Found
+  - 429 Rate Limit Exceeded
+  - 500 Internal Server Error
+- Try-catch blocks in all route handlers
+- Proper database rollback on errors
+- Consistent error response format
+- Detailed error logging with context
+
+**Enhanced app.py:**
+
+- Added comprehensive module documentation
+- Organized imports by category
+- Clear section headers for different route groups
+- Improved code comments
+- Better error handling throughout
+- Consistent response patterns
+
+**Frontend Configuration:**
+
+- Created `frontend/src/config/api.js` for centralized API configuration
+- All API endpoints defined in one place
+- Environment variable support (`REACT_APP_API_URL`)
+- Helper function for authorization headers
+- Easy to switch between dev/staging/production
+
+#### 🛠️ Development Tools
+
+**Linting & Formatting:**
+
+- Added `.eslintrc.json` for JavaScript/React linting
+- Added `.pylintrc` for Python linting with project-specific rules
+- Added `.prettierrc.json` for consistent code formatting
+- Configured rules for maintainable code
+
+**Docker Improvements:**
+
+- Updated docker-compose.yml to use environment variables throughout
+- Added database health check
+- Proper service dependencies with health conditions
+- All configuration externalized via environment variables
+- Default values for development ease
+
+#### 📚 Documentation
+
+**Comprehensive Documentation Created:**
+
+1. **SECURITY.md** - Complete security guide covering:
+   - Authentication & authorization best practices
+   - Input validation & sanitization details
+   - Rate limiting configuration
+   - Security headers explained
+   - Environment variable management
+   - CORS configuration
+   - Logging & monitoring
+   - Deployment security checklist
+   - Regular maintenance schedule
+
+2. **API_DOCUMENTATION.md** - Full API reference with:
+   - All endpoints documented
+   - Request/response examples
+   - Authentication requirements
+   - Rate limits per endpoint
+   - Error responses
+   - cURL and JavaScript examples
+   - HTTP status codes
+
+3. **MAINTENANCE.md** - Operations guide including:
+   - Setup & installation instructions
+   - Environment configuration
+   - Running in dev/production
+   - Database management & migrations
+   - Backup & restore procedures
+   - Code quality tools
+   - Monitoring & log management
+   - Dependency updates
+   - Troubleshooting guide
+   - Maintenance schedules
+
+4. **Enhanced .env.example** - Template with:
+   - All configuration options
+   - Descriptive comments
+   - Security warnings
+   - Default values
+   - Setup instructions
+
+#### 📦 Dependencies Added
+
+**Python Packages:**
+
+- `python-dotenv==1.0.0` - Environment variable management
+- `Flask-Limiter==3.5.0` - API rate limiting
+- `bleach==6.1.0` - HTML sanitization for XSS prevention
+
+**Configuration Files:**
+
+- `.eslintrc.json` - JavaScript linting
+- `.pylintrc` - Python linting
+- `.prettierrc.json` - Code formatting
+- `backend/.env.example` - Environment template
+
+#### 🔄 Breaking Changes
+
+**None** - All changes are backwards compatible!
+
+- Existing functionality maintained
+- New features opt-in via environment variables
+- Default values preserve current behavior
+- Frontend code unchanged (API config is additive)
+
+#### ⚙️ Configuration Requirements
+
+**For Existing Installations:**
+
+1. Create `backend/.env` from `backend/.env.example`
+2. Generate secure keys:
+
+   ```bash
+   python -c "import secrets; print(secrets.token_urlsafe(32))"
+   ```
+
+3. Update environment variables
+4. Install new dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+5. Restart application
+
+**For New Installations:**
+
+- Follow MAINTENANCE.md setup instructions
+
+#### 🎯 Production Readiness
+
+This update makes the application **production-ready** with:
+
+- ✅ Secure authentication and authorization
+- ✅ Input validation and XSS prevention
+- ✅ Rate limiting to prevent abuse
+- ✅ Security headers for defense in depth
+- ✅ Comprehensive logging for monitoring
+- ✅ Proper error handling
+- ✅ Environment-based configuration
+- ✅ Complete documentation
+- ✅ Development tools for code quality
+- ✅ Maintainable, modular code structure
+
+**Next Steps for Production:**
+
+1. Enable HTTPS and HSTS header
+2. Set up log monitoring/alerting
+3. Configure regular database backups
+4. Set up CI/CD pipeline
+5. Perform security audit
+6. Load testing
+
+---
+
+### Course Management & Filtering
 
 - **Course Creation in Courses Modal**:
   - Added "+ Add New Course" button in Courses modal (requires authentication)

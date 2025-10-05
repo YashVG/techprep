@@ -74,22 +74,43 @@ class User(db.Model):
         """Verify the user's password."""
         return check_password_hash(self.password_hash, password)
 
-    def generate_token(self):
-        """Generate a JWT token for the user."""
+    def generate_token(self, expires_in: int = None):
+        """
+        Generate a JWT token for the user.
+        
+        Args:
+            expires_in: Token expiration time in seconds (uses config default if None)
+            
+        Returns:
+            JWT token string
+        """
+        from config import JWT_SECRET_KEY, JWT_ACCESS_TOKEN_EXPIRES
+        
+        if expires_in is None:
+            expires_in = JWT_ACCESS_TOKEN_EXPIRES
+        
         payload = {
             'user_id': self.id,
             'username': self.username,
-            'exp': datetime.utcnow() + timedelta(days=1)  # 24 hour expiry
+            'exp': datetime.utcnow() + timedelta(seconds=expires_in)
         }
-        secret_key = os.getenv('JWT_SECRET_KEY', 'your-secret-key-change-in-production')
-        return jwt.encode(payload, secret_key, algorithm='HS256')
+        return jwt.encode(payload, JWT_SECRET_KEY, algorithm='HS256')
 
     @staticmethod
-    def verify_token(token):
-        """Verify and decode a JWT token."""
+    def verify_token(token: str):
+        """
+        Verify and decode a JWT token.
+        
+        Args:
+            token: JWT token string
+            
+        Returns:
+            User object if token is valid, None otherwise
+        """
+        from config import JWT_SECRET_KEY
+        
         try:
-            secret_key = os.getenv('JWT_SECRET_KEY', 'your-secret-key-change-in-production')
-            payload = jwt.decode(token, secret_key, algorithms=['HS256'])
+            payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=['HS256'])
             return User.query.get(payload['user_id'])
         except jwt.ExpiredSignatureError:
             return None  # Token has expired

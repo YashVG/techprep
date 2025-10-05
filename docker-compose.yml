@@ -1,29 +1,49 @@
-version: "3.9"
-
 services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_DB: blog
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${DB_NAME:-blog}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   web:
     build: .
     volumes:
       - ./backend:/app/backend
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
-      DB_NAME: blog
-      DB_USER: postgres
-      DB_PASSWORD: password
+      # Database
+      DB_NAME: ${DB_NAME:-blog}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-password}
       DB_HOST: db
       DB_PORT: 5432
+      # Flask
+      FLASK_ENV: ${FLASK_ENV:-development}
+      FLASK_DEBUG: ${FLASK_DEBUG:-True}
+      SECRET_KEY: ${SECRET_KEY:-dev-secret-key-CHANGE-IN-PRODUCTION}
+      # JWT
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-dev-jwt-secret-CHANGE-IN-PRODUCTION}
+      JWT_ACCESS_TOKEN_EXPIRES: ${JWT_ACCESS_TOKEN_EXPIRES:-86400}
+      # CORS
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://localhost:3001}
+      # Rate Limiting
+      RATE_LIMIT_ENABLED: ${RATE_LIMIT_ENABLED:-True}
+      RATE_LIMIT_DEFAULT: ${RATE_LIMIT_DEFAULT:-100 per hour}
+      # Logging
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      LOG_FILE: ${LOG_FILE:-app.log}
     ports:
       - "5001:5000"
     restart: always

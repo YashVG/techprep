@@ -1,5 +1,7 @@
 Starting Flask + Docker:    docker compose up
 Start React:                cd frontend -> npm start
+Test User + PWD:
+    testUser - TestPass123
 
 AUTHENTICATION SYSTEM:
 - Backend runs on http://localhost:5001

@@ -1,0 +1,35 @@
+[MASTER]
+# Python code to execute, usually for sys.path manipulation
+init-hook='import sys; sys.path.append("backend")'
+
+[MESSAGES CONTROL]
+# Disable specific warnings
+disable=
+    C0111,  # missing-docstring
+    C0103,  # invalid-name
+    R0903,  # too-few-public-methods
+    R0913,  # too-many-arguments
+    W0703,  # broad-except
+    C0301,  # line-too-long (handled by max-line-length)
+
+[FORMAT]
+# Maximum number of characters on a single line
+max-line-length=120
+
+# String used for indentation
+indent-string='    '
+
+[BASIC]
+# Good variable names
+good-names=i,j,k,id,db,app,_
+
+[DESIGN]
+# Maximum number of arguments for function
+max-args=7
+
+# Maximum number of attributes for a class
+max-attributes=10
+
+# Maximum number of public methods for a class
+max-public-methods=20
+
