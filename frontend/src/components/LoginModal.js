@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_ENDPOINTS, API_CONFIG } from '../config/api';
 
 const LoginModal = ({ show, onClose, onSwitchToSignUp }) => {
     const [formData, setFormData] = useState({
@@ -32,11 +33,9 @@ const LoginModal = ({ show, onClose, onSwitchToSignUp }) => {
 
         setIsLoading(true);
         try {
-            const response = await fetch('http://localhost:5001/auth/login', {
+            const response = await fetch(API_ENDPOINTS.AUTH.LOGIN, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: API_CONFIG.HEADERS,
                 body: JSON.stringify({
                     username: formData.username,
                     password: formData.password

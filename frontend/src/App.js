@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import Post from './components/Post';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import AddPost from './AddPost';
 import { AuthProvider, useAuth } from './components/AuthContext';
 import AuthHeader from './components/AuthHeader';
+import { API_ENDPOINTS, getAuthHeaders } from './config/api';
 
 function AppContent() {
   const [posts, setPosts] = useState([]);
@@ -26,7 +27,7 @@ function AppContent() {
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch('http://localhost:5001/courses');
+      const response = await fetch(API_ENDPOINTS.COURSES.LIST);
       if (response.ok) {
         const courses = await response.json();
         setCourseOptions(courses);
@@ -42,10 +43,8 @@ function AppContent() {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:5001/users/${user.id}/posts`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      const response = await fetch(API_ENDPOINTS.USERS.POSTS(user.id), {
+        headers: getAuthHeaders(token)
       });
       if (response.ok) {
         const userPosts = await response.json();
@@ -65,7 +64,7 @@ function AppContent() {
 
   const fetchAllPosts = async () => {
     try {
-      const response = await fetch('http://localhost:5001/posts');
+      const response = await fetch(API_ENDPOINTS.POSTS.LIST);
       if (response.ok) {
         const fetchedPosts = await response.json();
         setPosts(fetchedPosts);
@@ -79,7 +78,7 @@ function AppContent() {
   };
 
   useEffect(() => {
-    fetch('http://localhost:5001/posts')
+    fetch(API_ENDPOINTS.POSTS.LIST)
       .then(res => res.json())
       .then(data => {
         setPosts(data);
@@ -96,7 +95,7 @@ function AppContent() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5001/posts/${postId}/comments`);
+      const response = await fetch(API_ENDPOINTS.POSTS.COMMENTS(postId));
       const data = await response.json();
       setComments(data);
       setVisibleComments(postId);
@@ -121,12 +120,9 @@ function AppContent() {
     }
 
     try {
-      const response = await fetch('http://localhost:5001/posts', {
+      const response = await fetch(API_ENDPOINTS.POSTS.CREATE, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: getAuthHeaders(token),
         body: JSON.stringify(postData)
       });
 
@@ -154,12 +150,9 @@ function AppContent() {
     }
 
     try {
-      const response = await fetch('http://localhost:5001/comments', {
+      const response = await fetch(API_ENDPOINTS.COMMENTS.CREATE, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: getAuthHeaders(token),
         body: JSON.stringify(commentData)
       });
 
@@ -187,11 +180,9 @@ function AppContent() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5001/posts/${postId}`, {
+      const response = await fetch(API_ENDPOINTS.POSTS.DELETE(postId), {
         method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers: getAuthHeaders(token)
       });
 
       if (response.ok) {
@@ -220,12 +211,9 @@ function AppContent() {
     }
 
     try {
-      const response = await fetch('http://localhost:5001/courses', {
+      const response = await fetch(API_ENDPOINTS.COURSES.CREATE, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: getAuthHeaders(token),
         body: JSON.stringify(courseData)
       });
 
@@ -278,8 +266,6 @@ function AppContent() {
             Please login to create posts and comments
           </p>
         )}
-      </div>
-      <div className="button-bar">
         {isAuthenticated ? (
           <button onClick={() => {
             if (showUserPosts) {
@@ -297,8 +283,6 @@ function AppContent() {
             Please login to view your posts
           </p>
         )}
-      </div>
-      <div className="button-bar">
         <button onClick={() => setShowCourses(true)}>
           Courses
         </button>

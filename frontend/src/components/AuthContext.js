@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { API_ENDPOINTS, getAuthHeaders } from '../config/api';
 
 const AuthContext = createContext();
 
@@ -18,10 +19,8 @@ export const AuthProvider = ({ children }) => {
     // Function to validate token with backend
     const validateToken = async (token) => {
         try {
-            const response = await fetch('http://localhost:5001/auth/profile', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+            const response = await fetch(API_ENDPOINTS.AUTH.PROFILE, {
+                headers: getAuthHeaders(token)
             });
 
             if (response.ok) {
@@ -83,10 +82,8 @@ export const AuthProvider = ({ children }) => {
         if (!token) return;
 
         try {
-            const response = await fetch('http://localhost:5001/auth/profile', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+            const response = await fetch(API_ENDPOINTS.AUTH.PROFILE, {
+                headers: getAuthHeaders(token)
             });
 
             if (response.ok) {

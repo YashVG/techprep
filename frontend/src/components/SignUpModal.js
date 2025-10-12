@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_ENDPOINTS, API_CONFIG } from '../config/api';
 
 const SignUpModal = ({ show, onClose, onSwitchToLogin }) => {
     const [formData, setFormData] = useState({
@@ -50,11 +51,9 @@ const SignUpModal = ({ show, onClose, onSwitchToLogin }) => {
 
         setIsLoading(true);
         try {
-            const response = await fetch('http://localhost:5001/auth/register', {
+            const response = await fetch(API_ENDPOINTS.AUTH.REGISTER, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: API_CONFIG.HEADERS,
                 body: JSON.stringify({
                     username: formData.username,
                     email: formData.email,

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MonacoEditor from '@monaco-editor/react';
+import { API_ENDPOINTS, getAuthHeaders } from './config/api';
 
 /**
  * Default code snippets for each supported language.
@@ -60,12 +61,9 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
         if (!newCourseCode.trim()) return;
 
         try {
-            const response = await fetch('http://localhost:5001/courses', {
+            const response = await fetch(API_ENDPOINTS.COURSES.CREATE, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+                headers: getAuthHeaders(token),
                 body: JSON.stringify({
                     code: newCourseCode.toUpperCase(),
                     name: newCourseName.trim() || null

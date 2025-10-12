@@ -14,6 +14,38 @@ This is a full-stack web application built with React.js frontend and Flask back
 
 ## Development History
 
+### API Configuration Refactoring (October 12, 2025)
+
+**Centralized API Endpoint Management:**
+
+- Refactored all hardcoded API URLs across the frontend to use centralized `API_ENDPOINTS` configuration
+- Updated the following components to import and use `API_ENDPOINTS` from `config/api.js`:
+  - `App.js` - All posts, comments, courses, and user endpoints
+  - `AuthContext.js` - Authentication profile endpoints
+  - `LoginModal.js` - Login endpoint
+  - `SignUpModal.js` - Registration endpoint
+  - `AddPost.js` - Course creation endpoint
+- Implemented consistent use of `getAuthHeaders()` helper function for authenticated requests
+- Improved code maintainability, readability, and safety by eliminating URL duplication
+- Enhanced environment configuration flexibility - API base URL can now be changed via `REACT_APP_API_URL` environment variable
+- All API endpoints are now managed in a single location (`frontend/src/config/api.js`), making it easy to update URLs for different environments (development, staging, production)
+
+**Benefits:**
+
+- Single source of truth for API endpoints
+- Type-safe endpoint construction with function-based dynamic URLs (e.g., `API_ENDPOINTS.POSTS.DELETE(id)`)
+- Consistent authorization header management
+- Easier testing and debugging
+- Reduced risk of typos and inconsistencies
+
+### UI Layout Update (October 12, 2025)
+
+**Frontend Button Layout:**
+
+- Modified button layout in App.js to display the three main navigation buttons (Add Post, My Posts, Courses) in a horizontal row instead of a vertical column
+- Consolidated three separate `.button-bar` divs into a single container for better layout control
+- Improved visual hierarchy and user experience with more compact navigation
+
 ### Security & Maintainability Overhaul (October 5, 2025) ⭐ MAJOR UPDATE
 
 This update implements comprehensive best practices for production-ready security and maintainability.
