@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import MonacoEditor from '@monaco-editor/react';
 import { API_ENDPOINTS, getAuthHeaders } from './config/api';
+import './AddPost.css';
 
 /**
  * Default code snippets for each supported language.
@@ -108,8 +109,8 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
     };
 
     return (
-        <div className="modal-overlay" style={{ zIndex: 2000, alignItems: 'flex-start', overflowY: 'auto' }}>
-            <div className="signup-modal-popup" style={{ minWidth: 600, maxWidth: 900, width: '80vw', minHeight: 600, maxHeight: '90vh', margin: '2em auto', background: '#444950', color: '#ffd700', position: 'relative', overflowY: 'auto' }}>
+        <div className="modal-overlay add-post-modal-overlay">
+            <div className="signup-modal-popup add-post-modal-content">
                 <button
                     className="modal-close-btn"
                     onClick={onCancel}
@@ -117,23 +118,21 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
                 >
                     &times;
                 </button>
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1em', alignItems: 'center', width: '100%' }}>
-                    <h2 style={{ color: '#ffd700', marginBottom: 0 }}>Add New Post</h2>
+                <form onSubmit={handleSubmit} className="add-post-form">
+                    <h2 className="add-post-title">Add New Post</h2>
                     <input
                         type="text"
                         placeholder="Title"
                         value={title}
                         onChange={e => setTitle(e.target.value)}
-                        className="block-centered-input"
-                        style={{ width: '100%', maxWidth: 400 }}
+                        className="block-centered-input add-post-input"
                         required
                     />
                     <textarea
                         placeholder="Content"
                         value={content}
                         onChange={e => setContent(e.target.value)}
-                        className="block-centered-input"
-                        style={{ width: '100%', maxWidth: 400, minHeight: 80 }}
+                        className="block-centered-input add-post-textarea"
                         required
                     />
                     <input
@@ -141,18 +140,16 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
                         placeholder="Tags (comma-separated)"
                         value={tags}
                         onChange={e => setTags(e.target.value)}
-                        className="block-centered-input"
-                        style={{ width: '100%', maxWidth: 400 }}
+                        className="block-centered-input add-post-input"
                     />
                     {/* Course Selection with Add Button */}
-                    <div style={{ width: '100%', maxWidth: 400, margin: '1em 0' }}>
-                        <label style={{ color: '#ffd700', fontWeight: 600, marginRight: '1em', display: 'block', marginBottom: '0.5em' }}>Course:</label>
-                        <div style={{ display: 'flex', gap: '0.5em', alignItems: 'center' }}>
+                    <div className="course-selection-container">
+                        <label className="course-label">Course:</label>
+                        <div className="course-input-row">
                             <select
                                 value={course}
                                 onChange={e => setCourse(e.target.value)}
-                                className="block-centered-input"
-                                style={{ flex: 1 }}
+                                className="block-centered-input course-select"
                             >
                                 <option value="">Select Course</option>
                                 {courseOptions.map(courseOption => (
@@ -164,17 +161,7 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
                             <button
                                 type="button"
                                 onClick={() => setShowAddCourse(!showAddCourse)}
-                                style={{
-                                    background: '#ffd700',
-                                    color: '#2e2e2e',
-                                    fontWeight: 700,
-                                    borderRadius: '4px',
-                                    border: 'none',
-                                    padding: '0.5em',
-                                    cursor: 'pointer',
-                                    fontSize: '0.9em',
-                                    minWidth: '40px'
-                                }}
+                                className="course-add-btn"
                                 title="Add New Course"
                             >
                                 +
@@ -183,23 +170,14 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
 
                         {/* Add New Course Form */}
                         {showAddCourse && (
-                            <div style={{
-                                marginTop: '1em',
-                                padding: '1em',
-                                background: '#2e2e2e',
-                                borderRadius: '6px',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '0.5em'
-                            }}>
-                                <h4 style={{ color: '#ffd700', margin: 0, marginBottom: '0.5em', fontSize: '1em' }}>Add New Course</h4>
+                            <div className="inline-course-form">
+                                <h4 className="inline-course-title">Add New Course</h4>
                                 <input
                                     type="text"
                                     placeholder="Course Code (e.g., CPSC221)"
                                     value={newCourseCode}
                                     onChange={e => setNewCourseCode(e.target.value)}
-                                    className="block-centered-input"
-                                    style={{ width: '100%' }}
+                                    className="block-centered-input inline-course-input"
                                     pattern="[A-Za-z0-9]{3,10}"
                                     title="3-10 alphanumeric characters"
                                 />
@@ -208,23 +186,13 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
                                     placeholder="Course Name (optional)"
                                     value={newCourseName}
                                     onChange={e => setNewCourseName(e.target.value)}
-                                    className="block-centered-input"
-                                    style={{ width: '100%' }}
+                                    className="block-centered-input inline-course-input"
                                 />
-                                <div style={{ display: 'flex', gap: '0.5em' }}>
+                                <div className="inline-course-buttons">
                                     <button
                                         type="button"
                                         onClick={handleAddNewCourse}
-                                        style={{
-                                            background: '#1db954',
-                                            color: '#fff',
-                                            fontWeight: 700,
-                                            borderRadius: '4px',
-                                            border: 'none',
-                                            padding: '0.5em 1em',
-                                            cursor: 'pointer',
-                                            fontSize: '0.9em'
-                                        }}
+                                        className="inline-course-add-btn"
                                     >
                                         Add Course
                                     </button>
@@ -235,16 +203,7 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
                                             setNewCourseCode('');
                                             setNewCourseName('');
                                         }}
-                                        style={{
-                                            background: '#888',
-                                            color: '#fff',
-                                            fontWeight: 700,
-                                            borderRadius: '4px',
-                                            border: 'none',
-                                            padding: '0.5em 1em',
-                                            cursor: 'pointer',
-                                            fontSize: '0.9em'
-                                        }}
+                                        className="inline-course-cancel-btn"
                                     >
                                         Cancel
                                     </button>
@@ -254,13 +213,13 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
                     </div>
 
                     {/* Language Selector for Code Editor */}
-                    <div style={{ width: '100%', maxWidth: 400, margin: '1em 0' }}>
-                        <label htmlFor="code-language-select" style={{ color: '#ffd700', fontWeight: 600, marginRight: '1em' }}>Code Language:</label>
+                    <div className="language-selector-container">
+                        <label htmlFor="code-language-select" className="language-label">Code Language:</label>
                         <select
                             id="code-language-select"
                             value={language}
                             onChange={handleLanguageChange}
-                            style={{ padding: '0.5em 1em', borderRadius: '4px', border: '1.5px solid #ffd700', background: '#2e2e2e', color: '#ffd700', fontWeight: 600 }}
+                            className="language-select"
                         >
                             {Object.entries(LANGUAGE_LABELS).map(([key, label]) => (
                                 <option key={key} value={key}>{label}</option>
@@ -268,7 +227,7 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
                         </select>
                     </div>
                     {/* Monaco Code Editor */}
-                    <div style={{ width: '100%', maxWidth: 700, minHeight: 300, borderRadius: '8px', overflow: 'hidden', boxShadow: '0 2px 16px rgba(0,0,0,0.25)', margin: '1em 0' }}>
+                    <div className="code-editor-container">
                         <MonacoEditor
                             height="300px"
                             language={language === 'cpp' ? 'cpp' : language}
@@ -285,9 +244,9 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
                             }}
                         />
                     </div>
-                    <div style={{ display: 'flex', gap: '1em', marginTop: '1em' }}>
-                        <button type="button" onClick={onCancel} style={{ background: '#888', color: '#fff', fontWeight: 700, borderRadius: '4px', border: 'none', padding: '0.75em 2em', cursor: 'pointer' }}>Cancel</button>
-                        <button type="submit" style={{ background: '#1db954', color: '#fff', fontWeight: 700, borderRadius: '4px', border: 'none', padding: '0.75em 2em', cursor: 'pointer' }}>Submit</button>
+                    <div className="add-post-actions">
+                        <button type="button" onClick={onCancel} className="add-post-cancel-btn">Cancel</button>
+                        <button type="submit" className="add-post-submit-btn">Submit</button>
                     </div>
                 </form>
             </div>

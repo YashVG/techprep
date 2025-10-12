@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from './AuthContext';
 import LoginModal from './LoginModal';
 import SignUpModal from './SignUpModal';
+import './AuthHeader.css';
 
 const AuthHeader = () => {
     const { user, logout, isAuthenticated } = useAuth();
@@ -14,36 +15,20 @@ const AuthHeader = () => {
     };
 
     return (
-        <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '1rem 2rem',
-            backgroundColor: '#f8f9fa',
-            borderBottom: '1px solid #e9ecef',
-            marginBottom: '2rem'
-        }}>
+        <div className="auth-header-container">
             <div>
-                <h1 style={{ margin: 0, color: '#333' }}>Tech Prep Blog</h1>
+                <h1 className="auth-header-title">Tech Prep Blog</h1>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div className="auth-header-actions">
                 {isAuthenticated ? (
                     <>
-                        <span style={{ color: '#666' }}>
+                        <span className="auth-header-welcome">
                             Welcome, <strong>{user?.username}</strong>!
                         </span>
                         <button
                             onClick={handleLogout}
-                            style={{
-                                background: '#dc3545',
-                                color: 'white',
-                                border: 'none',
-                                padding: '0.5rem 1rem',
-                                borderRadius: '4px',
-                                cursor: 'pointer',
-                                fontSize: '0.9rem'
-                            }}
+                            className="auth-header-logout-btn"
                         >
                             Logout
                         </button>
@@ -52,29 +37,13 @@ const AuthHeader = () => {
                     <>
                         <button
                             onClick={() => setShowLogin(true)}
-                            style={{
-                                background: '#007bff',
-                                color: 'white',
-                                border: 'none',
-                                padding: '0.5rem 1rem',
-                                borderRadius: '4px',
-                                cursor: 'pointer',
-                                fontSize: '0.9rem'
-                            }}
+                            className="auth-header-login-btn"
                         >
                             Login
                         </button>
                         <button
                             onClick={() => setShowSignUp(true)}
-                            style={{
-                                background: '#28a745',
-                                color: 'white',
-                                border: 'none',
-                                padding: '0.5rem 1rem',
-                                borderRadius: '4px',
-                                cursor: 'pointer',
-                                fontSize: '0.9rem'
-                            }}
+                            className="auth-header-signup-btn"
                         >
                             Sign Up
                         </button>

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import MonacoEditor from '@monaco-editor/react';
+import './Post.css';
 
 const Post = ({
     post,
@@ -36,30 +37,13 @@ const Post = ({
     const showComments = visibleComments === post.id;
 
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            justifyContent: 'center',
-            gap: showComments ? '2em' : 0,
-            width: '100%',
-            flexWrap: 'wrap',
-        }}>
+        <div className={`post-container ${showComments ? 'post-container-with-comments' : ''}`}>
             {/* Main Post Card */}
             <div
-                className="post-card"
+                className="post-card post-card-wrapper"
                 ref={postCardRef}
-                style={{
-                    position: 'relative',
-                    width: '600px',
-                    minWidth: '320px',
-                    maxWidth: '100%',
-                    boxSizing: 'border-box',
-                    marginBottom: '1em',
-                    flexShrink: 0,
-                }}
             >
-                <div className="post-author-top" style={{ position: 'absolute', top: '1em', right: '1.5em', fontSize: '0.95em', color: '#ffd700', opacity: 0.8, textAlign: 'right' }}>
+                <div className="post-author-top">
                     <span>By: {post.author}</span>
                 </div>
                 <h2 className="post-title">{post.title}</h2>
@@ -67,20 +51,8 @@ const Post = ({
 
                 {/* Course Badge - Display Only */}
                 {post.course && (
-                    <div style={{ marginBottom: '1em' }}>
-                        <span
-                            style={{
-                                display: 'inline-block',
-                                background: '#1db954',
-                                color: '#fff',
-                                border: 'none',
-                                borderRadius: '20px',
-                                padding: '0.5em 1.2em',
-                                fontSize: '0.95em',
-                                fontWeight: 700,
-                                boxShadow: '0 2px 8px rgba(29, 185, 84, 0.3)'
-                            }}
-                        >
+                    <div className="post-course-badge-container">
+                        <span className="post-course-badge">
                             📚 {post.course}
                         </span>
                     </div>
@@ -108,16 +80,11 @@ const Post = ({
 
                 {/* Code Editor Section - Always Visible */}
                 {post.code && (
-                    <div style={{ marginTop: '1em' }}>
-                        <div style={{
-                            width: '100%',
-                            height: shouldShowFullscreenButton ? `${editorHeight}px` : 'auto',
-                            borderRadius: '8px',
-                            overflow: 'hidden',
-                            boxShadow: '0 2px 16px rgba(0,0,0,0.25)',
-                            marginBottom: '1em',
-                            position: 'relative'
-                        }}>
+                    <div className="post-code-section">
+                        <div
+                            className="post-code-editor-wrapper"
+                            style={{ height: shouldShowFullscreenButton ? `${editorHeight}px` : 'auto' }}
+                        >
                             <MonacoEditor
                                 height={editorHeight + 'px'}
                                 language="python" // Default to python, you can make this dynamic based on post data
@@ -136,20 +103,7 @@ const Post = ({
                             {shouldShowFullscreenButton && (
                                 <button
                                     onClick={() => setShowFullscreenCode(true)}
-                                    style={{
-                                        position: 'absolute',
-                                        top: '10px',
-                                        right: '10px',
-                                        background: '#1db954',
-                                        color: '#fff',
-                                        fontWeight: 700,
-                                        fontSize: '0.9em',
-                                        borderRadius: '4px',
-                                        border: 'none',
-                                        padding: '0.4em 0.8em',
-                                        cursor: 'pointer',
-                                        zIndex: 10
-                                    }}
+                                    className="post-fullscreen-btn"
                                 >
                                     Fullscreen
                                 </button>
@@ -163,18 +117,8 @@ const Post = ({
 
                 {/* Fullscreen Code Modal */}
                 {showFullscreenCode && (
-                    <div className="modal-overlay" style={{ zIndex: 2000 }}>
-                        <div style={{
-                            background: '#444950',
-                            color: '#ffd700',
-                            borderRadius: '12px',
-                            padding: '2em',
-                            width: '90vw',
-                            height: '80vh',
-                            position: 'relative',
-                            display: 'flex',
-                            flexDirection: 'column'
-                        }}>
+                    <div className="modal-overlay fullscreen-code-modal-overlay">
+                        <div className="fullscreen-code-modal-content">
                             <button
                                 className="modal-close-btn"
                                 onClick={() => setShowFullscreenCode(false)}
@@ -182,8 +126,8 @@ const Post = ({
                             >
                                 &times;
                             </button>
-                            <h3 style={{ marginBottom: '1em', textAlign: 'center' }}>Code: {post.title}</h3>
-                            <div style={{ flex: 1, borderRadius: '8px', overflow: 'hidden' }}>
+                            <h3 className="fullscreen-code-title">Code: {post.title}</h3>
+                            <div className="fullscreen-code-editor-container">
                                 <MonacoEditor
                                     height="100%"
                                     language="python"
@@ -207,25 +151,7 @@ const Post = ({
 
             {/* Comments Sidebar */}
             {showComments && (
-                <div
-                    style={{
-                        background: '#23262b',
-                        color: '#ffd700',
-                        borderRadius: '10px',
-                        boxShadow: '0 2px 16px rgba(0,0,0,0.25)',
-                        width: '320px',
-                        minWidth: '320px',
-                        maxWidth: '320px',
-                        maxHeight: postHeight ? postHeight - 40 : '500px',
-                        overflowY: 'auto',
-                        padding: '1.5em 1em',
-                        marginTop: '0.5em',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '1em',
-                        flexShrink: 0,
-                    }}
-                >
+                <div className="comments-sidebar">
                     {showSidebarCommentForm ? (
                         // Only show the add comment form, not the comments list or header
                         <form
@@ -241,46 +167,47 @@ const Post = ({
                                 }
                                 setShowSidebarCommentForm(false);
                             }}
-                            className="comment-form"
-                            style={{ margin: 'auto', width: '100%' }}
+                            className="comment-form sidebar-comment-form"
                         >
-                            <h4 style={{ color: '#ffd700', margin: 0, marginBottom: '1em', textAlign: 'center' }}>Add Comment</h4>
+                            <h4 className="sidebar-comment-form-title">Add Comment</h4>
                             <textarea
                                 name={`sidebar-comment-content-${post.id}`}
                                 placeholder="Your comment"
                                 required
-                                className="block-centered-input"
-                                style={{ width: '100%', marginBottom: '1em' }}
+                                className="block-centered-input sidebar-comment-textarea"
                             />
-                            <div style={{ display: 'flex', gap: '1em', marginTop: '0.5em', justifyContent: 'center' }}>
-                                <button type="submit" style={{ background: '#1db954', color: '#fff', fontWeight: 700, borderRadius: '4px', border: 'none', padding: '0.5em 2em', cursor: 'pointer' }}>Submit</button>
-                                <button type="button" style={{ background: '#888', color: '#fff', fontWeight: 'none', padding: '0.5em 2em', cursor: 'pointer' }} onClick={() => setShowSidebarCommentForm(false)}>Cancel</button>
+                            <div className="sidebar-comment-buttons">
+                                <button type="submit" className="sidebar-comment-submit-btn">Submit</button>
+                                <button type="button" className="sidebar-comment-cancel-btn" onClick={() => setShowSidebarCommentForm(false)}>Cancel</button>
                             </div>
                         </form>
                     ) : (
                         <>
-                            <h4 style={{ color: '#ffd700', margin: 0, marginBottom: '1em', textAlign: 'center' }}>Comments</h4>
+                            <h4 className="comments-section-title">Comments</h4>
                             {isAuthenticated ? (
                                 <button
-                                    style={{ background: '#ffd700', color: '#2e2e2e', fontWeight: 700, fontSize: '1em', borderRadius: '4px', border: 'none', padding: '0.5em 2em', cursor: 'pointer', marginBottom: '0.5em' }}
+                                    className="comments-add-btn"
                                     onClick={() => setShowSidebarCommentForm(true)}
                                 >
                                     Add Comment
                                 </button>
                             ) : (
-                                <p style={{ color: '#888', fontSize: '0.9em', textAlign: 'center', marginBottom: '0.5em' }}>
+                                <p className="comments-login-message">
                                     Please login to add comments
                                 </p>
                             )}
                             {/* Comments List Scrollable */}
                             {comments.length === 0 ? (
-                                <p style={{ color: '#bbb', textAlign: 'center' }}>No comments yet.</p>
+                                <p className="comments-empty-message">No comments yet.</p>
                             ) : (
-                                <div style={{ maxHeight: postHeight ? postHeight - 40 : '400px', overflowY: 'scroll', marginBottom: '1em', scrollbarWidth: 'thin', scrollbarColor: '#ffd700 #23262b' }}>
+                                <div
+                                    className="comments-list"
+                                    style={{ maxHeight: postHeight ? postHeight - 40 : '400px' }}
+                                >
                                     {comments.map((comment) => (
-                                        <div key={comment.id} style={{ marginBottom: '0.5em', background: '#2e2e2e', borderRadius: '6px', padding: '0.75em 1em' }}>
-                                            <p style={{ margin: 0 }}>{comment.content}</p>
-                                            <p style={{ margin: 0, fontSize: '0.95em', color: '#1db954' }}><strong>By:</strong> {comment.user}</p>
+                                        <div key={comment.id} className="comment-item">
+                                            <p className="comment-content">{comment.content}</p>
+                                            <p className="comment-author"><strong>By:</strong> {comment.user}</p>
                                         </div>
                                     ))}
                                 </div>

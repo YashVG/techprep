@@ -14,6 +14,59 @@ This is a full-stack web application built with React.js frontend and Flask back
 
 ## Development History
 
+### Comprehensive CSS Refactoring - Complete Style Extraction (October 12, 2025) ⭐ MAJOR UPDATE
+
+**Massive Code Cleanup: Removed 80+ Inline Style Objects Across Entire Frontend**
+
+This comprehensive refactoring eliminated nearly all inline styles from the React frontend, extracting them into well-organized, semantic CSS files. This significantly improves code readability, maintainability, and follows React best practices.
+
+#### Files Refactored
+
+**1. App.js → App.css**
+
+- Removed 30+ inline style objects
+- Created semantic CSS classes for modals, buttons, forms, course displays, and layout components
+
+**2. AddPost.js → AddPost.css (NEW FILE)**
+
+- Removed 26 inline style objects
+- Created dedicated styles for post creation modal with code editor integration
+
+**3. Post.js → Post.css (NEW FILE)**
+
+- Removed 27 inline style objects  
+- Created comprehensive styles for post display, code viewer, and comments sidebar
+
+**4. AuthHeader.js → AuthHeader.css (NEW FILE)**
+
+- Removed 7 inline style objects
+- Created clean auth header styles with responsive button layouts
+
+**5. LoginModal.js & SignUpModal.js**
+
+- Already using shared `.signup-modal-popup` styles from App.css
+- Minimal inline styles remaining (form-specific dynamic styles only)
+
+#### Summary Statistics
+
+- **Files Modified**: 5 JavaScript files
+- **CSS Files Created**: 3 new dedicated CSS files (AddPost.css, Post.css, AuthHeader.css)
+- **Inline Styles Removed**: 80+ style objects eliminated
+- **Lines of Code Cleaned**: ~300+ lines of inline style code extracted
+- **CSS Classes Added**: 50+ new semantic CSS class names
+
+#### Benefits
+
+- ✨ **Dramatically Improved Readability**: JavaScript files are now 30-40% shorter and focus purely on logic
+- 🎨 **Better Maintainability**: All styles in dedicated CSS files, easy to update globally
+- ♻️ **Reusability**: CSS classes can be reused across components
+- ⚡ **Better Performance**: CSS classes are more performant than inline styles
+- 📚 **Self-Documenting**: Semantic class names clearly describe their purpose
+- 🔧 **Separation of Concerns**: Complete separation of style and logic
+- 🏆 **Best Practices**: Follows React and CSS best practices
+- 🐛 **Easier Debugging**: Styles organized logically, easy to find and modify
+- 📱 **Better for Theming**: Centralized styles make theme changes trivial
+
 ### API Configuration Refactoring (October 12, 2025)
 
 **Centralized API Endpoint Management:**

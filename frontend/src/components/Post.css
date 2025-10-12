@@ -1,0 +1,239 @@
+/**
+ * Post Component Styles
+ * Styles for individual post display with comments and code editor
+ */
+
+/* Post Container Layout */
+.post-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.post-container-with-comments {
+    gap: 2em;
+}
+
+/* Post Card */
+.post-card-wrapper {
+    position: relative;
+    width: 600px;
+    min-width: 320px;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1em;
+    flex-shrink: 0;
+}
+
+.post-author-top {
+    position: absolute;
+    top: 1em;
+    right: 1.5em;
+    font-size: 0.95em;
+    color: #ffd700;
+    opacity: 0.8;
+    text-align: right;
+}
+
+/* Course Badge */
+.post-course-badge-container {
+    margin-bottom: 1em;
+}
+
+.post-course-badge {
+    display: inline-block;
+    background: #1db954;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 0.5em 1.2em;
+    font-size: 0.95em;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(29, 185, 84, 0.3);
+}
+
+/* Code Section */
+.post-code-section {
+    margin-top: 1em;
+}
+
+.post-code-editor-wrapper {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
+    margin-bottom: 1em;
+    position: relative;
+}
+
+.post-fullscreen-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #1db954;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9em;
+    border-radius: 4px;
+    border: none;
+    padding: 0.4em 0.8em;
+    cursor: pointer;
+    z-index: 10;
+    margin: 0;
+    display: inline-block;
+}
+
+/* Fullscreen Code Modal */
+.fullscreen-code-modal-overlay {
+    z-index: 2000;
+}
+
+.fullscreen-code-modal-content {
+    background: #444950;
+    color: #ffd700;
+    border-radius: 12px;
+    padding: 2em;
+    width: 90vw;
+    max-width: 1200px;
+    height: 80vh;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fullscreen-code-title {
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.fullscreen-code-editor-container {
+    flex: 1;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Comments Sidebar */
+.comments-sidebar {
+    background: #23262b;
+    color: #ffd700;
+    border-radius: 10px;
+    padding: 1.5em 1.2em;
+    width: 400px;
+    min-width: 300px;
+    max-width: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    position: relative;
+    box-sizing: border-box;
+    min-height: 200px;
+    flex-shrink: 0;
+}
+
+/* Comment Form */
+.sidebar-comment-form {
+    margin: auto;
+    width: 100%;
+}
+
+.sidebar-comment-form-title {
+    color: #ffd700;
+    margin: 0;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.sidebar-comment-textarea {
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+.sidebar-comment-buttons {
+    display: flex;
+    gap: 1em;
+    margin-top: 0.5em;
+    justify-content: center;
+}
+
+.sidebar-comment-submit-btn {
+    background: #1db954;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 4px;
+    border: none;
+    padding: 0.5em 2em;
+    cursor: pointer;
+    margin: 0;
+    display: inline-block;
+}
+
+.sidebar-comment-cancel-btn {
+    background: #888;
+    color: #fff;
+    font-weight: normal;
+    padding: 0.5em 2em;
+    cursor: pointer;
+    margin: 0;
+    display: inline-block;
+}
+
+/* Comments Display */
+.comments-section-title {
+    color: #ffd700;
+    margin: 0;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.comments-add-btn {
+    background: #ffd700;
+    color: #2e2e2e;
+    font-weight: 700;
+    font-size: 1em;
+    border-radius: 4px;
+    border: none;
+    padding: 0.5em 2em;
+    cursor: pointer;
+    margin-bottom: 0.5em;
+    display: block;
+}
+
+.comments-login-message {
+    color: #888;
+    font-size: 0.9em;
+    text-align: center;
+    margin-bottom: 0.5em;
+}
+
+.comments-empty-message {
+    color: #bbb;
+    text-align: center;
+}
+
+.comments-list {
+    max-height: 400px;
+    overflow-y: scroll;
+    margin-bottom: 1em;
+    scrollbar-width: thin;
+    scrollbar-color: #ffd700 #23262b;
+}
+
+.comment-item {
+    margin-bottom: 0.5em;
+    background: #2e2e2e;
+    border-radius: 6px;
+    padding: 0.75em 1em;
+}
+
+.comment-content {
+    margin: 0;
+}
+
+.comment-author {
+    margin: 0;
+    font-size: 0.95em;
+    color: #1db954;
+}

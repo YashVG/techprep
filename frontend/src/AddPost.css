@@ -1,0 +1,205 @@
+/**
+ * AddPost Component Styles
+ * Styles for the post creation modal with code editor
+ */
+
+/* Modal Container */
+.add-post-modal-overlay {
+    z-index: 2000;
+    align-items: flex-start;
+    overflow-y: auto;
+}
+
+.add-post-modal-content {
+    min-width: 600px;
+    max-width: 900px;
+    width: 80vw;
+    min-height: 600px;
+    max-height: 90vh;
+    margin: 2em auto;
+    background: #444950;
+    color: #ffd700;
+    position: relative;
+    overflow-y: auto;
+}
+
+/* Form Styles */
+.add-post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+    width: 100%;
+}
+
+.add-post-title {
+    color: #ffd700;
+    margin-bottom: 0;
+}
+
+.add-post-input {
+    width: 100%;
+    max-width: 400px;
+}
+
+.add-post-textarea {
+    width: 100%;
+    max-width: 400px;
+    min-height: 80px;
+}
+
+/* Course Selection */
+.course-selection-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 1em 0;
+}
+
+.course-label {
+    color: #ffd700;
+    font-weight: 600;
+    margin-right: 1em;
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+.course-input-row {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+}
+
+.course-select {
+    flex: 1;
+}
+
+.course-add-btn {
+    background: #ffd700;
+    color: #2e2e2e;
+    font-weight: 700;
+    border-radius: 4px;
+    border: none;
+    padding: 0.5em;
+    cursor: pointer;
+    font-size: 0.9em;
+    min-width: 40px;
+    margin: 0;
+    display: inline-block;
+}
+
+/* Inline Course Add Form */
+.inline-course-form {
+    margin-top: 1em;
+    padding: 1em;
+    background: #2e2e2e;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.inline-course-title {
+    color: #ffd700;
+    margin: 0;
+    margin-bottom: 0.5em;
+    font-size: 1em;
+}
+
+.inline-course-input {
+    width: 100%;
+}
+
+.inline-course-buttons {
+    display: flex;
+    gap: 0.5em;
+}
+
+.inline-course-add-btn {
+    background: #1db954;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 4px;
+    border: none;
+    padding: 0.5em 1em;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin: 0;
+    display: inline-block;
+}
+
+.inline-course-cancel-btn {
+    background: #888;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 4px;
+    border: none;
+    padding: 0.5em 1em;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin: 0;
+    display: inline-block;
+}
+
+/* Language Selector */
+.language-selector-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 1em 0;
+}
+
+.language-label {
+    color: #ffd700;
+    font-weight: 600;
+    margin-right: 1em;
+}
+
+.language-select {
+    padding: 0.5em 1em;
+    border-radius: 4px;
+    border: 1.5px solid #ffd700;
+    background: #2e2e2e;
+    color: #ffd700;
+    font-weight: 600;
+}
+
+/* Code Editor Container */
+.code-editor-container {
+    width: 100%;
+    max-width: 700px;
+    min-height: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
+    margin: 1em 0;
+}
+
+/* Form Action Buttons */
+.add-post-actions {
+    display: flex;
+    gap: 1em;
+    margin-top: 1em;
+}
+
+.add-post-cancel-btn {
+    background: #888;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 4px;
+    border: none;
+    padding: 0.75em 2em;
+    cursor: pointer;
+    margin: 0;
+    display: inline-block;
+}
+
+.add-post-submit-btn {
+    background: #1db954;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 4px;
+    border: none;
+    padding: 0.75em 2em;
+    cursor: pointer;
+    margin: 0;
+    display: inline-block;
+}

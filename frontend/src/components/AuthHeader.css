@@ -1,0 +1,65 @@
+/**
+ * AuthHeader Component Styles
+ * Header with authentication controls
+ */
+
+.auth-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 2rem;
+}
+
+.auth-header-title {
+    margin: 0;
+    color: #333;
+}
+
+.auth-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.auth-header-welcome {
+    color: #666;
+}
+
+.auth-header-logout-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin: 0;
+}
+
+.auth-header-login-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin: 0;
+}
+
+.auth-header-signup-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin: 0;
+}

@@ -262,7 +262,7 @@ function AppContent() {
             {showAddPost ? "Cancel" : "Add Post"}
           </button>
         ) : (
-          <p style={{ color: '#666', fontStyle: 'italic' }}>
+          <p className="auth-message">
             Please login to create posts and comments
           </p>
         )}
@@ -279,7 +279,7 @@ function AppContent() {
             {showUserPosts ? "Show All Posts" : "My Posts"}
           </button>
         ) : (
-          <p style={{ color: '#666', fontStyle: 'italic' }}>
+          <p className="auth-message">
             Please login to view your posts
           </p>
         )}
@@ -290,33 +290,12 @@ function AppContent() {
 
       {/* Active Filter Display */}
       {selectedCourse && (
-        <div style={{
-          background: '#ffd700',
-          color: '#2e2e2e',
-          padding: '0.75em 1.5em',
-          margin: '1em auto',
-          borderRadius: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '1em',
-          maxWidth: '600px',
-          fontWeight: 600
-        }}>
+        <div className="course-filter-badge">
           <span>Filtering by course: <strong>{selectedCourse}</strong></span>
           <button
             onClick={() => {
               setPosts(allPosts);
               setSelectedCourse(null);
-            }}
-            style={{
-              background: '#2e2e2e',
-              color: '#ffd700',
-              border: 'none',
-              borderRadius: '4px',
-              padding: '0.4em 1em',
-              cursor: 'pointer',
-              fontWeight: 600
             }}
           >
             Clear Filter
@@ -334,19 +313,8 @@ function AppContent() {
       />
 
       {showCourses && (
-        <div className="modal-overlay" style={{ zIndex: 2000, alignItems: 'flex-start', overflowY: 'auto' }}>
-          <div className="signup-modal-popup" style={{
-            minWidth: 600,
-            maxWidth: 900,
-            width: '80vw',
-            minHeight: 400,
-            maxHeight: '80vh',
-            margin: '2em auto',
-            background: '#444950',
-            color: '#ffd700',
-            position: 'relative',
-            overflowY: 'auto'
-          }}>
+        <div className="modal-overlay courses-modal-overlay">
+          <div className="signup-modal-popup courses-modal-content">
             <button
               className="modal-close-btn"
               onClick={() => {
@@ -358,29 +326,17 @@ function AppContent() {
               &times;
             </button>
 
-            <div style={{ padding: '1em' }}>
-              <h2 style={{ color: '#ffd700', marginBottom: '1em', textAlign: 'center' }}>
+            <div className="courses-modal-inner">
+              <h2 className="courses-modal-title">
                 Available Courses ({courseOptions.length})
               </h2>
 
               {/* Add Course Button */}
               {isAuthenticated && !showAddCourseForm && (
-                <div style={{ textAlign: 'center', marginBottom: '1.5em' }}>
+                <div className="add-course-btn-container">
                   <button
                     onClick={() => setShowAddCourseForm(true)}
-                    style={{
-                      background: '#ffd700',
-                      color: '#2e2e2e',
-                      border: 'none',
-                      borderRadius: '4px',
-                      padding: '0.75em 2em',
-                      fontSize: '1em',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => e.target.style.background = '#ffed4e'}
-                    onMouseLeave={(e) => e.target.style.background = '#ffd700'}
+                    className="add-course-btn"
                   >
                     + Add New Course
                   </button>
@@ -389,14 +345,8 @@ function AppContent() {
 
               {/* Add Course Form */}
               {showAddCourseForm && (
-                <div style={{
-                  background: '#2e2e2e',
-                  padding: '1.5em',
-                  borderRadius: '8px',
-                  marginBottom: '1.5em',
-                  border: '2px solid #ffd700'
-                }}>
-                  <h3 style={{ color: '#ffd700', marginBottom: '1em', textAlign: 'center' }}>
+                <div className="add-course-form-container">
+                  <h3 className="add-course-form-title">
                     Add New Course
                   </h3>
                   <form onSubmit={(e) => {
@@ -407,9 +357,9 @@ function AppContent() {
                       name: formData.get('name')
                     });
                   }}>
-                    <div style={{ marginBottom: '1em' }}>
-                      <label style={{ display: 'block', marginBottom: '0.5em', color: '#ffd700' }}>
-                        Course Code <span style={{ color: '#ff4444' }}>*</span>
+                    <div className="form-field">
+                      <label className="form-label">
+                        Course Code <span className="form-label-required">*</span>
                       </label>
                       <input
                         type="text"
@@ -417,22 +367,14 @@ function AppContent() {
                         placeholder="e.g., CPSC221"
                         required
                         maxLength={10}
-                        style={{
-                          width: '100%',
-                          padding: '0.75em',
-                          borderRadius: '4px',
-                          border: '1px solid #555',
-                          background: '#1a1a1a',
-                          color: '#fff',
-                          fontSize: '1em'
-                        }}
+                        className="form-input"
                       />
-                      <p style={{ fontSize: '0.85em', color: '#888', marginTop: '0.3em' }}>
+                      <p className="form-help-text">
                         3-10 alphanumeric characters
                       </p>
                     </div>
-                    <div style={{ marginBottom: '1em' }}>
-                      <label style={{ display: 'block', marginBottom: '0.5em', color: '#ffd700' }}>
+                    <div className="form-field">
+                      <label className="form-label">
                         Course Name (Optional)
                       </label>
                       <input
@@ -440,45 +382,20 @@ function AppContent() {
                         name="name"
                         placeholder="e.g., Data Structures and Algorithms"
                         maxLength={100}
-                        style={{
-                          width: '100%',
-                          padding: '0.75em',
-                          borderRadius: '4px',
-                          border: '1px solid #555',
-                          background: '#1a1a1a',
-                          color: '#fff',
-                          fontSize: '1em'
-                        }}
+                        className="form-input"
                       />
                     </div>
-                    <div style={{ display: 'flex', gap: '1em', justifyContent: 'center' }}>
+                    <div className="form-button-group">
                       <button
                         type="submit"
-                        style={{
-                          background: '#1db954',
-                          color: '#fff',
-                          border: 'none',
-                          borderRadius: '4px',
-                          padding: '0.75em 2em',
-                          fontSize: '1em',
-                          fontWeight: 700,
-                          cursor: 'pointer'
-                        }}
+                        className="btn-success"
                       >
                         Create Course
                       </button>
                       <button
                         type="button"
                         onClick={() => setShowAddCourseForm(false)}
-                        style={{
-                          background: '#888',
-                          color: '#fff',
-                          border: 'none',
-                          borderRadius: '4px',
-                          padding: '0.75em 2em',
-                          fontSize: '1em',
-                          cursor: 'pointer'
-                        }}
+                        className="btn-secondary"
                       >
                         Cancel
                       </button>
@@ -488,17 +405,11 @@ function AppContent() {
               )}
 
               {courseOptions.length === 0 ? (
-                <p style={{ textAlign: 'center', color: '#bbb', fontStyle: 'italic', fontSize: '1.1em' }}>
+                <p className="empty-state-message">
                   No courses available yet. Create a post to add the first course!
                 </p>
               ) : (
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                  gap: '1em',
-                  maxHeight: '60vh',
-                  overflowY: 'auto'
-                }}>
+                <div className="course-grid">
                   {courseOptions.map(course => (
                     <div
                       key={course.id}
@@ -506,47 +417,20 @@ function AppContent() {
                         handleCourseFilter(course.code);
                         setShowCourses(false);
                       }}
-                      style={{
-                        background: '#2e2e2e',
-                        padding: '1em',
-                        borderRadius: '8px',
-                        border: '1px solid #ffd700',
-                        textAlign: 'center',
-                        transition: 'transform 0.2s ease',
-                        cursor: 'pointer'
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                      onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                      className="course-card"
                     >
-                      <h3 style={{
-                        margin: '0 0 0.5em 0',
-                        color: '#ffd700',
-                        fontSize: '1.2em'
-                      }}>
+                      <h3 className="course-card-code">
                         {course.code}
                       </h3>
                       {course.name && (
-                        <p style={{
-                          margin: '0 0 0.5em 0',
-                          color: '#bbb',
-                          fontSize: '0.9em'
-                        }}>
+                        <p className="course-card-name">
                           {course.name}
                         </p>
                       )}
-                      <p style={{
-                        margin: '0',
-                        color: '#888',
-                        fontSize: '0.8em'
-                      }}>
+                      <p className="course-card-date">
                         Added: {new Date(course.created_at).toLocaleDateString()}
                       </p>
-                      <p style={{
-                        margin: '0.5em 0 0 0',
-                        color: '#1db954',
-                        fontSize: '0.85em',
-                        fontWeight: 600
-                      }}>
+                      <p className="course-card-cta">
                         Click to filter posts
                       </p>
                     </div>
@@ -554,28 +438,13 @@ function AppContent() {
                 </div>
               )}
 
-              <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                marginTop: '2em'
-              }}>
+              <div className="modal-footer">
                 <button
                   onClick={() => {
                     setShowCourses(false);
                     setShowAddCourseForm(false);
                   }}
-                  style={{
-                    background: '#dc3545',
-                    color: '#fff',
-                    fontWeight: 700,
-                    borderRadius: '4px',
-                    border: 'none',
-                    padding: '0.75em 2em',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => e.target.style.background = '#c82333'}
-                  onMouseLeave={(e) => e.target.style.background = '#dc3545'}
+                  className="btn-danger"
                 >
                   Close
                 </button>
@@ -596,12 +465,12 @@ function AppContent() {
       ) : (
         <div>
           {showUserPosts && (
-            <h2 style={{ color: '#ffd700', textAlign: 'center', marginBottom: '1em' }}>
+            <h2 className="section-header">
               Your Posts ({posts.length})
             </h2>
           )}
           {selectedCourse && (
-            <h2 style={{ color: '#ffd700', textAlign: 'center', marginBottom: '1em' }}>
+            <h2 className="section-header">
               Posts for {selectedCourse} ({posts.length})
             </h2>
           )}

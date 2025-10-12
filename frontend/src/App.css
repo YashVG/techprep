@@ -267,3 +267,253 @@ select {
 .signup-modal-popup button {
   margin: 0.5em 0;
 }
+
+/* Auth Message Styles */
+.auth-message {
+  color: #666;
+  font-style: italic;
+}
+
+/* Course Filter Badge */
+.course-filter-badge {
+  background: #ffd700;
+  color: #2e2e2e;
+  padding: 0.75em 1.5em;
+  margin: 1em auto;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  max-width: 600px;
+  font-weight: 600;
+}
+
+.course-filter-badge button {
+  background: #2e2e2e;
+  color: #ffd700;
+  border: none;
+  border-radius: 4px;
+  padding: 0.4em 1em;
+  cursor: pointer;
+  font-weight: 600;
+  margin: 0;
+  display: inline-block;
+}
+
+/* Courses Modal Styles */
+.courses-modal-overlay {
+  z-index: 2000;
+  align-items: flex-start;
+  overflow-y: auto;
+}
+
+.courses-modal-content {
+  min-width: 600px;
+  max-width: 900px;
+  width: 80vw;
+  min-height: 400px;
+  max-height: 80vh;
+  margin: 2em auto;
+  background: #444950;
+  color: #ffd700;
+  position: relative;
+  overflow-y: auto;
+}
+
+.courses-modal-inner {
+  padding: 1em;
+}
+
+.courses-modal-title {
+  color: #ffd700;
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+/* Add Course Button Container */
+.add-course-btn-container {
+  text-align: center;
+  margin-bottom: 1.5em;
+}
+
+.add-course-btn {
+  background: #ffd700;
+  color: #2e2e2e;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75em 2em;
+  font-size: 1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 0;
+  display: inline-block;
+}
+
+.add-course-btn:hover {
+  background: #ffed4e;
+}
+
+/* Add Course Form */
+.add-course-form-container {
+  background: #2e2e2e;
+  padding: 1.5em;
+  border-radius: 8px;
+  margin-bottom: 1.5em;
+  border: 2px solid #ffd700;
+}
+
+.add-course-form-title {
+  color: #ffd700;
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+.form-field {
+  margin-bottom: 1em;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5em;
+  color: #ffd700;
+}
+
+.form-label-required {
+  color: #ff4444;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75em;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 1em;
+}
+
+.form-help-text {
+  font-size: 0.85em;
+  color: #888;
+  margin-top: 0.3em;
+}
+
+.form-button-group {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+}
+
+.btn-success {
+  background: #1db954;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75em 2em;
+  font-size: 1em;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 0;
+  display: inline-block;
+}
+
+.btn-secondary {
+  background: #888;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75em 2em;
+  font-size: 1em;
+  cursor: pointer;
+  margin: 0;
+  display: inline-block;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 4px;
+  border: none;
+  padding: 0.75em 2em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 0;
+  display: inline-block;
+}
+
+.btn-danger:hover {
+  background: #c82333;
+}
+
+/* Empty State Message */
+.empty-state-message {
+  text-align: center;
+  color: #bbb;
+  font-style: italic;
+  font-size: 1.1em;
+}
+
+/* Course Grid */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1em;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.course-card {
+  background: #2e2e2e;
+  padding: 1em;
+  border-radius: 8px;
+  border: 1px solid #ffd700;
+  text-align: center;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.course-card:hover {
+  transform: scale(1.05);
+}
+
+.course-card-code {
+  margin: 0 0 0.5em 0;
+  color: #ffd700;
+  font-size: 1.2em;
+}
+
+.course-card-name {
+  margin: 0 0 0.5em 0;
+  color: #bbb;
+  font-size: 0.9em;
+}
+
+.course-card-date {
+  margin: 0;
+  color: #888;
+  font-size: 0.8em;
+}
+
+.course-card-cta {
+  margin: 0.5em 0 0 0;
+  color: #1db954;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+/* Button Container for Close Actions */
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 2em;
+}
+
+/* Section Headers */
+.section-header {
+  color: #ffd700;
+  text-align: center;
+  margin-bottom: 1em;
+}
