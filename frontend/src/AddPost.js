@@ -229,13 +229,13 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
                     {/* Monaco Code Editor */}
                     <div className="code-editor-container">
                         <MonacoEditor
-                            height="300px"
+                            height="200px"
                             language={language === 'cpp' ? 'cpp' : language}
                             theme="vs-dark"
                             value={code}
                             onChange={value => setCode(value)}
                             options={{
-                                fontSize: 16,
+                                fontSize: 14,
                                 minimap: { enabled: false },
                                 fontFamily: 'Fira Mono, monospace',
                                 scrollBeyondLastLine: false,

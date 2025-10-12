@@ -1,0 +1,134 @@
+/**
+ * UserDropdown Component Styles
+ * Fixed position user menu at top-right of screen
+ */
+
+/* Fixed Position Container */
+.user-dropdown-fixed {
+    position: fixed;
+    top: 1.5rem;
+    right: 2rem;
+    z-index: 2000;
+}
+
+/* User Dropdown Toggle Button */
+.user-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1.5px solid #ffd700;
+    border-radius: 25px;
+    padding: 0.6rem 1.2rem;
+    color: #ffd700;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 0;
+}
+
+.user-dropdown-toggle:hover {
+    background: rgba(255, 215, 0, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+.user-icon {
+    font-size: 1.3rem;
+}
+
+.user-name {
+    font-size: 0.95rem;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-arrow {
+    font-size: 0.7rem;
+    margin-left: 0.25rem;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    background: #2e2e2e;
+    border: 2px solid #ffd700;
+    border-radius: 8px;
+    min-width: 220px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    animation: dropdownSlide 0.2s ease;
+}
+
+@keyframes dropdownSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-item {
+    padding: 0.75rem 1.25rem;
+    color: #ffd700;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.dropdown-item:hover {
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.dropdown-user-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    cursor: default;
+    padding: 1rem 1.25rem;
+}
+
+.dropdown-user-info:hover {
+    background: transparent;
+}
+
+.user-email {
+    font-size: 0.85rem;
+    color: #aaa;
+    font-weight: normal;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: rgba(255, 215, 0, 0.2);
+    margin: 0;
+}
+
+.dropdown-logout {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.dropdown-logout:hover {
+    background: rgba(220, 53, 69, 0.1);
+}
+
+.logout-icon {
+    font-size: 1.1rem;
+}

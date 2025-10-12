@@ -1,65 +1,77 @@
 /**
  * AuthHeader Component Styles
- * Header with authentication controls
+ * Header with centered title - Dark theme consistent with app
  */
 
 .auth-header-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 1rem 2rem;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #e9ecef;
+    padding: 1.5rem 3rem;
+    background-color: #1a1a1a;
+    border-bottom: 2px solid #ffd700;
     margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    min-height: 80px;
 }
 
 .auth-header-title {
     margin: 0;
-    color: #333;
+    color: #ffd700;
+    font-weight: 700;
+    font-size: 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.5px;
+    text-align: center;
 }
 
-.auth-header-actions {
+/* Fixed Login/Signup buttons for non-authenticated users */
+.auth-header-actions-fixed {
+    position: fixed;
+    top: 1.5rem;
+    right: 2rem;
     display: flex;
     align-items: center;
     gap: 1rem;
-}
-
-.auth-header-welcome {
-    color: #666;
-}
-
-.auth-header-logout-btn {
-    background: #dc3545;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    display: inline-block;
-    margin: 0;
+    z-index: 2000;
 }
 
 .auth-header-login-btn {
-    background: #007bff;
-    color: white;
+    background: #ffd700;
+    color: #2e2e2e;
     border: none;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1.2rem;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 700;
     display: inline-block;
     margin: 0;
+    transition: all 0.2s ease;
+}
+
+.auth-header-login-btn:hover {
+    background: #ffed4e;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
 }
 
 .auth-header-signup-btn {
-    background: #28a745;
+    background: #1db954;
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1.2rem;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 700;
     display: inline-block;
     margin: 0;
+    transition: all 0.2s ease;
+}
+
+.auth-header-signup-btn:hover {
+    background: #159c46;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(29, 185, 84, 0.4);
 }
