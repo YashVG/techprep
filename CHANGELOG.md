@@ -112,6 +112,107 @@ This update adds a dedicated informational page that clearly explains the platfo
   - Added subtle hover states to action buttons
   - Responsive: Stacks to single column on screens < 900px
   - Improved visual hierarchy: Code > Title > Content > Metadata
+  
+- **Comments Section Redesign** (`Post.css`)
+  - Updated to match new dark theme with #1a1a1a background
+  - Consistent border styling with gold accents
+  - Modern button styling with transparent backgrounds and borders
+  - Added hover states to all buttons and comment items
+  - Improved form styling with focus states
+  - Comment items now have subtle hover effects
+  - Added user icon (👤) before comment author
+  - Better spacing and typography throughout
+  - All buttons now follow the consistent design language
+
+---
+
+## [2025-10-13] - Card-Based Post Layout with Modal Detail View
+
+### Added
+
+- **PostCard Component** (`PostCard.js` + `PostCard.css` - NEW)
+  - Compact card view showing title, content preview (100 chars), and course code
+  - Hover effects with elevation and border glow
+  - Clickable cards that open full detail modal
+  - Grid layout for browsing multiple posts at once
+  - Shows first 3 tags with hashtag format
+  - "Click to view →" CTA indicator
+
+- **PostDetailModal Component** (`PostDetailModal.js` + `PostDetailModal.css` - NEW)
+  - Full post detail view in modal overlay (like StackOverflow)
+  - Large, scrollable modal with all post information
+  - Complete code editor view with dynamic height
+  - Full comments section with add/view functionality
+  - Delete button for post authors
+  - Course badge clickable for filtering
+  - Escape/close functionality
+
+### Modified
+
+- **App.js**
+  - Replaced full `Post` component with `PostCard` grid layout
+  - Added `selectedPost` state for modal management
+  - Implemented `handlePostClick` to open post details and fetch comments
+  - Added `handleClosePostDetail` to close modal
+  - Posts now render in responsive grid (auto-fill, min 350px)
+  - Modal overlays main content when post is selected
+
+- **App.css**
+  - Added `.posts-grid` with CSS Grid layout
+  - Responsive design: grid on desktop, single column on mobile
+  - Maximum width of 1400px for optimal viewing
+
+### Removed
+
+- Direct rendering of full `Post` component in main view
+- Inline comments sidebar (moved to modal only)
+
+### Benefits
+
+- Much cleaner, scannable main view
+- Faster browsing through multiple posts
+- Focus on titles and previews
+- Code and details only shown when user is interested
+- Better performance (less DOM elements rendered at once)
+- More similar to modern Q&A platforms like StackOverflow
+
+### Enhanced Comments Section Design
+
+- **Two-Column Comment Layout** (`PostDetailModal.js` + `PostDetailModal.css`)
+  - Left column (140px): Large circular avatar (60px) with user icon and username
+  - Right column (flexible): Comment content with optimal reading width
+  - Vertical divider between columns with subtle gold line
+  - Avatar grows and glows on comment hover
+  - Grid-based responsive layout (100px left column on mobile)
+  - Better visual hierarchy with clear user/content separation
+  
+- **Visual Polish**
+  - Added gradient backgrounds to comment form and individual comments
+  - Emoji icons for section titles (💬 Comments, ✍️ Add Comment, 🔒 Login, 📝 Empty)
+  - Vertical accent bar that appears on comment hover (left side)
+  - Large circular avatar with gradient background and gold border
+  - Larger, more readable text with better line-height (1.7)
+  - Enhanced hover effects with shadows and avatar scale animation
+  - Improved form with focus glow effect
+  - Gradient buttons with better visual feedback
+  - Empty state with dashed border and centered emoji
+  - Better spacing and visual hierarchy throughout
+
+---
+
+## [2025-10-13] - UI Polish and Branding
+
+### Modified
+
+- **Browser Tab Title** (`frontend/public/index.html`)
+  - Changed title from "React App" to "TechPrep"
+  - Updated meta description to reflect platform purpose for UBC students
+  
+- **Overscroll Background Fix** (`index.css` + `App.css`)
+  - Fixed white background appearing during overscroll
+  - Set body and html background to dark (#2e2e2e)
+  - Added pseudo-elements to prevent white bounce effect on mobile/desktop
+  - Consistent dark theme throughout entire viewport and overscroll areas
 
 #### Files Refactored
 

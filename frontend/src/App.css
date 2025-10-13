@@ -45,6 +45,30 @@ select {
   padding: 1rem;
   text-align: center;
   font-family: sans-serif;
+  position: relative;
+}
+
+/* Prevent white overscroll background */
+body::before {
+  content: '';
+  position: fixed;
+  top: -100vh;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background-color: #2e2e2e;
+  z-index: -1;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -100vh;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background-color: #2e2e2e;
+  z-index: -1;
 }
 
 .App-logo {
@@ -532,4 +556,23 @@ select {
   color: #ffd700;
   text-align: center;
   margin-bottom: 1em;
+}
+
+/* Posts Grid Layout */
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .posts-grid {
+    grid-template-columns: 1fr;
+    padding: 0.5rem;
+    gap: 1rem;
+  }
 }

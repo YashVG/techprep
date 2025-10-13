@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import Post from './components/Post';
+import PostCard from './components/PostCard';
+import PostDetailModal from './components/PostDetailModal';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AddPost from './AddPost';
 import { AuthProvider, useAuth } from './components/AuthContext';
@@ -13,15 +14,14 @@ import { API_ENDPOINTS, getAuthHeaders } from './config/api';
 function AppContent() {
   const [posts, setPosts] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
-  const [visibleComments, setVisibleComments] = useState(null);
   const [comments, setComments] = useState([]);
   const [courseOptions, setCourseOptions] = useState([]);
-  const [showCommentFormFor, setShowCommentFormFor] = useState(null);
   const [showAddPost, setShowAddPost] = useState(false);
   const [showUserPosts, setShowUserPosts] = useState(false);
   const [showCourses, setShowCourses] = useState(false);
   const [showAddCourseForm, setShowAddCourseForm] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
   const { user, token, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
@@ -90,21 +90,22 @@ function AppContent() {
       .catch(err => console.error("Failed to fetch posts:", err));
   }, []);
 
-  const handleViewComments = async (postId) => {
-    if (visibleComments === postId) {
-      setVisibleComments(null);
-      setComments([]);
-      return;
-    }
-
+  const handlePostClick = async (post) => {
+    setSelectedPost(post);
+    // Fetch comments for this post
     try {
-      const response = await fetch(API_ENDPOINTS.POSTS.COMMENTS(postId));
+      const response = await fetch(API_ENDPOINTS.POSTS.COMMENTS(post.id));
       const data = await response.json();
       setComments(data);
-      setVisibleComments(postId);
     } catch (error) {
       console.error('Failed to fetch comments:', error);
+      setComments([]);
     }
+  };
+
+  const handleClosePostDetail = () => {
+    setSelectedPost(null);
+    setComments([]);
   };
 
   const handleApiError = (response, errorMessage) => {
@@ -162,7 +163,6 @@ function AppContent() {
       if (response.ok) {
         const newComment = await response.json();
         setComments([...comments, newComment]);
-        setShowCommentFormFor(null);
       } else {
         if (handleApiError(response, 'Failed to add comment')) {
           return;
@@ -468,7 +468,7 @@ function AppContent() {
               : "No posts found."}
         </p>
       ) : (
-        <div>
+        <>
           {showUserPosts && (
             <h2 className="section-header">
               Your Posts ({posts.length})
@@ -479,25 +479,30 @@ function AppContent() {
               Posts for {selectedCourse} ({posts.length})
             </h2>
           )}
-          {posts.map(post => (
-            <Post
-              key={post.id}
-              post={post}
+          <div className="posts-grid">
+            {posts.map(post => (
+              <PostCard
+                key={post.id}
+                post={post}
+                onClick={handlePostClick}
+              />
+            ))}
+          </div>
+
+          {/* Post Detail Modal */}
+          {selectedPost && (
+            <PostDetailModal
+              post={selectedPost}
               comments={comments}
-              visibleComments={visibleComments}
-              showCommentFormFor={showCommentFormFor}
-              handleViewComments={handleViewComments}
-              handleDeletePost={handleDeletePost}
-              setShowCommentFormFor={setShowCommentFormFor}
-              setComments={setComments}
-              setVisibleComments={setVisibleComments}
-              onAddComment={handleAddComment}
+              onClose={handleClosePostDetail}
               isAuthenticated={isAuthenticated}
               currentUser={user}
+              onAddComment={handleAddComment}
+              onDeletePost={handleDeletePost}
               onCourseClick={handleCourseFilter}
             />
-          ))}
-        </div>
+          )}
+        </>
       )}
     </div>
   );

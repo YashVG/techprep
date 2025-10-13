@@ -1,0 +1,105 @@
+/**
+ * PostCard Component Styles
+ * Compact card view for browsing posts
+ */
+
+.post-card-compact {
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-height: 180px;
+}
+
+.post-card-compact:hover {
+    border-color: #ffd700;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.2);
+}
+
+/* Header: Course badge and author */
+.post-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.post-card-course-badge {
+    background: rgba(29, 185, 84, 0.15);
+    color: #1db954;
+    border: 1px solid #1db954;
+    border-radius: 4px;
+    padding: 0.25em 0.75em;
+    font-size: 0.75em;
+    font-weight: 600;
+}
+
+.post-card-author {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+/* Title */
+.post-card-title {
+    color: #ffd700;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Preview text */
+.post-card-preview {
+    color: #aaa;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Footer: Tags and CTA */
+.post-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+.post-card-tags {
+    color: #666;
+    font-size: 0.8rem;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.post-card-cta {
+    color: #ffd700;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .post-card-compact {
+        padding: 1rem;
+    }
+}
