@@ -5,10 +5,8 @@
 
 /* Fixed Position Container */
 .user-dropdown-fixed {
-    position: fixed;
-    top: 1.5rem;
-    right: 2rem;
-    z-index: 2000;
+    position: relative;
+    /* Position is controlled by parent TopRightControls */
 }
 
 /* User Dropdown Toggle Button */

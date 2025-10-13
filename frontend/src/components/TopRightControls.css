@@ -1,0 +1,29 @@
+/**
+ * Top Right Controls Styles
+ * Container for info button and user dropdown
+ */
+
+.top-right-controls {
+    position: fixed;
+    top: 1.5rem;
+    right: 2rem;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Adjust UserDropdown when inside controls */
+.top-right-controls .user-dropdown-fixed {
+    position: static;
+    top: auto;
+    right: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .top-right-controls {
+        top: 1rem;
+        right: 1rem;
+    }
+}

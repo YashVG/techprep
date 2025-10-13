@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useAuth } from './AuthContext';
 import LoginModal from './LoginModal';
 import SignUpModal from './SignUpModal';
-import UserDropdown from './UserDropdown';
 import './AuthHeader.css';
 
 const AuthHeader = () => {
@@ -12,9 +11,6 @@ const AuthHeader = () => {
 
     return (
         <>
-            {/* Fixed User Dropdown at top-right (authenticated) */}
-            <UserDropdown />
-
             {/* Fixed Login/Signup buttons at top-right (not authenticated) */}
             {!isAuthenticated && (
                 <div className="auth-header-actions-fixed">

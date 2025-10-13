@@ -1,0 +1,52 @@
+/**
+ * InfoButton Component Styles
+ * Fixed position info button at top-left of screen
+ */
+
+.info-button-topleft {
+    position: fixed;
+    top: 1.5rem;
+    left: 2rem;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1.5px solid #ffd700;
+    border-radius: 50%;
+    color: #ffd700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.info-button-topleft:hover {
+    background: rgba(255, 215, 0, 0.2);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+}
+
+.info-button-topleft:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.info-button-topleft .info-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .info-button-topleft {
+        top: 1rem;
+        left: 1rem;
+        width: 40px;
+        height: 40px;
+    }
+
+    .info-button-topleft .info-icon {
+        font-size: 1.3rem;
+    }
+}

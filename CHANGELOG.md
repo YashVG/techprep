@@ -18,7 +18,100 @@ This is a full-stack web application built with React.js frontend and Flask back
 
 **Massive Code Cleanup: Removed 80+ Inline Style Objects Across Entire Frontend**
 
-This comprehensive refactoring eliminated nearly all inline styles from the React frontend, extracting them into well-organized, semantic CSS files. This significantly improves code readability, maintainability, and follows React best practices.
+  This comprehensive refactoring eliminated nearly all inline styles from the React frontend, extracting them into well-organized, semantic CSS files. This significantly improves code readability, maintainability, and follows React best practices.
+
+---
+
+## [2025-10-13] - Information Page and Navigation Enhancement
+
+### Added
+
+- **About Page Component** (`About.js` + `About.css`)
+  - Comprehensive informational page explaining Tech Prep Blog's purpose
+  - Specifically tailored for UBC students preparing for technical interviews
+  - Detailed sections on mission, interview prep, course support, and features
+  - Professional dark-themed design with gold accents matching app aesthetic
+  - Responsive layout for mobile and desktop viewing
+
+- **TopRightControls Component** (`TopRightControls.js` + `TopRightControls.css`)
+  - Container component for top-right navigation elements
+  - Houses the user dropdown with fixed positioning
+  - Fixed positioning ensures consistent placement across all pages
+
+- **InfoButton Component** (`InfoButton.js` + `InfoButton.css` - NEW)
+  - Circular info button (ℹ️) for easy access to About page
+  - Fixed at top-left corner of screen for intuitive access
+  - Matches design language of other navigation controls
+  - Same styling as user dropdown and header buttons
+
+- **BackButton Component** (`BackButton.js` + `BackButton.css`)
+  - Navigation button to return from About page to home
+  - Fixed at top-left of screen for intuitive navigation
+  - Animated hover effects and responsive design
+  - Shows arrow icon only on mobile, full text on desktop
+
+- **Routing System**
+  - Implemented React Router with Routes for About page
+  - Seamless navigation between home and informational content
+  - Maintains authentication state across page transitions
+
+### Modified
+
+- **App.js**
+  - Added `TopRightControls` component to main layout
+  - Implemented routing with `Routes` and `Route` components
+  - Added route for `/about` path
+  - Imported necessary routing dependencies
+
+- **AuthHeader.js**
+  - Removed `UserDropdown` component (now in TopRightControls)
+  - Simplified component to focus only on title and login/signup buttons
+  - Cleaner component separation and responsibilities
+
+- **UserDropdown.css**
+  - Changed positioning from `fixed` to `relative`
+  - Positioning now controlled by parent `TopRightControls` component
+  - Maintains all styling while improving component modularity
+
+### Purpose
+
+This update adds a dedicated informational page that clearly explains the platform's mission: helping UBC students ace technical interviews and coursework. The new navigation structure with the info button provides easy access to this information while maintaining the clean, modern UI aesthetic.
+
+### Design Polish
+
+- **AuthHeader.css**
+  - Updated title with gradient gold effect and improved shadow for premium look
+  - Matched font family across all header elements for consistency
+  - Updated login/signup buttons to rounded style (border-radius: 25px) matching top-right controls
+  - Both buttons now use identical semi-transparent backgrounds (`rgba(255, 215, 0, 0.1)`) matching info button and user dropdown
+  - **Header container now has rounded corners (25px) with semi-transparent background matching button style**
+  - Changed from full-width bar to centered pill-shaped container with gold border
+  - Refined button sizing, padding, and spacing to perfectly match top-right controls
+  - All header elements now share consistent design language with unified gold theme
+
+---
+
+## [2025-10-13] - Post Layout Redesign - Code-First Design
+
+### Modified
+
+- **Post Component Layout** (`Post.js` + `Post.css` + `App.css`)
+  - Complete redesign inspired by Stack Overflow's code-first approach
+  - **Two-column grid layout**: Left column (metadata/info) + Right column (code)
+  - Left column (300px): Title, content, author, course, tags, action buttons
+  - Right column (flexible): Code editor takes remaining space
+  - **Code is now the primary focus** with larger, more prominent display
+  - Title and content made more subtle with smaller fonts and muted colors
+  - Post card redesigned with cleaner borders and better spacing
+  - **Darker background (#1a1a1a) for improved text readability and contrast**
+  - Added box shadow for depth and card separation
+  - Metadata (author, course) moved to compact single line at top
+  - Tags displayed inline with hashtag format (#tag)
+  - Action buttons stacked vertically in left column for better organization
+  - Increased post card width to 900px for two-column layout
+  - Added subtle hover states to action buttons
+  - Responsive: Stacks to single column on screens < 900px
+  - Improved visual hierarchy: Code > Title > Content > Metadata
 
 #### Files Refactored
 

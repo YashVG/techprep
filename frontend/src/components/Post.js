@@ -43,77 +43,87 @@ const Post = ({
                 className="post-card post-card-wrapper"
                 ref={postCardRef}
             >
-                <div className="post-author-top">
-                    <span>By: {post.author}</span>
-                </div>
-                <h2 className="post-title">{post.title}</h2>
-                <h4 className="post-content">{post.content}</h4>
-
-                {/* Course Badge - Display Only */}
-                {post.course && (
-                    <div className="post-course-badge-container">
-                        <span className="post-course-badge">
-                            📚 {post.course}
-                        </span>
-                    </div>
-                )}
-
-                <div className="post-row-flex">
-                    <div className="post-tags-box">
-                        {post.tags && post.tags.length > 0 && (
-                            <span><strong>Tags:</strong> {Array.isArray(post.tags) ? post.tags.join(', ') : post.tags}</span>
-                        )}
-                    </div>
-                    <div className="post-comments-btn-box">
-                        <button onClick={() => handleViewComments(post.id)}>
-                            {showComments ? 'Hide Comments' : 'Show Comments'}
-                        </button>
-                    </div>
-                    {isAuthenticated && currentUser && currentUser.username === post.author && (
-                        <div className="post-delete-btn-box">
-                            <button onClick={() => handleDeletePost(post.id)}>
-                                Delete
-                            </button>
+                {/* Two-column layout */}
+                <div className="post-two-column-layout">
+                    {/* LEFT COLUMN: Metadata, Title, Content, Tags, Actions */}
+                    <div className="post-left-column">
+                        {/* Meta info: author and course badge */}
+                        <div className="post-author-top">
+                            <span>Asked by <strong style={{ color: '#ffd700' }}>{post.author}</strong></span>
+                            {post.course && (
+                                <span className="post-course-badge">
+                                    {post.course}
+                                </span>
+                            )}
                         </div>
-                    )}
-                </div>
 
-                {/* Code Editor Section - Always Visible */}
-                {post.code && (
-                    <div className="post-code-section">
-                        <div
-                            className="post-code-editor-wrapper"
-                            style={{ height: shouldShowFullscreenButton ? `${editorHeight}px` : 'auto' }}
-                        >
-                            <MonacoEditor
-                                height={editorHeight + 'px'}
-                                language="python" // Default to python, you can make this dynamic based on post data
-                                theme="vs-dark"
-                                value={post.code || '// No code available'}
-                                options={{
-                                    fontSize: 14,
-                                    minimap: { enabled: false },
-                                    fontFamily: 'Fira Mono, monospace',
-                                    scrollBeyondLastLine: false,
-                                    wordWrap: 'on',
-                                    automaticLayout: true,
-                                    readOnly: true, // Make it read-only since it's just for display
-                                }}
-                            />
-                            {shouldShowFullscreenButton && (
-                                <button
-                                    onClick={() => setShowFullscreenCode(true)}
-                                    className="post-fullscreen-btn"
-                                >
-                                    Fullscreen
+                        {/* Title and content */}
+                        <h2 className="post-title">{post.title}</h2>
+                        {post.content && <p className="post-content">{post.content}</p>}
+
+                        {/* Tags inline */}
+                        {post.tags && post.tags.length > 0 && (
+                            <div className="post-tags-box" style={{ marginBottom: '1rem' }}>
+                                <span style={{ color: '#666', fontSize: '0.85rem' }}>
+                                    {Array.isArray(post.tags) ? post.tags.map(tag => `#${tag}`).join(' ') : `#${post.tags}`}
+                                </span>
+                            </div>
+                        )}
+
+                        {/* Action buttons */}
+                        <div className="post-row-flex">
+                            <div className="post-comments-btn-box">
+                                <button onClick={() => handleViewComments(post.id)}>
+                                    {showComments ? '💬 Hide Comments' : '💬 Show Comments'}
                                 </button>
+                            </div>
+                            {isAuthenticated && currentUser && currentUser.username === post.author && (
+                                <div className="post-delete-btn-box">
+                                    <button onClick={() => handleDeletePost(post.id)}>
+                                        🗑️ Delete
+                                    </button>
+                                </div>
                             )}
                         </div>
                     </div>
-                )}
 
-                {/* Add Comment Button and Form */}
-                {/* The Add Comment button and form are now moved to the sidebar */}
+                    {/* RIGHT COLUMN: Code Editor */}
+                    <div className="post-right-column">
+                        {/* Code Editor Section - THE MAIN FOCUS */}
+                        {post.code && (
+                            <div className="post-code-section">
+                                <div
+                                    className="post-code-editor-wrapper"
+                                    style={{ height: shouldShowFullscreenButton ? `${editorHeight}px` : 'auto' }}
+                                >
+                                    <MonacoEditor
+                                        height={editorHeight + 'px'}
+                                        language="python"
+                                        theme="vs-dark"
+                                        value={post.code || '// No code available'}
+                                        options={{
+                                            fontSize: 14,
+                                            minimap: { enabled: false },
+                                            fontFamily: 'Fira Mono, monospace',
+                                            scrollBeyondLastLine: false,
+                                            wordWrap: 'on',
+                                            automaticLayout: true,
+                                            readOnly: true,
+                                        }}
+                                    />
+                                    {shouldShowFullscreenButton && (
+                                        <button
+                                            onClick={() => setShowFullscreenCode(true)}
+                                            className="post-fullscreen-btn"
+                                        >
+                                            Fullscreen
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
 
                 {/* Fullscreen Code Modal */}
                 {showFullscreenCode && (

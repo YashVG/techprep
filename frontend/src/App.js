@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import Post from './components/Post';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AddPost from './AddPost';
 import { AuthProvider, useAuth } from './components/AuthContext';
 import AuthHeader from './components/AuthHeader';
+import About from './About';
+import TopRightControls from './components/TopRightControls';
+import InfoButton from './components/InfoButton';
 import { API_ENDPOINTS, getAuthHeaders } from './config/api';
 
 function AppContent() {
@@ -255,6 +258,8 @@ function AppContent() {
 
   return (
     <div className="App">
+      <InfoButton />
+      <TopRightControls />
       <AuthHeader />
       <div className="button-bar">
         {isAuthenticated ? (
@@ -502,7 +507,10 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <AppContent />
+        <Routes>
+          <Route path="/" element={<AppContent />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
       </Router>
     </AuthProvider>
   );

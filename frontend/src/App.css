@@ -94,69 +94,85 @@ select {
 }
 
 .post-card {
-  background: #444950;
+  background: transparent;
   color: #ffd700;
-  border-radius: 8px;
-  padding: 1.5em 2em;
-  margin: 1.5em 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
 }
 
 .post-title {
   background: none;
   color: #ffd700;
-  padding: 0.75em 0 0.25em 0;
-  margin-bottom: 0.5em;
+  padding: 0;
+  margin-bottom: 0.5rem;
   border-radius: 0;
-  text-align: center;
+  text-align: left;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
 .post-content {
   background: none;
-  color: #ffd700;
-  padding: 0.5em 0 1em 0;
-  margin-bottom: 1em;
+  color: #aaa;
+  padding: 0;
+  margin-bottom: 1rem;
   border-radius: 0;
-  text-align: center;
+  text-align: left;
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.5;
 }
 
 .post-row-flex {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 1em;
-  margin-bottom: 1em;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 215, 0, 0.1);
 }
 
 .post-tags-box,
 .post-comments-btn-box,
 .post-delete-btn-box {
   background: none;
-  color: #ffd700;
+  color: #aaa;
   padding: 0;
   border: none;
-  min-width: 120px;
-  text-align: center;
+  text-align: left;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-weight: bold;
+  justify-content: flex-start;
+  font-weight: normal;
+  font-size: 0.85rem;
 }
 
 .post-comments-btn-box button,
 .post-delete-btn-box button {
-  background-color: #ffd700;
-  color: #2e2e2e;
-  border: none;
-  padding: 0.5rem 1rem;
+  background-color: transparent;
+  color: #ffd700;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
   border-radius: 4px;
-  font-weight: bold;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: center;
 }
 
 .post-comments-btn-box button:hover,
+.post-delete-btn-box button:hover {
+  background-color: rgba(255, 215, 0, 0.1);
+  border-color: #ffd700;
+  cursor: pointer;
+}
+
 .post-delete-btn-box button:hover {
   background-color: #e6c200;
   color: #1e1e1e;
