@@ -35,7 +35,7 @@ const AuthHeader = () => {
 
             {/* Header with centered title only */}
             <div className="auth-header-container">
-                <h1 className="auth-header-title">Tech Prep Blog</h1>
+                <h1 className="auth-header-title">TechPrep</h1>
             </div>
 
             {/* Modals */}

@@ -12,14 +12,14 @@
     border-bottom: 2px solid #ffd700;
     margin-bottom: 2rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    min-height: 80px;
+    min-height: 60px;
 }
 
 .auth-header-title {
     margin: 0;
     color: #ffd700;
     font-weight: 700;
-    font-size: 2rem;
+    font-size: 1.5rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     letter-spacing: 0.5px;
     text-align: center;
