@@ -8,29 +8,29 @@
     justify-content: center;
     align-items: center;
     padding: 0.75rem 2.5rem;
-    background: rgba(255, 215, 0, 0.1);
-    border: 1.5px solid #ffd700;
+    background: var(--accent-subtle);
+    border: 1.5px solid var(--border-primary);
     border-radius: 25px;
     margin: 1.5rem auto;
     margin-bottom: 4rem;
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 4px 12px var(--accent-subtle-hover);
     max-width: fit-content;
 }
 
 .auth-header-title {
     margin: 0;
-    color: #ffd700;
+    color: var(--text-primary);
     font-weight: 700;
     font-size: 1.5rem;
-    text-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+    text-shadow: 0 2px 8px var(--accent-subtle-hover);
     letter-spacing: 1.5px;
     text-align: center;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-hover) 50%, var(--accent-primary) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 2px 8px rgba(255, 215, 0, 0.4));
+    filter: drop-shadow(0 2px 8px var(--accent-subtle-hover));
 }
 
 /* Fixed Login/Signup buttons for non-authenticated users */
@@ -45,9 +45,9 @@
 }
 
 .auth-header-login-btn {
-    background: rgba(255, 215, 0, 0.1);
-    border: 1.5px solid #ffd700;
-    color: #ffd700;
+    background: var(--accent-subtle);
+    border: 1.5px solid var(--border-primary);
+    color: var(--text-primary);
     padding: 0.6rem 1.2rem;
     border-radius: 25px;
     cursor: pointer;
@@ -60,15 +60,15 @@
 }
 
 .auth-header-login-btn:hover {
-    background: rgba(255, 215, 0, 0.2);
+    background: var(--accent-subtle-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 4px 12px var(--accent-subtle-hover);
 }
 
 .auth-header-signup-btn {
-    background: rgba(255, 215, 0, 0.1);
-    border: 1.5px solid #ffd700;
-    color: #ffd700;
+    background: var(--accent-subtle);
+    border: 1.5px solid var(--border-primary);
+    color: var(--text-primary);
     padding: 0.6rem 1.2rem;
     border-radius: 25px;
     cursor: pointer;
@@ -81,7 +81,7 @@
 }
 
 .auth-header-signup-btn:hover {
-    background: rgba(255, 215, 0, 0.2);
+    background: var(--accent-subtle-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 4px 12px var(--accent-subtle-hover);
 }

@@ -8,8 +8,8 @@ html,
 
 
 button {
-  background-color: #ffd700;
-  color: #2e2e2e;
+  background-color: var(--button-bg);
+  color: var(--button-text);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -22,8 +22,8 @@ button {
 }
 
 button:hover {
-  background-color: #e6c200;
-  color: #1e1e1e;
+  background-color: var(--button-hover-bg);
+  color: var(--button-hover-text);
 }
 
 input,
@@ -39,13 +39,14 @@ select {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-color: #2e2e2e;
-  color: #ffd700;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
   padding: 1rem;
   text-align: center;
   font-family: sans-serif;
   position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Prevent white overscroll background */
@@ -56,8 +57,9 @@ body::before {
   left: 0;
   right: 0;
   height: 100vh;
-  background-color: #2e2e2e;
+  background-color: var(--bg-primary);
   z-index: -1;
+  transition: background-color 0.3s ease;
 }
 
 body::after {
@@ -67,8 +69,9 @@ body::after {
   left: 0;
   right: 0;
   height: 100vh;
-  background-color: #2e2e2e;
+  background-color: var(--bg-primary);
   z-index: -1;
+  transition: background-color 0.3s ease;
 }
 
 .App-logo {
@@ -119,7 +122,7 @@ body::after {
 
 .post-card {
   background: transparent;
-  color: #ffd700;
+  color: var(--text-primary);
   border-radius: 0;
   padding: 0;
   margin: 0;
@@ -128,7 +131,7 @@ body::after {
 
 .post-title {
   background: none;
-  color: #ffd700;
+  color: var(--text-primary);
   padding: 0;
   margin-bottom: 0.5rem;
   border-radius: 0;
@@ -140,7 +143,7 @@ body::after {
 
 .post-content {
   background: none;
-  color: #aaa;
+  color: var(--text-secondary);
   padding: 0;
   margin-bottom: 1rem;
   border-radius: 0;
@@ -158,14 +161,14 @@ body::after {
   gap: 0.75rem;
   margin-top: auto;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 215, 0, 0.1);
+  border-top: 1px solid var(--border-divider);
 }
 
 .post-tags-box,
 .post-comments-btn-box,
 .post-delete-btn-box {
   background: none;
-  color: #aaa;
+  color: var(--text-secondary);
   padding: 0;
   border: none;
   text-align: left;
@@ -179,8 +182,8 @@ body::after {
 .post-comments-btn-box button,
 .post-delete-btn-box button {
   background-color: transparent;
-  color: #ffd700;
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: var(--text-primary);
+  border: 1px solid var(--border-secondary);
   padding: 0.6rem 1rem;
   font-size: 0.85rem;
   font-weight: 500;
@@ -192,14 +195,14 @@ body::after {
 
 .post-comments-btn-box button:hover,
 .post-delete-btn-box button:hover {
-  background-color: rgba(255, 215, 0, 0.1);
-  border-color: #ffd700;
+  background-color: var(--accent-subtle);
+  border-color: var(--border-primary);
   cursor: pointer;
 }
 
 .post-delete-btn-box button:hover {
-  background-color: #e6c200;
-  color: #1e1e1e;
+  background-color: var(--button-hover-bg);
+  color: var(--button-hover-text);
   text-decoration: none;
 }
 
@@ -209,7 +212,7 @@ body::after {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(30, 32, 38, 0.75);
+  background: var(--modal-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -217,8 +220,8 @@ body::after {
 }
 
 .signup-modal-popup {
-  background: #444950;
-  color: #ffd700;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
   border-radius: 12px;
   padding: 2.5em 2em 2em 2em;
   min-width: 340px;
@@ -235,15 +238,15 @@ body::after {
 .signup-modal-popup label,
 .signup-modal-popup div,
 .signup-modal-popup a {
-  color: #ffd700 !important;
+  color: var(--text-primary) !important;
 }
 
 .signup-modal-popup input[type="text"],
 .signup-modal-popup input[type="email"],
 .signup-modal-popup input[type="password"] {
-  background: #2e2e2e;
-  color: #ffd700;
-  border: 1.5px solid #ffd700;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-primary);
   border-radius: 4px;
   padding: 0.75em 1em;
   margin: 0.5em 0;
@@ -254,19 +257,19 @@ body::after {
 }
 
 .signup-modal-popup input::placeholder {
-  color: #ffd700bb;
-  opacity: 1;
+  color: var(--text-secondary);
+  opacity: 0.8;
 }
 
 .signup-modal-popup input:focus {
-  outline: 2px solid #1db954;
-  background: #353a40;
+  outline: 2px solid var(--success);
+  background: var(--input-focus-bg);
 }
 
 .signup-modal-popup button[type="submit"] {
   width: 100%;
   max-width: 320px;
-  background: #1db954;
+  background: var(--success);
   color: #fff;
   font-weight: 700;
   font-size: 1.1em;
@@ -278,17 +281,17 @@ body::after {
 }
 
 .signup-modal-popup button[type="submit"]:hover {
-  background: #159c46;
+  background: var(--success-hover);
 }
 
 .signup-modal-popup a {
-  color: #1db954 !important;
+  color: var(--success) !important;
   text-decoration: none;
   font-weight: 600;
 }
 
 .signup-divider-row span {
-  color: #ffd700 !important;
+  color: var(--text-primary) !important;
 }
 
 .modal-close-btn {
@@ -298,7 +301,7 @@ body::after {
   background: none;
   border: none;
   font-size: 1.7em;
-  color: #ffd700;
+  color: var(--text-primary);
   cursor: pointer;
   z-index: 10;
 }
@@ -310,14 +313,14 @@ body::after {
 
 /* Auth Message Styles */
 .auth-message {
-  color: #666;
+  color: var(--text-tertiary);
   font-style: italic;
 }
 
 /* Course Filter Badge */
 .course-filter-badge {
-  background: #ffd700;
-  color: #2e2e2e;
+  background: var(--accent-primary);
+  color: var(--button-text);
   padding: 0.75em 1.5em;
   margin: 1em auto;
   border-radius: 8px;
@@ -330,8 +333,8 @@ body::after {
 }
 
 .course-filter-badge button {
-  background: #2e2e2e;
-  color: #ffd700;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   border: none;
   border-radius: 4px;
   padding: 0.4em 1em;
@@ -355,8 +358,8 @@ body::after {
   min-height: 400px;
   max-height: 80vh;
   margin: 2em auto;
-  background: #444950;
-  color: #ffd700;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
   position: relative;
   overflow-y: auto;
 }
@@ -366,7 +369,7 @@ body::after {
 }
 
 .courses-modal-title {
-  color: #ffd700;
+  color: var(--text-primary);
   margin-bottom: 1em;
   text-align: center;
 }
@@ -378,8 +381,8 @@ body::after {
 }
 
 .add-course-btn {
-  background: #ffd700;
-  color: #2e2e2e;
+  background: var(--accent-primary);
+  color: var(--button-text);
   border: none;
   border-radius: 4px;
   padding: 0.75em 2em;
@@ -392,20 +395,20 @@ body::after {
 }
 
 .add-course-btn:hover {
-  background: #ffed4e;
+  background: var(--accent-hover);
 }
 
 /* Add Course Form */
 .add-course-form-container {
-  background: #2e2e2e;
+  background: var(--bg-primary);
   padding: 1.5em;
   border-radius: 8px;
   margin-bottom: 1.5em;
-  border: 2px solid #ffd700;
+  border: 2px solid var(--border-primary);
 }
 
 .add-course-form-title {
-  color: #ffd700;
+  color: var(--text-primary);
   margin-bottom: 1em;
   text-align: center;
 }
@@ -417,7 +420,7 @@ body::after {
 .form-label {
   display: block;
   margin-bottom: 0.5em;
-  color: #ffd700;
+  color: var(--text-primary);
 }
 
 .form-label-required {
@@ -428,15 +431,15 @@ body::after {
   width: 100%;
   padding: 0.75em;
   border-radius: 4px;
-  border: 1px solid #555;
-  background: #1a1a1a;
-  color: #fff;
+  border: 1px solid var(--border-secondary);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
   font-size: 1em;
 }
 
 .form-help-text {
   font-size: 0.85em;
-  color: #888;
+  color: var(--text-tertiary);
   margin-top: 0.3em;
 }
 
@@ -447,7 +450,7 @@ body::after {
 }
 
 .btn-success {
-  background: #1db954;
+  background: var(--success);
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -460,7 +463,7 @@ body::after {
 }
 
 .btn-secondary {
-  background: #888;
+  background: var(--text-tertiary);
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -472,7 +475,7 @@ body::after {
 }
 
 .btn-danger {
-  background: #dc3545;
+  background: var(--danger);
   color: #fff;
   font-weight: 700;
   border-radius: 4px;
@@ -485,13 +488,13 @@ body::after {
 }
 
 .btn-danger:hover {
-  background: #c82333;
+  background: var(--danger-hover);
 }
 
 /* Empty State Message */
 .empty-state-message {
   text-align: center;
-  color: #bbb;
+  color: var(--text-secondary);
   font-style: italic;
   font-size: 1.1em;
 }
@@ -506,10 +509,10 @@ body::after {
 }
 
 .course-card {
-  background: #2e2e2e;
+  background: var(--bg-primary);
   padding: 1em;
   border-radius: 8px;
-  border: 1px solid #ffd700;
+  border: 1px solid var(--border-primary);
   text-align: center;
   transition: transform 0.2s ease;
   cursor: pointer;
@@ -521,25 +524,25 @@ body::after {
 
 .course-card-code {
   margin: 0 0 0.5em 0;
-  color: #ffd700;
+  color: var(--text-primary);
   font-size: 1.2em;
 }
 
 .course-card-name {
   margin: 0 0 0.5em 0;
-  color: #bbb;
+  color: var(--text-secondary);
   font-size: 0.9em;
 }
 
 .course-card-date {
   margin: 0;
-  color: #888;
+  color: var(--text-tertiary);
   font-size: 0.8em;
 }
 
 .course-card-cta {
   margin: 0.5em 0 0 0;
-  color: #1db954;
+  color: var(--success);
   font-size: 0.85em;
   font-weight: 600;
 }
@@ -553,7 +556,7 @@ body::after {
 
 /* Section Headers */
 .section-header {
-  color: #ffd700;
+  color: var(--text-primary);
   text-align: center;
   margin-bottom: 1em;
 }

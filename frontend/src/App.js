@@ -5,6 +5,7 @@ import PostDetailModal from './components/PostDetailModal';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AddPost from './AddPost';
 import { AuthProvider, useAuth } from './components/AuthContext';
+import { ThemeProvider } from './components/ThemeContext';
 import AuthHeader from './components/AuthHeader';
 import About from './About';
 import TopRightControls from './components/TopRightControls';
@@ -510,14 +511,16 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<AppContent />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<AppContent />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

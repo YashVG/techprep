@@ -5,31 +5,32 @@
 
 .about-page {
     min-height: 100vh;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2e2e2e 100%);
+    background: var(--bg-primary);
     padding: 2rem;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     padding-top: 6rem;
     /* Account for fixed header */
+    transition: background-color 0.3s ease;
 }
 
 .about-container {
     max-width: 900px;
     width: 100%;
-    background: #2e2e2e;
-    border: 2px solid #ffd700;
+    background: var(--bg-primary);
+    border: 2px solid var(--border-primary);
     border-radius: 12px;
     padding: 3rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .about-title {
-    color: #ffd700;
+    color: var(--text-primary);
     font-size: 2.5rem;
     text-align: center;
     margin-bottom: 2rem;
-    text-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+    text-shadow: 0 2px 8px var(--accent-subtle-hover);
     font-weight: 700;
     letter-spacing: 1px;
 }
@@ -41,28 +42,28 @@
 }
 
 .about-section {
-    background: rgba(26, 26, 26, 0.5);
+    background: var(--bg-tertiary);
     padding: 1.5rem;
     border-radius: 8px;
-    border-left: 4px solid #ffd700;
+    border-left: 4px solid var(--accent-primary);
 }
 
 .section-title {
-    color: #ffd700;
+    color: var(--text-primary);
     font-size: 1.5rem;
     margin-bottom: 1rem;
     font-weight: 600;
 }
 
 .section-text {
-    color: #e0e0e0;
+    color: var(--text-primary);
     line-height: 1.8;
     margin-bottom: 1rem;
     font-size: 1.05rem;
 }
 
 .section-text strong {
-    color: #ffd700;
+    color: var(--accent-primary);
     font-weight: 600;
 }
 
@@ -73,7 +74,7 @@
 }
 
 .feature-list li {
-    color: #e0e0e0;
+    color: var(--text-primary);
     padding: 0.5rem 0;
     padding-left: 1.5rem;
     position: relative;
@@ -83,7 +84,7 @@
 
 .feature-list li::before {
     content: '▸';
-    color: #ffd700;
+    color: var(--accent-primary);
     position: absolute;
     left: 0;
     font-weight: bold;
@@ -91,22 +92,22 @@
 }
 
 .feature-list li strong {
-    color: #ffd700;
+    color: var(--accent-primary);
     font-weight: 600;
 }
 
 .about-footer {
     margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 1px solid rgba(255, 215, 0, 0.3);
+    border-top: 1px solid var(--border-secondary);
     text-align: center;
 }
 
 .footer-text {
-    color: #ffd700;
+    color: var(--text-primary);
     font-size: 1.1rem;
     font-weight: 600;
-    text-shadow: 0 2px 4px rgba(255, 215, 0, 0.2);
+    text-shadow: 0 2px 4px var(--accent-subtle-hover);
 }
 
 /* Responsive Design */

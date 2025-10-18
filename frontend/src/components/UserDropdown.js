@@ -1,15 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from './AuthContext';
+import { useTheme } from './ThemeContext';
 import './UserDropdown.css';
 
 const UserDropdown = () => {
     const { user, logout, isAuthenticated } = useAuth();
+    const { theme, toggleTheme, isDark } = useTheme();
     const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef(null);
 
     const handleLogout = () => {
         logout();
         setShowDropdown(false);
+    };
+
+    const handleThemeToggle = () => {
+        toggleTheme();
     };
 
     // Close dropdown when clicking outside
@@ -47,6 +53,14 @@ const UserDropdown = () => {
                         <strong>{user?.username}</strong>
                         <span className="user-email">{user?.email}</span>
                     </div>
+                    <div className="dropdown-divider"></div>
+                    <button
+                        className="dropdown-item dropdown-theme-toggle"
+                        onClick={handleThemeToggle}
+                    >
+                        <span className="theme-icon">{isDark ? '☀️' : '🌙'}</span>
+                        {isDark ? 'Light Mode' : 'Dark Mode'}
+                    </button>
                     <div className="dropdown-divider"></div>
                     <button
                         className="dropdown-item dropdown-logout"

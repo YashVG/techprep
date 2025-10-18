@@ -11,20 +11,20 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(255, 215, 0, 0.1);
-    border: 1.5px solid #ffd700;
+    background: var(--accent-subtle);
+    border: 1.5px solid var(--border-primary);
     border-radius: 25px;
     padding: 0.6rem 1.2rem;
-    color: #ffd700;
+    color: var(--text-primary);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .back-button:hover {
-    background: rgba(255, 215, 0, 0.2);
+    background: var(--accent-subtle-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 4px 12px var(--accent-subtle-hover);
 }
 
 .back-button:active {
