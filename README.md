@@ -1,6 +1,6 @@
-# 🚀 Tech Prep - Helping UBC Students Prepare for Tech Interviews
+# 🚀 Tech Prep - A Learning Platform for a Small Group of UBC Students
 
-A modern, full-stack blog application built with React.js frontend and Flask backend, featuring a complete authentication system, code editor integration, and real-time commenting.
+A modern, full-stack blog application where a small group of UBC students can share and exchange what they've learned in their classes. Built with React.js frontend and Flask backend, featuring a complete authentication system, code editor integration, and real-time commenting.
 
 ## ✨ Features
 
@@ -17,7 +17,7 @@ A modern, full-stack blog application built with React.js frontend and Flask bac
 - **Rich Post Creation** with integrated code editor
 - **Real-time Comments** with user attribution
 - **Tag System** for post categorization
-- **Course Integration** for UBC students
+- **Course Integration** to organize shared learnings by class
 - **Responsive Design** with modern UI/UX
 
 ### 💻 **Code Editor Integration**
@@ -127,6 +127,6 @@ If you have any questions or need help:
 
 ---
 
-**Built with ❤️ for UBC students and tech enthusiasts**
+**Built with ❤️ for a small group of UBC students to share their learning journey**
 
-*Last updated: August 2025*
+*Last updated: October 2025*

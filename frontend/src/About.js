@@ -17,40 +17,41 @@ const About = () => {
                     <section className="about-section">
                         <h2 className="section-title">📚 Our Mission</h2>
                         <p className="section-text">
-                            Tech Prep Blog is a dedicated platform built for <strong>UBC students</strong> to excel in their
-                            computer science journey. We provide a collaborative space where students can share code,
-                            discuss solutions, and prepare together for the challenges ahead.
+                            Tech Prep Blog is a small learning platform built for <strong>a close-knit group of UBC students</strong>
+                            who want to share what they've learned in their classes. We provide an intimate space where
+                            friends can exchange knowledge, discuss course concepts, and help each other understand the
+                            material better.
                         </p>
                     </section>
 
                     <section className="about-section">
-                        <h2 className="section-title">💼 Technical Interview Preparation</h2>
+                        <h2 className="section-title">💼 Share What You've Learned</h2>
                         <p className="section-text">
-                            Master your coding interviews with real problems and solutions from fellow UBC students.
-                            Share your approaches to LeetCode problems, algorithm implementations, and data structure
-                            solutions. Learn from diverse coding styles and problem-solving techniques.
+                            Share your understanding of class concepts, interesting solutions you've discovered, and
+                            coding techniques you've picked up. Exchange ideas with your study group and learn from
+                            each other's approaches to problems. It's like a personal study blog for your friend group.
                         </p>
                         <ul className="feature-list">
-                            <li>Practice with real interview questions</li>
-                            <li>Learn multiple approaches to the same problem</li>
-                            <li>Get feedback from peers on your solutions</li>
-                            <li>Build confidence for technical interviews</li>
+                            <li>Share course-related code and explanations</li>
+                            <li>Learn different approaches from your peers</li>
+                            <li>Get friendly feedback on your understanding</li>
+                            <li>Build knowledge together as a small community</li>
                         </ul>
                     </section>
 
                     <section className="about-section">
-                        <h2 className="section-title">🎓 Course Support</h2>
+                        <h2 className="section-title">🎓 Organize by Course</h2>
                         <p className="section-text">
-                            Organize your learning by course codes (CPSC 110, CPSC 210, CPSC 221, etc.).
-                            Share course-specific solutions, study together for exams, and help each other
-                            understand complex concepts. From introductory programming to advanced algorithms,
-                            we've got you covered.
+                            Keep your shared learnings organized by course codes (CPSC 110, CPSC 210, CPSC 221, etc.).
+                            Exchange notes on what you've learned, interesting concepts that clicked for you, and
+                            helpful ways of thinking about course material. It's easier to find relevant content when
+                            it's grouped by class.
                         </p>
                         <ul className="feature-list">
-                            <li>Course-organized content for easy navigation</li>
-                            <li>Share and discuss assignment approaches</li>
-                            <li>Collaborative learning environment</li>
-                            <li>Peer support for challenging concepts</li>
+                            <li>Course-organized posts for easy browsing</li>
+                            <li>Share interesting insights from lectures</li>
+                            <li>Small group learning environment</li>
+                            <li>Help each other with tricky concepts</li>
                         </ul>
                     </section>
 
@@ -66,17 +67,17 @@ const About = () => {
                     </section>
 
                     <section className="about-section">
-                        <h2 className="section-title">🌟 Join the Community</h2>
+                        <h2 className="section-title">🌟 Join Your Study Group</h2>
                         <p className="section-text">
-                            Whether you're preparing for your first co-op interview or tackling advanced coursework,
-                            Tech Prep Blog is here to support your success. Sign up today and start contributing
-                            to the UBC CS community!
+                            This is a small, friendly platform for your group to share learnings and help each other out.
+                            Whether you're in first year or upper years, it's a casual space to exchange what you've
+                            figured out in your classes. Sign up and start sharing with your study buddies!
                         </p>
                     </section>
                 </div>
 
                 <div className="about-footer">
-                    <p className="footer-text">Built with 💛 for UBC Computer Science Students</p>
+                    <p className="footer-text">Built with 💛 for a small group of UBC CS students</p>
                 </div>
             </div>
         </div>

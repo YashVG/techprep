@@ -1,6 +1,6 @@
 # API Documentation
 
-Complete API reference for the UBC Tech Prep Portfolio application.
+Complete API reference for the UBC Tech Prep learning platform - a small space for a group of UBC students to share what they've learned.
 
 ## Base URL
 

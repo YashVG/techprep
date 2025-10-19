@@ -1,8 +1,8 @@
-# Project Changelog - UBC Tech Prep Portfolio
+# Project Changelog - UBC Tech Prep
 
 ## Overview
 
-This is a full-stack web application built with React.js frontend and Flask backend, featuring a blog-style post system with comments, code editor integration, and user management.
+This is a small learning platform built with React.js frontend and Flask backend, where a close-knit group of UBC students can share and exchange what they've learned in their classes. Features include a blog-style post system with comments, code editor integration, and user management.
 
 ## Tech Stack
 
@@ -13,6 +13,21 @@ This is a full-stack web application built with React.js frontend and Flask back
 - **Authentication**: JWT tokens, Werkzeug password hashing
 
 ## Development History
+
+### [2025-10-19] - Documentation Update: Refined Platform Scope
+
+**Updated Platform Positioning**
+
+- Repositioned the platform as a small, intimate learning space for a close-knit group of UBC students
+- Updated all documentation to reflect the platform's purpose: sharing what students have learned in their classes
+- Removed broader "all UBC students" positioning in favor of "small group" focus
+- Updated files:
+  - `README.md` - Changed title and description to emphasize small group learning
+  - `About.js` - Rewrote mission, features, and call-to-action sections
+  - `index.html` - Updated meta description
+  - `CHANGELOG.md` - Updated overview section
+- New tone emphasizes: casual knowledge sharing, friend group dynamics, and intimate learning space
+- Better aligns with the platform's current maturity level and realistic use case
 
 ### Comprehensive CSS Refactoring - Complete Style Extraction (October 12, 2025) ⭐ MAJOR UPDATE
 
@@ -28,8 +43,8 @@ This is a full-stack web application built with React.js frontend and Flask back
 
 - **About Page Component** (`About.js` + `About.css`)
   - Comprehensive informational page explaining Tech Prep Blog's purpose
-  - Specifically tailored for UBC students preparing for technical interviews
-  - Detailed sections on mission, interview prep, course support, and features
+  - Specifically tailored for a small group of UBC students to share learnings
+  - Detailed sections on mission, knowledge sharing, course organization, and features
   - Professional dark-themed design with gold accents matching app aesthetic
   - Responsive layout for mobile and desktop viewing
 
