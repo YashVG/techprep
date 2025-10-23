@@ -214,11 +214,26 @@ function AppContent() {
       return;
     }
 
+    // Validate course code format: 4 letters + 3 numbers
+    const courseCodePattern = /^[A-Za-z]{4}[0-9]{3}$/;
+    if (!courseCodePattern.test(courseData.code)) {
+      alert('Course code must be 4 letters followed by 3 numbers (e.g., CPSC221)');
+      return;
+    }
+
+    if (!courseData.name || !courseData.name.trim()) {
+      alert('Course name is required');
+      return;
+    }
+
     try {
       const response = await fetch(API_ENDPOINTS.COURSES.CREATE, {
         method: 'POST',
         headers: getAuthHeaders(token),
-        body: JSON.stringify(courseData)
+        body: JSON.stringify({
+          code: courseData.code.toUpperCase(),
+          name: courseData.name.trim()
+        })
       });
 
       if (response.ok) {
@@ -372,21 +387,23 @@ function AppContent() {
                         name="code"
                         placeholder="e.g., CPSC221"
                         required
-                        maxLength={10}
+                        pattern="[A-Za-z]{4}[0-9]{3}"
+                        maxLength={7}
                         className="form-input"
                       />
                       <p className="form-help-text">
-                        3-10 alphanumeric characters
+                        4 letters followed by 3 numbers (e.g., CPSC221)
                       </p>
                     </div>
                     <div className="form-field">
                       <label className="form-label">
-                        Course Name (Optional)
+                        Course Name <span className="form-label-required">*</span>
                       </label>
                       <input
                         type="text"
                         name="name"
                         placeholder="e.g., Data Structures and Algorithms"
+                        required
                         maxLength={100}
                         className="form-input"
                       />

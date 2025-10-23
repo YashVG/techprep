@@ -59,15 +59,33 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
      * Handles adding a new course.
      */
     const handleAddNewCourse = async () => {
-        if (!newCourseCode.trim()) return;
+        // Validate course code format: 4 letters + 3 numbers
+        const courseCodePattern = /^[A-Za-z]{4}[0-9]{3}$/;
+        const trimmedCode = newCourseCode.trim();
+        const trimmedName = newCourseName.trim();
+
+        if (!trimmedCode) {
+            alert('Course code is required');
+            return;
+        }
+
+        if (!courseCodePattern.test(trimmedCode)) {
+            alert('Course code must be 4 letters followed by 3 numbers (e.g., CPSC221)');
+            return;
+        }
+
+        if (!trimmedName) {
+            alert('Course name is required');
+            return;
+        }
 
         try {
             const response = await fetch(API_ENDPOINTS.COURSES.CREATE, {
                 method: 'POST',
                 headers: getAuthHeaders(token),
                 body: JSON.stringify({
-                    code: newCourseCode.toUpperCase(),
-                    name: newCourseName.trim() || null
+                    code: trimmedCode.toUpperCase(),
+                    name: trimmedName
                 })
             });
 
@@ -178,15 +196,19 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
                                     value={newCourseCode}
                                     onChange={e => setNewCourseCode(e.target.value)}
                                     className="block-centered-input inline-course-input"
-                                    pattern="[A-Za-z0-9]{3,10}"
-                                    title="3-10 alphanumeric characters"
+                                    pattern="[A-Za-z]{4}[0-9]{3}"
+                                    title="4 letters followed by 3 numbers (e.g., CPSC221)"
+                                    maxLength="7"
+                                    required
                                 />
                                 <input
                                     type="text"
-                                    placeholder="Course Name (optional)"
+                                    placeholder="Course Name (required)"
                                     value={newCourseName}
                                     onChange={e => setNewCourseName(e.target.value)}
                                     className="block-centered-input inline-course-input"
+                                    maxLength="100"
+                                    required
                                 />
                                 <div className="inline-course-buttons">
                                     <button

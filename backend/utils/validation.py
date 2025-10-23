@@ -101,8 +101,8 @@ def validate_course_code(code: str) -> Tuple[bool, str]:
     Validate course code format.
     
     Requirements:
-    - Alphanumeric characters only
-    - Between 3 and 10 characters
+    - Four letters followed by three numbers (e.g., CPSC221)
+    - No spaces allowed
     
     Args:
         code: The course code string to validate
@@ -113,9 +113,10 @@ def validate_course_code(code: str) -> Tuple[bool, str]:
     if not code:
         return False, "Course code is required"
     
-    code_pattern = r'^[A-Za-z0-9]{3,10}$'
+    # Pattern: exactly 4 letters followed by exactly 3 numbers
+    code_pattern = r'^[A-Za-z]{4}[0-9]{3}$'
     if not re.match(code_pattern, code):
-        return False, "Course code must be 3-10 alphanumeric characters"
+        return False, "Course code must be 4 letters followed by 3 numbers (e.g., CPSC221)"
     
     return True, "Course code is valid"
 

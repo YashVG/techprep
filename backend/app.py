@@ -610,7 +610,7 @@ def add_course():
     """
     Creates a new course if it doesn't exist.
     
-    Requires authentication. Accepts JSON with 'code' and optional 'name'.
+    Requires authentication. Accepts JSON with 'code' and 'name' (both required).
     Returns the course data (existing or newly created).
     """
     try:
@@ -619,19 +619,20 @@ def add_course():
         if not data.get('code'):
             return jsonify({"error": "Course code is required"}), 400
         
+        if not data.get('name'):
+            return jsonify({"error": "Course name is required"}), 400
+        
         # Sanitize and validate course code
         code = sanitize_plain_text(data['code'])
         is_valid, message = validate_course_code(code)
         if not is_valid:
             return jsonify({"error": message}), 400
         
-        # Sanitize course name
-        name = None
-        if data.get('name'):
-            name = sanitize_plain_text(data['name'])
-            is_valid, message = validate_string_length(name, min_length=1, max_length=100, field_name="Course name")
-            if not is_valid:
-                return jsonify({"error": message}), 400
+        # Sanitize and validate course name
+        name = sanitize_plain_text(data['name'])
+        is_valid, message = validate_string_length(name, min_length=1, max_length=100, field_name="Course name")
+        if not is_valid:
+            return jsonify({"error": message}), 400
         
         # Check if course already exists
         course = Course.query.filter_by(code=code.upper()).first()
@@ -639,7 +640,7 @@ def add_course():
         if not course:
             # Create new course
             course = Course(
-                code=code,
+                code=code.upper(),
                 name=name
             )
             db.session.add(course)

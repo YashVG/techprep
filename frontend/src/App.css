@@ -501,11 +501,13 @@ body::after {
 
 /* Course Grid */
 .course-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 1em;
   max-height: 60vh;
   overflow-y: auto;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .course-card {
@@ -514,12 +516,16 @@ body::after {
   border-radius: 8px;
   border: 1px solid var(--border-primary);
   text-align: center;
-  transition: transform 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
   cursor: pointer;
+  min-width: 150px;
+  max-width: 200px;
+  flex: 0 1 auto;
 }
 
 .course-card:hover {
-  transform: scale(1.05);
+  background: var(--accent-subtle-hover);
+  border-color: var(--accent-primary);
 }
 
 .course-card-code {

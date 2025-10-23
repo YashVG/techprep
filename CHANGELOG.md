@@ -14,6 +14,42 @@ This is a small learning platform built with React.js frontend and Flask backend
 
 ## Development History
 
+### [2025-10-19] - Course Validation & Safety Enforcement
+
+**Enhanced Course Code Validation and Required Fields**
+
+- **Backend Validation (`validation.py`)**:
+  - Updated `validate_course_code()` to enforce strict format: 4 letters + 3 numbers (e.g., CPSC221)
+  - Regex pattern changed from `[A-Za-z0-9]{3,10}` to `^[A-Za-z]{4}[0-9]{3}$`
+  - Clear error message: "Course code must be 4 letters followed by 3 numbers (e.g., CPSC221)"
+  
+- **Backend API (`app.py`)**:
+  - Course name now **required** (was optional)
+  - Added validation check for course name before processing
+  - Improved error messages for missing fields
+  - Code automatically converted to uppercase for consistency
+  
+- **Frontend Validation**:
+  - **AddPost.js**: Updated inline course form with client-side validation
+    - Pattern validation: `[A-Za-z]{4}[0-9]{3}`
+    - maxLength set to 7 characters
+    - Course name now required with clear indication
+    - JavaScript validation before API call
+  - **App.js**: Updated courses modal form
+    - Same pattern validation as AddPost
+    - Both fields marked as required with asterisk (*)
+    - Updated help text to reflect new format
+
+- **User Experience**:
+  - Clear placeholder examples: "e.g., CPSC221"
+  - Helpful validation messages
+  - Required fields clearly marked
+  - Automatic uppercase conversion
+
+**Benefits**: Ensures data consistency, prevents invalid course codes, and provides better user guidance
+
+---
+
 ### [2025-10-19] - Documentation Update: Refined Platform Scope
 
 **Updated Platform Positioning**
