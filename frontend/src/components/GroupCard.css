@@ -1,0 +1,99 @@
+.group-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 1em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 150px;
+  max-width: 200px;
+  flex: 0 1 auto;
+  text-align: center;
+}
+
+.group-card:hover {
+  background: var(--accent-subtle-hover);
+  border-color: var(--accent-primary);
+}
+
+.group-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.group-card-name {
+  margin: 0;
+  font-size: 1.2em;
+  font-weight: 600;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.group-member-count {
+  background: var(--accent-primary);
+  color: var(--button-text);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.group-card-description {
+  margin: 0.5em 0;
+  color: var(--text-secondary);
+  font-size: 0.9em;
+  line-height: 1.5;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.group-card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-primary);
+}
+
+.group-creator {
+  font-size: 0.85em;
+  color: var(--text-secondary);
+}
+
+.group-creator strong {
+  color: var(--text-primary);
+}
+
+.group-created-date {
+  font-size: 0.8em;
+  color: var(--text-tertiary);
+}
+
+.group-card-cta {
+  margin-top: 0.5em;
+  color: var(--success);
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .group-card {
+    padding: 0.75em;
+    min-width: 120px;
+  }
+
+  .group-card-name {
+    font-size: 1.1em;
+  }
+}
+

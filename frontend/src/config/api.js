@@ -52,6 +52,18 @@ export const API_ENDPOINTS = {
         CREATE: `${API_BASE_URL}/courses`,
         DELETE: (id) => `${API_BASE_URL}/courses/${id}`,
     },
+
+    // Groups
+    GROUPS: {
+        LIST: `${API_BASE_URL}/groups`,
+        CREATE: `${API_BASE_URL}/groups`,
+        GET: (id) => `${API_BASE_URL}/groups/${id}`,
+        UPDATE: (id) => `${API_BASE_URL}/groups/${id}`,
+        DELETE: (id) => `${API_BASE_URL}/groups/${id}`,
+        ADD_MEMBER: (id) => `${API_BASE_URL}/groups/${id}/members`,
+        REMOVE_MEMBER: (groupId, userId) => `${API_BASE_URL}/groups/${groupId}/members/${userId}`,
+        USER_GROUPS: (userId) => `${API_BASE_URL}/users/${userId}/groups`,
+    },
 };
 
 /**

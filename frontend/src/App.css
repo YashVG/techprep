@@ -345,13 +345,15 @@ body::after {
 }
 
 /* Courses Modal Styles */
-.courses-modal-overlay {
+.courses-modal-overlay,
+.groups-modal-overlay {
   z-index: 2000;
   align-items: flex-start;
   overflow-y: auto;
 }
 
-.courses-modal-content {
+.courses-modal-content,
+.groups-modal-content {
   min-width: 600px;
   max-width: 900px;
   width: 80vw;
@@ -583,5 +585,12 @@ body::after {
     grid-template-columns: 1fr;
     padding: 0.5rem;
     gap: 1rem;
+  }
+
+  .courses-modal-content,
+  .groups-modal-content {
+    min-width: 95vw;
+    width: 95vw;
+    margin: 1em auto;
   }
 }

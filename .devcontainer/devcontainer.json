@@ -1,0 +1,26 @@
+{
+    "name": "techprep-dev",
+    "dockerComposeFile": [
+        "../docker-compose.dev.yml"
+    ],
+    "service": "app",
+    "workspaceFolder": "/workspace",
+    "overrideCommand": true,
+    "postCreateCommand": "pip install -U pip && pip install -r requirements.txt",
+    "forwardPorts": [
+        5000,
+        5432
+    ],
+    "remoteEnv": {
+        "FLASK_ENV": "development"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "github.vscode-pull-request-github"
+            ]
+        }
+    }
+}

@@ -157,6 +157,65 @@ class Comment(db.Model):
         self.user_id = user_id
         self.post_id = post_id
 
+# Association table for group members (many-to-many relationship)
+group_members = db.Table('group_members',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+    db.Column('group_id', db.Integer, db.ForeignKey('groups.id'), primary_key=True),
+    db.Column('joined_at', db.DateTime, default=datetime.utcnow)
+)
+
+class Group(db.Model):
+    """
+    Represents a group that users can create and join.
+    
+    - Mapped to the 'groups' table in PostgreSQL.
+    - Each group has a name, description, and creator.
+    - Many-to-many relationship with users through group_members table.
+    """
+    __tablename__ = "groups"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Creator of the group
+    creator_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    creator = db.relationship("User", backref="created_groups", foreign_keys=[creator_id])
+    
+    # Many-to-many relationship with users
+    members = db.relationship("User", secondary=group_members, backref="groups", lazy='dynamic')
+
+    def __init__(self, name, creator_id, description=None):
+        self.name = name
+        self.creator_id = creator_id
+        self.description = description
+
+    def to_dict(self, include_members=False):
+        """Convert group to dictionary."""
+        result = {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'creator_id': self.creator_id,
+            'creator_username': self.creator.username if self.creator else None,
+            'member_count': self.members.count(),
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None
+        }
+        
+        if include_members:
+            result['members'] = [
+                {
+                    'id': member.id,
+                    'username': member.username
+                }
+                for member in self.members.all()
+            ]
+        
+        return result
+
 class Course(db.Model):
     """
     Represents a course that posts can be associated with.

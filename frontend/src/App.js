@@ -11,6 +11,9 @@ import About from './About';
 import TopRightControls from './components/TopRightControls';
 import InfoButton from './components/InfoButton';
 import { API_ENDPOINTS, getAuthHeaders } from './config/api';
+import GroupCard from './components/GroupCard';
+import GroupDetailModal from './components/GroupDetailModal';
+import CreateGroupForm from './components/CreateGroupForm';
 
 function AppContent() {
   const [posts, setPosts] = useState([]);
@@ -23,10 +26,15 @@ function AppContent() {
   const [showAddCourseForm, setShowAddCourseForm] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [showGroups, setShowGroups] = useState(false);
+  const [showCreateGroup, setShowCreateGroup] = useState(false);
+  const [groups, setGroups] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState(null);
   const { user, token, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     fetchCourses();
+    fetchGroups();
   }, []);
 
   const fetchCourses = async () => {
@@ -38,6 +46,18 @@ function AppContent() {
       }
     } catch (error) {
       console.error('Failed to fetch courses:', error);
+    }
+  };
+
+  const fetchGroups = async () => {
+    try {
+      const response = await fetch(API_ENDPOINTS.GROUPS.LIST);
+      if (response.ok) {
+        const groupsData = await response.json();
+        setGroups(groupsData);
+      }
+    } catch (error) {
+      console.error('Failed to fetch groups:', error);
     }
   };
 
@@ -272,6 +292,59 @@ function AppContent() {
     }
   };
 
+  const handleCreateGroup = async (groupData) => {
+    if (!isAuthenticated) {
+      alert('Please login to create groups');
+      return;
+    }
+
+    try {
+      const response = await fetch(API_ENDPOINTS.GROUPS.CREATE, {
+        method: 'POST',
+        headers: getAuthHeaders(token),
+        body: JSON.stringify(groupData)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setGroups([...groups, result.group]);
+        setShowCreateGroup(false);
+        alert('Group created successfully!');
+      } else {
+        if (handleApiError(response, 'Failed to create group')) {
+          return;
+        }
+        const errorData = await response.json();
+        alert(errorData.error || 'Failed to create group');
+      }
+    } catch (error) {
+      console.error('Failed to create group:', error);
+      alert('Network error. Please try again.');
+    }
+  };
+
+  const handleGroupClick = async (group) => {
+    try {
+      const response = await fetch(API_ENDPOINTS.GROUPS.GET(group.id));
+      if (response.ok) {
+        const groupData = await response.json();
+        setSelectedGroup(groupData);
+      }
+    } catch (error) {
+      console.error('Failed to fetch group details:', error);
+    }
+  };
+
+  const handleGroupUpdate = (updatedGroup) => {
+    setGroups(groups.map(g => g.id === updatedGroup.id ? updatedGroup : g));
+    setSelectedGroup(updatedGroup);
+  };
+
+  const handleGroupDelete = (groupId) => {
+    setGroups(groups.filter(g => g.id !== groupId));
+    setSelectedGroup(null);
+  };
+
   return (
     <div className="App">
       <InfoButton />
@@ -306,6 +379,9 @@ function AppContent() {
         )}
         <button onClick={() => setShowCourses(true)}>
           Courses
+        </button>
+        <button onClick={() => setShowGroups(true)}>
+          Groups
         </button>
       </div>
 
@@ -475,6 +551,88 @@ function AppContent() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Groups Modal */}
+      {showGroups && (
+        <div className="modal-overlay groups-modal-overlay">
+          <div className="signup-modal-popup groups-modal-content">
+            <button
+              className="modal-close-btn"
+              onClick={() => {
+                setShowGroups(false);
+                setShowCreateGroup(false);
+              }}
+              aria-label="Close"
+            >
+              &times;
+            </button>
+
+            <div className="courses-modal-inner">
+              <h2 className="courses-modal-title">
+                Groups ({groups.length})
+              </h2>
+
+              {/* Create Group Button */}
+              {isAuthenticated && !showCreateGroup && (
+                <div className="add-course-btn-container">
+                  <button
+                    onClick={() => setShowCreateGroup(true)}
+                    className="add-course-btn"
+                  >
+                    + Create New Group
+                  </button>
+                </div>
+              )}
+
+              {/* Create Group Form */}
+              {showCreateGroup && (
+                <CreateGroupForm
+                  onSubmit={handleCreateGroup}
+                  onCancel={() => setShowCreateGroup(false)}
+                />
+              )}
+
+              {groups.length === 0 ? (
+                <p className="empty-state-message">
+                  No groups available yet. Create the first group!
+                </p>
+              ) : (
+                <div className="course-grid">
+                  {groups.map(group => (
+                    <GroupCard
+                      key={group.id}
+                      group={group}
+                      onClick={handleGroupClick}
+                    />
+                  ))}
+                </div>
+              )}
+
+              <div className="modal-footer">
+                <button
+                  onClick={() => {
+                    setShowGroups(false);
+                    setShowCreateGroup(false);
+                  }}
+                  className="btn-danger"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Group Detail Modal */}
+      {selectedGroup && (
+        <GroupDetailModal
+          group={selectedGroup}
+          onClose={() => setSelectedGroup(null)}
+          onUpdate={handleGroupUpdate}
+          onDelete={handleGroupDelete}
+        />
       )}
 
       {posts.length === 0 ? (

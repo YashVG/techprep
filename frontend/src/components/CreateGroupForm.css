@@ -1,0 +1,125 @@
+.create-group-form-container {
+  background: var(--bg-primary);
+  border: 2px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.create-group-form-title {
+  margin: 0 0 1em 0;
+  color: var(--text-primary);
+  font-size: 1.4em;
+  font-weight: 600;
+  text-align: center;
+}
+
+.create-group-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 0.5em;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.required {
+  color: #ff4444;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  padding: 0.75em;
+  border: 1px solid var(--border-secondary);
+  border-radius: 4px;
+  font-size: 1em;
+  font-family: inherit;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  transition: all 0.2s;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  outline: 2px solid var(--success);
+  background: var(--input-focus-bg);
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.field-hint {
+  margin: 0.3em 0 0 0;
+  font-size: 0.85em;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+.form-button-group {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  margin-top: 0.5em;
+}
+
+.form-button-group button {
+  padding: 0.75em 2em;
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 0;
+}
+
+.btn-create {
+  background: var(--success);
+  color: #fff;
+}
+
+.btn-create:hover:not(:disabled) {
+  background: var(--success-hover);
+}
+
+.btn-create:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  background: var(--text-tertiary);
+  color: #fff;
+}
+
+.btn-cancel:hover {
+  background: #5a6268;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .create-group-form-container {
+    padding: 1em;
+  }
+
+  .form-button-group {
+    flex-direction: column;
+  }
+
+  .form-button-group button {
+    width: 100%;
+  }
+}
+
