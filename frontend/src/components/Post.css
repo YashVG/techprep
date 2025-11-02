@@ -26,8 +26,8 @@
     box-sizing: border-box;
     margin-bottom: 2em;
     flex-shrink: 0;
-    background: #1a1a1a;
-    border: 1px solid rgba(255, 215, 0, 0.2);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-secondary);
     border-radius: 8px;
     padding: 1.5rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
@@ -66,7 +66,7 @@
 
 .post-author-top {
     font-size: 0.8em;
-    color: #999;
+    color: var(--text-tertiary);
     margin-bottom: 0.75rem;
     display: flex;
     align-items: center;
@@ -81,9 +81,9 @@
 
 .post-course-badge {
     display: inline-block;
-    background: rgba(29, 185, 84, 0.15);
-    color: #1db954;
-    border: 1px solid #1db954;
+    background: var(--course-badge-bg);
+    color: var(--course-badge);
+    border: 1px solid var(--course-badge);
     border-radius: 4px;
     padding: 0.3em 0.75em;
     font-size: 0.75em;
@@ -103,19 +103,19 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     margin-bottom: 0;
     position: relative;
-    border: 1px solid rgba(255, 215, 0, 0.15);
+    border: 1px solid var(--border-secondary);
 }
 
 .post-fullscreen-btn {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: rgba(255, 215, 0, 0.1);
-    color: #ffd700;
+    background: var(--accent-subtle);
+    color: var(--text-primary);
     font-weight: 600;
     font-size: 0.85em;
     border-radius: 4px;
-    border: 1px solid rgba(255, 215, 0, 0.3);
+    border: 1px solid var(--border-secondary);
     padding: 0.5em 1em;
     cursor: pointer;
     z-index: 10;
@@ -125,8 +125,8 @@
 }
 
 .post-fullscreen-btn:hover {
-    background: rgba(255, 215, 0, 0.2);
-    border-color: #ffd700;
+    background: var(--accent-subtle-hover);
+    border-color: var(--border-primary);
 }
 
 /* Fullscreen Code Modal */
@@ -135,8 +135,8 @@
 }
 
 .fullscreen-code-modal-content {
-    background: #444950;
-    color: #ffd700;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
     border-radius: 12px;
     padding: 2em;
     width: 90vw;
@@ -162,9 +162,9 @@
 
 /* Comments Sidebar */
 .comments-sidebar {
-    background: #1a1a1a;
-    color: #ffd700;
-    border: 1px solid rgba(255, 215, 0, 0.2);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-secondary);
     border-radius: 8px;
     padding: 1.5rem;
     width: 400px;
@@ -181,12 +181,12 @@
 .sidebar-comment-form {
     margin-bottom: 1.5rem;
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+    border-bottom: 1px solid var(--border-divider);
     width: 100%;
 }
 
 .sidebar-comment-form-title {
-    color: #ffd700;
+    color: var(--text-primary);
     margin: 0;
     margin-bottom: 1rem;
     text-align: left;
@@ -197,9 +197,9 @@
 .sidebar-comment-textarea {
     width: 100%;
     min-height: 100px;
-    background: #2e2e2e;
-    color: #ffd700;
-    border: 1px solid rgba(255, 215, 0, 0.3);
+    background: var(--input-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-secondary);
     border-radius: 6px;
     padding: 0.75rem;
     resize: vertical;
@@ -211,8 +211,8 @@
 
 .sidebar-comment-textarea:focus {
     outline: none;
-    border-color: #ffd700;
-    background: #333;
+    border-color: var(--border-primary);
+    background: var(--input-focus-bg);
 }
 
 .sidebar-comment-buttons {
@@ -223,10 +223,10 @@
 .sidebar-comment-submit-btn {
     flex: 1;
     background: transparent;
-    color: #ffd700;
+    color: var(--text-primary);
     font-weight: 500;
     border-radius: 6px;
-    border: 1px solid rgba(255, 215, 0, 0.3);
+    border: 1px solid var(--border-secondary);
     padding: 0.6rem 1rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -235,17 +235,17 @@
 }
 
 .sidebar-comment-submit-btn:hover {
-    background: rgba(255, 215, 0, 0.1);
-    border-color: #ffd700;
+    background: var(--accent-subtle);
+    border-color: var(--border-primary);
 }
 
 .sidebar-comment-cancel-btn {
     flex: 1;
     background: transparent;
-    color: #999;
+    color: var(--text-secondary);
     font-weight: 500;
     border-radius: 6px;
-    border: 1px solid rgba(153, 153, 153, 0.3);
+    border: 1px solid var(--border-divider);
     padding: 0.6rem 1rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -254,13 +254,13 @@
 }
 
 .sidebar-comment-cancel-btn:hover {
-    background: rgba(153, 153, 153, 0.1);
-    border-color: #999;
+    background: var(--accent-subtle);
+    border-color: var(--border-secondary);
 }
 
 /* Comments Display */
 .comments-section-title {
-    color: #ffd700;
+    color: var(--text-primary);
     margin: 0;
     margin-bottom: 1rem;
     text-align: left;
@@ -270,11 +270,11 @@
 
 .comments-add-btn {
     background: transparent;
-    color: #ffd700;
+    color: var(--text-primary);
     font-weight: 500;
     font-size: 0.85rem;
     border-radius: 6px;
-    border: 1px solid rgba(255, 215, 0, 0.3);
+    border: 1px solid var(--border-secondary);
     padding: 0.6rem 1rem;
     cursor: pointer;
     margin-bottom: 1rem;
@@ -285,23 +285,23 @@
 }
 
 .comments-add-btn:hover {
-    background: rgba(255, 215, 0, 0.1);
-    border-color: #ffd700;
+    background: var(--accent-subtle);
+    border-color: var(--border-primary);
 }
 
 .comments-login-message {
-    color: #aaa;
+    color: var(--text-secondary);
     font-size: 0.85rem;
     text-align: left;
     margin-bottom: 1rem;
     padding: 0.75rem;
-    background: rgba(255, 215, 0, 0.05);
+    background: var(--accent-subtle);
     border-radius: 6px;
-    border: 1px solid rgba(255, 215, 0, 0.1);
+    border: 1px solid var(--border-divider);
 }
 
 .comments-empty-message {
-    color: #666;
+    color: var(--text-tertiary);
     text-align: center;
     font-size: 0.85rem;
     margin-top: 1rem;
@@ -314,27 +314,27 @@
     margin-bottom: 0;
     padding-right: 0.5rem;
     scrollbar-width: thin;
-    scrollbar-color: #ffd700 #1a1a1a;
+    scrollbar-color: var(--accent-primary) var(--bg-tertiary);
 }
 
 .comment-item {
     margin-bottom: 1rem;
-    background: #2e2e2e;
+    background: var(--input-bg);
     border-radius: 6px;
     padding: 1rem;
-    border: 1px solid rgba(255, 215, 0, 0.15);
+    border: 1px solid var(--border-divider);
     transition: all 0.2s ease;
 }
 
 .comment-item:hover {
-    border-color: rgba(255, 215, 0, 0.3);
-    background: #333;
+    border-color: var(--border-secondary);
+    background: var(--input-focus-bg);
 }
 
 .comment-content {
     margin: 0;
     margin-bottom: 0.75rem;
-    color: #d3d3d3;
+    color: var(--text-secondary);
     line-height: 1.6;
     font-size: 0.9rem;
 }
@@ -342,7 +342,7 @@
 .comment-author {
     margin: 0;
     font-size: 0.85rem;
-    color: #ffd700;
+    color: var(--text-primary);
     font-weight: 600;
     display: flex;
     align-items: center;

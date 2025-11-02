@@ -31,9 +31,9 @@
 }
 
 .post-card-course-badge {
-    background: rgba(29, 185, 84, 0.15);
-    color: var(--success);
-    border: 1px solid var(--success);
+    background: var(--course-badge-bg);
+    color: var(--course-badge);
+    border: 1px solid var(--course-badge);
     border-radius: 4px;
     padding: 0.25em 0.75em;
     font-size: 0.75em;

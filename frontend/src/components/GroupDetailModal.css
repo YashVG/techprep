@@ -129,13 +129,13 @@
 }
 
 .btn-warning {
-  background: #ffc107;
-  color: #333;
+  background: var(--accent-primary);
+  color: var(--button-text);
   font-weight: 700;
 }
 
 .btn-warning:hover:not(:disabled) {
-  background: #e0a800;
+  background: var(--accent-hover);
 }
 
 .btn-primary {
@@ -290,7 +290,7 @@ button:disabled {
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: #5a6268;
+  background: var(--border-secondary);
 }
 
 /* Responsive design */

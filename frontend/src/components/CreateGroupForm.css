@@ -105,7 +105,7 @@
 }
 
 .btn-cancel:hover {
-  background: #5a6268;
+  background: var(--border-secondary);
 }
 
 /* Responsive design */

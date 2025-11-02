@@ -66,9 +66,9 @@
 }
 
 .post-detail-course-badge {
-    background: rgba(29, 185, 84, 0.15);
-    color: var(--success);
-    border: 1px solid var(--success);
+    background: var(--course-badge-bg);
+    color: var(--course-badge);
+    border: 1px solid var(--course-badge);
     border-radius: 4px;
     padding: 0.3em 0.75em;
     font-size: 0.85em;
@@ -78,7 +78,7 @@
 }
 
 .post-detail-course-badge:hover {
-    background: rgba(29, 185, 84, 0.25);
+    background: rgba(251, 191, 36, 0.25);
 }
 
 /* Content */
@@ -87,7 +87,7 @@
 }
 
 .post-detail-content p {
-    color: #d3d3d3;
+    color: var(--text-secondary);
     font-size: 1rem;
     line-height: 1.7;
     margin: 0;
