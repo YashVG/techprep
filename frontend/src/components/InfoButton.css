@@ -15,7 +15,7 @@
     height: 45px;
     background: var(--accent-subtle);
     border: 1.5px solid var(--border-primary);
-    border-radius: 50%;
+    border-radius: 8px;
     color: var(--text-primary);
     cursor: pointer;
     transition: all 0.2s ease;

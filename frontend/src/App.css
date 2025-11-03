@@ -11,8 +11,8 @@ button {
   background-color: var(--button-bg);
   color: var(--button-text);
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: 0.5rem 1.5rem;
+  border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
   margin: 0.5rem auto;
