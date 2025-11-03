@@ -5,7 +5,7 @@ import './UserDropdown.css';
 
 const UserDropdown = () => {
     const { user, logout, isAuthenticated } = useAuth();
-    const { theme, toggleTheme, isDark } = useTheme();
+    const { toggleTheme, isDark } = useTheme();
     const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef(null);
 

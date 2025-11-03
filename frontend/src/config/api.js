@@ -63,6 +63,7 @@ export const API_ENDPOINTS = {
         ADD_MEMBER: (id) => `${API_BASE_URL}/groups/${id}/members`,
         REMOVE_MEMBER: (groupId, userId) => `${API_BASE_URL}/groups/${groupId}/members/${userId}`,
         USER_GROUPS: (userId) => `${API_BASE_URL}/users/${userId}/groups`,
+        POSTS: (id) => `${API_BASE_URL}/groups/${id}/posts`,
     },
 };
 

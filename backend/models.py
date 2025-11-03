@@ -15,6 +15,7 @@ class Post(db.Model):
     - Each post has a title, content, and an associated user (author).
     - Linked to the 'User' model via a foreign key (user_id).
     - Includes tags and an optional UBC course reference.
+    - Can be associated with a group (group_id) for group-specific posts.
     """
     __tablename__ = "posts"
 
@@ -26,18 +27,25 @@ class Post(db.Model):
 
     # New: code string for code editor integration
     code = db.Column(db.Text, nullable=True)
+    
+    # New: group association for group-specific posts
+    group_id = db.Column(db.Integer, db.ForeignKey("groups.id"), nullable=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationship to group
+    group = db.relationship("Group", backref="posts", lazy=True)
 
-    def __init__(self, title, content, user_id, tags=None, course=None, code=None):
+    def __init__(self, title, content, user_id, tags=None, course=None, code=None, group_id=None):
         self.title = title
         self.content = content
         self.user_id = user_id
         self.tags = tags or []
         self.course = course
         self.code = code
+        self.group_id = group_id
 
 class User(db.Model):
     """
