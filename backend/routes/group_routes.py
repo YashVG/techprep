@@ -21,7 +21,6 @@ groups_bp = Blueprint('groups', __name__, url_prefix='/groups')
 def get_groups():
     """
     Fetches all groups.
-    
     Returns a list of group dictionaries.
     """
     groups = Group.query.all()
