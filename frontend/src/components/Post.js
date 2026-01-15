@@ -49,7 +49,7 @@ const Post = ({
                     <div className="post-left-column">
                         {/* Meta info: author and course badge */}
                         <div className="post-author-top">
-                            <span>Asked by <strong style={{ color: '#ffd700' }}>{post.author}</strong></span>
+                            <span>Asked by <strong style={{ color: 'var(--accent-primary)' }}>{post.author}</strong></span>
                             {post.course && (
                                 <span className="post-course-badge">
                                     {post.course}

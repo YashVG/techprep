@@ -5,7 +5,6 @@ import './AddPost.css';
 
 /**
  * Default code snippets for each supported language.
- * bleh
  */
 const LANGUAGE_SNIPPETS = {
     javascript: '// Start coding!\nfunction hello() {\n  console.log("Hello, world!");\n}',
@@ -22,44 +21,29 @@ const LANGUAGE_LABELS = {
 };
 
 /**
- * AddPost component
- * Full-screen modal/page for creating a new post, including a Monaco code editor.
- * Props:
- *   - show: boolean (whether to show the modal)
- *   - onCancel: function (called when cancel is clicked)
- *   - onSubmit: function (called with post data on submit)
- *   - courseOptions: array of course strings
+ * AddPost component - Modern post creation modal with code editor
  */
 const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }) => {
-    // State for all post fields
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [tags, setTags] = useState('');
     const [course, setCourse] = useState('');
     const [language, setLanguage] = useState('python');
     const [code, setCode] = useState(LANGUAGE_SNIPPETS['python']);
-
-    // State for adding new course
     const [showAddCourse, setShowAddCourse] = useState(false);
     const [newCourseCode, setNewCourseCode] = useState('');
     const [newCourseName, setNewCourseName] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     if (!show) return null;
 
-    /**
-     * Handles language selection changes for the code editor.
-     */
     const handleLanguageChange = (e) => {
         const lang = e.target.value;
         setLanguage(lang);
         setCode(LANGUAGE_SNIPPETS[lang]);
     };
 
-    /**
-     * Handles adding a new course.
-     */
     const handleAddNewCourse = async () => {
-        // Validate course code format: 4 letters + 3 numbers
         const courseCodePattern = /^[A-Za-z]{4}[0-9]{3}$/;
         const trimmedCode = newCourseCode.trim();
         const trimmedName = newCourseName.trim();
@@ -91,13 +75,10 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
 
             if (response.ok) {
                 const result = await response.json();
-                // Call the parent's onAddCourse function to update the course list
                 if (onAddCourse) {
                     onAddCourse(result.course);
                 }
-                // Select the newly added course
                 setCourse(result.course.code);
-                // Reset form and hide add course section
                 setNewCourseCode('');
                 setNewCourseName('');
                 setShowAddCourse(false);
@@ -111,164 +92,247 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
         }
     };
 
-    /**
-     * Handles form submission.
-     */
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSubmit({
-            title,
-            content,
-            tags: tags.split(',').map(tag => tag.trim()),
-            course,
-            code,
-            language
-        });
+        setIsSubmitting(true);
+        try {
+            await onSubmit({
+                title,
+                content,
+                tags: tags.split(',').map(tag => tag.trim()).filter(Boolean),
+                course,
+                code,
+                language
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
-        <div className="modal-overlay add-post-modal-overlay">
-            <div className="signup-modal-popup add-post-modal-content">
-                <button
-                    className="modal-close-btn"
-                    onClick={onCancel}
-                    aria-label="Cancel"
-                >
-                    &times;
+        <div className="ap-overlay" onClick={onCancel}>
+            <div className="ap-container" onClick={(e) => e.stopPropagation()}>
+                {/* Close button */}
+                <button className="ap-close" onClick={onCancel} aria-label="Close">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
                 </button>
-                <form onSubmit={handleSubmit} className="add-post-form">
-                    <h2 className="add-post-title">Add New Post</h2>
-                    <input
-                        type="text"
-                        placeholder="Title"
-                        value={title}
-                        onChange={e => setTitle(e.target.value)}
-                        className="block-centered-input add-post-input"
-                        required
-                    />
-                    <textarea
-                        placeholder="Content"
-                        value={content}
-                        onChange={e => setContent(e.target.value)}
-                        className="block-centered-input add-post-textarea"
-                        required
-                    />
-                    <input
-                        type="text"
-                        placeholder="Tags (comma-separated)"
-                        value={tags}
-                        onChange={e => setTags(e.target.value)}
-                        className="block-centered-input add-post-input"
-                    />
-                    {/* Course Selection with Add Button */}
-                    <div className="course-selection-container">
-                        <label className="course-label">Course:</label>
-                        <div className="course-input-row">
-                            <select
-                                value={course}
-                                onChange={e => setCourse(e.target.value)}
-                                className="block-centered-input course-select"
-                            >
-                                <option value="">Select Course</option>
-                                {courseOptions.map(courseOption => (
-                                    <option key={courseOption.id || courseOption} value={courseOption.code || courseOption}>
-                                        {courseOption.code || courseOption} - {courseOption.name || 'No name'}
-                                    </option>
-                                ))}
-                            </select>
-                            <button
-                                type="button"
-                                onClick={() => setShowAddCourse(!showAddCourse)}
-                                className="course-add-btn"
-                                title="Add New Course"
-                            >
-                                +
-                            </button>
+
+                <form onSubmit={handleSubmit} className="ap-form">
+                    {/* Header */}
+                    <div className="ap-header">
+                        <div className="ap-header-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                                <line x1="12" y1="18" x2="12" y2="12"/>
+                                <line x1="9" y1="15" x2="15" y2="15"/>
+                            </svg>
+                        </div>
+                        <h2 className="ap-title">Create New Post</h2>
+                        <p className="ap-subtitle">Share your knowledge with the community</p>
+                    </div>
+
+                    {/* Form Content */}
+                    <div className="ap-body">
+                        {/* Title */}
+                        <div className="ap-field">
+                            <label className="ap-label">
+                                Title <span className="ap-required">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={e => setTitle(e.target.value)}
+                                className="ap-input"
+                                placeholder="What's your post about?"
+                                required
+                            />
                         </div>
 
-                        {/* Add New Course Form */}
-                        {showAddCourse && (
-                            <div className="inline-course-form">
-                                <h4 className="inline-course-title">Add New Course</h4>
-                                <input
-                                    type="text"
-                                    placeholder="Course Code (e.g., CPSC221)"
-                                    value={newCourseCode}
-                                    onChange={e => setNewCourseCode(e.target.value)}
-                                    className="block-centered-input inline-course-input"
-                                    pattern="[A-Za-z]{4}[0-9]{3}"
-                                    title="4 letters followed by 3 numbers (e.g., CPSC221)"
-                                    maxLength="7"
-                                    required
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Course Name (required)"
-                                    value={newCourseName}
-                                    onChange={e => setNewCourseName(e.target.value)}
-                                    className="block-centered-input inline-course-input"
-                                    maxLength="100"
-                                    required
-                                />
-                                <div className="inline-course-buttons">
-                                    <button
-                                        type="button"
-                                        onClick={handleAddNewCourse}
-                                        className="inline-course-add-btn"
-                                    >
-                                        Add Course
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            setShowAddCourse(false);
-                                            setNewCourseCode('');
-                                            setNewCourseName('');
-                                        }}
-                                        className="inline-course-cancel-btn"
-                                    >
-                                        Cancel
-                                    </button>
-                                </div>
+                        {/* Content */}
+                        <div className="ap-field">
+                            <label className="ap-label">
+                                Description <span className="ap-required">*</span>
+                            </label>
+                            <textarea
+                                value={content}
+                                onChange={e => setContent(e.target.value)}
+                                className="ap-textarea"
+                                placeholder="Explain your code or share what you've learned..."
+                                rows={4}
+                                required
+                            />
+                        </div>
+
+                        {/* Tags */}
+                        <div className="ap-field">
+                            <label className="ap-label">
+                                Tags <span className="ap-optional">Optional</span>
+                            </label>
+                            <input
+                                type="text"
+                                value={tags}
+                                onChange={e => setTags(e.target.value)}
+                                className="ap-input"
+                                placeholder="python, algorithms, data-structures (comma-separated)"
+                            />
+                        </div>
+
+                        {/* Course Selection */}
+                        <div className="ap-field">
+                            <label className="ap-label">Course</label>
+                            <div className="ap-course-row">
+                                <select
+                                    value={course}
+                                    onChange={e => setCourse(e.target.value)}
+                                    className="ap-select"
+                                >
+                                    <option value="">Select Course</option>
+                                    {courseOptions.map(courseOption => (
+                                        <option key={courseOption.id || courseOption} value={courseOption.code || courseOption}>
+                                            {courseOption.code || courseOption} - {courseOption.name || 'No name'}
+                                        </option>
+                                    ))}
+                                </select>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowAddCourse(!showAddCourse)}
+                                    className="ap-add-course-btn"
+                                    title="Add New Course"
+                                >
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="16"/>
+                                        <line x1="8" y1="12" x2="16" y2="12"/>
+                                    </svg>
+                                </button>
                             </div>
-                        )}
+
+                            {/* Add Course Form */}
+                            {showAddCourse && (
+                                <div className="ap-new-course-form">
+                                    <h4 className="ap-new-course-title">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                            <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+                                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+                                        </svg>
+                                        Add New Course
+                                    </h4>
+                                    <input
+                                        type="text"
+                                        placeholder="Course Code (e.g., CPSC221)"
+                                        value={newCourseCode}
+                                        onChange={e => setNewCourseCode(e.target.value)}
+                                        className="ap-input"
+                                        pattern="[A-Za-z]{4}[0-9]{3}"
+                                        maxLength="7"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Course Name"
+                                        value={newCourseName}
+                                        onChange={e => setNewCourseName(e.target.value)}
+                                        className="ap-input"
+                                        maxLength="100"
+                                    />
+                                    <div className="ap-new-course-actions">
+                                        <button
+                                            type="button"
+                                            onClick={handleAddNewCourse}
+                                            className="ap-btn ap-btn-success ap-btn-sm"
+                                        >
+                                            Add
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setShowAddCourse(false);
+                                                setNewCourseCode('');
+                                                setNewCourseName('');
+                                            }}
+                                            className="ap-btn ap-btn-secondary ap-btn-sm"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Language Selector */}
+                        <div className="ap-field">
+                            <label className="ap-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <polyline points="16,18 22,12 16,6"/>
+                                    <polyline points="8,6 2,12 8,18"/>
+                                </svg>
+                                Code Language
+                            </label>
+                            <select
+                                value={language}
+                                onChange={handleLanguageChange}
+                                className="ap-select"
+                            >
+                                {Object.entries(LANGUAGE_LABELS).map(([key, label]) => (
+                                    <option key={key} value={key}>{label}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Code Editor */}
+                        <div className="ap-field">
+                            <label className="ap-label">Code</label>
+                            <div className="ap-editor-wrapper">
+                                <MonacoEditor
+                                    height="220px"
+                                    language={language === 'cpp' ? 'cpp' : language}
+                                    theme="vs-dark"
+                                    value={code}
+                                    onChange={value => setCode(value)}
+                                    options={{
+                                        fontSize: 14,
+                                        minimap: { enabled: false },
+                                        fontFamily: "'Fira Code', 'Fira Mono', monospace",
+                                        scrollBeyondLastLine: false,
+                                        wordWrap: 'on',
+                                        automaticLayout: true,
+                                        padding: { top: 12, bottom: 12 },
+                                    }}
+                                />
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Language Selector for Code Editor */}
-                    <div className="language-selector-container">
-                        <label htmlFor="code-language-select" className="language-label">Code Language:</label>
-                        <select
-                            id="code-language-select"
-                            value={language}
-                            onChange={handleLanguageChange}
-                            className="language-select"
+                    {/* Footer */}
+                    <div className="ap-footer">
+                        <button
+                            type="button"
+                            onClick={onCancel}
+                            className="ap-btn ap-btn-secondary"
                         >
-                            {Object.entries(LANGUAGE_LABELS).map(([key, label]) => (
-                                <option key={key} value={key}>{label}</option>
-                            ))}
-                        </select>
-                    </div>
-                    {/* Monaco Code Editor */}
-                    <div className="code-editor-container">
-                        <MonacoEditor
-                            height="200px"
-                            language={language === 'cpp' ? 'cpp' : language}
-                            theme="vs-dark"
-                            value={code}
-                            onChange={value => setCode(value)}
-                            options={{
-                                fontSize: 14,
-                                minimap: { enabled: false },
-                                fontFamily: 'Fira Mono, monospace',
-                                scrollBeyondLastLine: false,
-                                wordWrap: 'on',
-                                automaticLayout: true,
-                            }}
-                        />
-                    </div>
-                    <div className="add-post-actions">
-                        <button type="button" onClick={onCancel} className="add-post-cancel-btn">Cancel</button>
-                        <button type="submit" className="add-post-submit-btn">Submit</button>
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            className="ap-btn ap-btn-primary"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? (
+                                <>
+                                    <span className="ap-spinner"></span>
+                                    Creating...
+                                </>
+                            ) : (
+                                <>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                                    </svg>
+                                    Create Post
+                                </>
+                            )}
+                        </button>
                     </div>
                 </form>
             </div>
@@ -276,4 +340,4 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
     );
 };
 
-export default AddPost; 
+export default AddPost;

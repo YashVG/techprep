@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { API_ENDPOINTS, API_CONFIG } from '../config/api';
+import './AuthModal.css';
 
+/**
+ * LoginModal - Modern login modal with the design system
+ */
 const LoginModal = ({ show, onClose, onSwitchToSignUp }) => {
     const [formData, setFormData] = useState({
         username: '',
@@ -45,13 +49,10 @@ const LoginModal = ({ show, onClose, onSwitchToSignUp }) => {
             const data = await response.json();
 
             if (response.ok) {
-                // Store token in localStorage
                 localStorage.setItem('authToken', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
-
-                // Close modal and refresh page or update app state
                 onClose();
-                window.location.reload(); // Simple approach - you might want to use React state management
+                window.location.reload();
             } else {
                 setErrors({ general: data.error || 'Login failed' });
             }
@@ -66,7 +67,6 @@ const LoginModal = ({ show, onClose, onSwitchToSignUp }) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
 
-        // Clear error when user starts typing
         if (errors[name]) {
             setErrors(prev => ({ ...prev, [name]: '' }));
         }
@@ -75,91 +75,121 @@ const LoginModal = ({ show, onClose, onSwitchToSignUp }) => {
     if (!show) return null;
 
     return (
-        <div className="modal-overlay">
-            <div className="signup-modal-popup">
-                <button
-                    className="modal-close-btn"
-                    onClick={onClose}
-                    aria-label="Close"
-                >
-                    &times;
+        <div className="auth-overlay" onClick={onClose}>
+            <div className="auth-modal" onClick={(e) => e.stopPropagation()}>
+                {/* Close button */}
+                <button className="auth-close" onClick={onClose} aria-label="Close">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
                 </button>
-                <form
-                    onSubmit={handleSubmit}
-                    className="form-margin signup-form"
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1em', marginTop: '2em', width: '100%' }}
-                >
-                    <h2 style={{ color: '#222', marginBottom: 0, fontWeight: 700 }}>Sign In</h2>
 
-                    <div className="signup-divider-row" style={{ width: '100%', display: 'flex', alignItems: 'center', margin: '1em 0' }}>
-                        <div style={{ flex: 1, height: 1, background: '#eee' }}></div>
+                {/* Header */}
+                <div className="auth-header">
+                    <div className="auth-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/>
+                            <polyline points="10,17 15,12 10,7"/>
+                            <line x1="15" y1="12" x2="3" y2="12"/>
+                        </svg>
+                    </div>
+                    <h2 className="auth-title">Welcome Back</h2>
+                    <p className="auth-subtitle">Sign in to continue to TechPrep</p>
+                </div>
+
+                {/* Form */}
+                <form onSubmit={handleSubmit} className="auth-form">
+                    {/* Username */}
+                    <div className="auth-field">
+                        <label className="auth-label">Username</label>
+                        <div className="auth-input-wrapper">
+                            <svg className="auth-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            <input
+                                type="text"
+                                name="username"
+                                value={formData.username}
+                                onChange={handleInputChange}
+                                className={`auth-input ${errors.username ? 'error' : ''}`}
+                                placeholder="Enter your username"
+                                autoComplete="username"
+                            />
+                        </div>
+                        {errors.username && (
+                            <span className="auth-error">{errors.username}</span>
+                        )}
                     </div>
 
-                    <input
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                        value={formData.username}
-                        onChange={handleInputChange}
-                        className="block-centered-input"
-                        style={{ width: '100%', maxWidth: '320px' }}
-                        required
-                    />
-                    {errors.username && <span style={{ color: 'red', fontSize: '0.8em' }}>{errors.username}</span>}
+                    {/* Password */}
+                    <div className="auth-field">
+                        <label className="auth-label">Password</label>
+                        <div className="auth-input-wrapper">
+                            <svg className="auth-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0110 0v4"/>
+                            </svg>
+                            <input
+                                type="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleInputChange}
+                                className={`auth-input ${errors.password ? 'error' : ''}`}
+                                placeholder="Enter your password"
+                                autoComplete="current-password"
+                            />
+                        </div>
+                        {errors.password && (
+                            <span className="auth-error">{errors.password}</span>
+                        )}
+                    </div>
 
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        className="block-centered-input"
-                        style={{ width: '100%', maxWidth: '320px' }}
-                        required
-                    />
-                    {errors.password && <span style={{ color: 'red', fontSize: '0.8em' }}>{errors.password}</span>}
+                    {/* General Error */}
+                    {errors.general && (
+                        <div className="auth-general-error">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                            </svg>
+                            {errors.general}
+                        </div>
+                    )}
 
+                    {/* Submit */}
                     <button
                         type="submit"
+                        className="auth-submit"
                         disabled={isLoading}
-                        style={{
-                            width: '100%',
-                            maxWidth: '320px',
-                            background: '#1db954',
-                            color: '#fff',
-                            fontWeight: 700,
-                            fontSize: '1.1em',
-                            borderRadius: '4px',
-                            border: 'none',
-                            padding: '0.75em 0',
-                            marginTop: '0.5em',
-                            opacity: isLoading ? 0.7 : 1,
-                            cursor: isLoading ? 'not-allowed' : 'pointer'
-                        }}
                     >
-                        {isLoading ? 'Signing In...' : 'Sign In'}
+                        {isLoading ? (
+                            <>
+                                <span className="auth-spinner"></span>
+                                Signing In...
+                            </>
+                        ) : (
+                            <>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/>
+                                    <polyline points="10,17 15,12 10,7"/>
+                                    <line x1="15" y1="12" x2="3" y2="12"/>
+                                </svg>
+                                Sign In
+                            </>
+                        )}
                     </button>
-
-                    {errors.general && <p style={{ color: 'red', textAlign: 'center', fontSize: '0.9em' }}>{errors.general}</p>}
-
-                    <p style={{ fontSize: '0.9em', color: '#666', marginTop: '1em' }}>
-                        Don't have an account?{' '}
-                        <button
-                            type="button"
-                            onClick={onSwitchToSignUp}
-                            style={{
-                                background: 'none',
-                                border: 'none',
-                                color: '#1db954',
-                                textDecoration: 'underline',
-                                cursor: 'pointer',
-                                fontSize: '0.9em'
-                            }}
-                        >
-                            Sign Up
-                        </button>
-                    </p>
                 </form>
+
+                {/* Footer */}
+                <div className="auth-footer">
+                    <p>Don't have an account?</p>
+                    <button
+                        type="button"
+                        onClick={onSwitchToSignUp}
+                        className="auth-switch-btn"
+                    >
+                        Create Account
+                    </button>
+                </div>
             </div>
         </div>
     );

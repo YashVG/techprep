@@ -594,16 +594,19 @@ function AppContent() {
               )}
 
               {groups.length === 0 ? (
-                <p className="empty-state-message">
-                  No groups available yet. Create the first group!
-                </p>
+                <div className="empty-state-container">
+                  <span className="empty-state-icon">👥</span>
+                  <p className="empty-state-message">No groups yet</p>
+                  <p className="empty-state-hint">Create the first group and start building your community!</p>
+                </div>
               ) : (
-                <div className="course-grid">
+                <div className="groups-grid">
                   {groups.map(group => (
                     <GroupCard
                       key={group.id}
                       group={group}
                       onClick={handleGroupClick}
+                      currentUser={user}
                     />
                   ))}
                 </div>

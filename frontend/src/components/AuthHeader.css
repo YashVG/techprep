@@ -1,87 +1,156 @@
-/**
- * AuthHeader Component Styles
- * Header with centered title - Dark theme consistent with app
- */
+/* ============================================
+   AuthHeader - Modern Header Component
+   ============================================ */
 
 .auth-header-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0.75rem 2.5rem;
-    background: var(--accent-subtle);
-    border: 1.5px solid var(--border-primary);
-    border-radius: 8px;
-    margin: 1.5rem auto;
-    margin-bottom: 4rem;
-    box-shadow: 0 4px 12px var(--accent-subtle-hover);
+    padding: 0.875rem 2rem;
+    background: linear-gradient(
+        135deg,
+        var(--bg-secondary) 0%,
+        var(--bg-tertiary) 100%
+    );
+    border: 1px solid var(--border-primary);
+    border-radius: 16px;
+    margin: 1.5rem auto 2.5rem;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        0 0 0 1px var(--border-secondary);
     max-width: fit-content;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-header-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), #60a5fa, var(--accent-primary));
+    background-size: 200% 100%;
+    animation: shimmer 3s ease infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
 
 .auth-header-title {
     margin: 0;
     color: var(--text-primary);
-    font-weight: 700;
-    font-size: 1.5rem;
-    text-shadow: 0 2px 8px var(--accent-subtle-hover);
-    letter-spacing: 1.5px;
+    font-weight: 800;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
     text-align: center;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-hover) 50%, var(--accent-primary) 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(
+        135deg,
+        var(--accent-primary) 0%,
+        #60a5fa 50%,
+        var(--accent-primary) 100%
+    );
+    background-size: 200% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 2px 8px var(--accent-subtle-hover));
+    animation: titleShimmer 4s ease infinite;
+    text-transform: uppercase;
+}
+
+@keyframes titleShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 /* Fixed Login/Signup buttons for non-authenticated users */
 .auth-header-actions-fixed {
     position: fixed;
-    top: 1.5rem;
-    right: 2rem;
+    top: 1.25rem;
+    right: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     z-index: 2000;
 }
 
-.auth-header-login-btn {
-    background: var(--accent-subtle);
-    border: 1.5px solid var(--border-primary);
+.auth-header-login-btn,
+.auth-header-signup-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
     color: var(--text-primary);
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
+    padding: 0.625rem 1.25rem;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    display: inline-block;
     margin: 0;
     transition: all 0.2s ease;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.auth-header-login-btn:hover {
-    background: var(--accent-subtle-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px var(--accent-subtle-hover);
+.auth-header-login-btn:hover,
+.auth-header-signup-btn:hover {
+    background: var(--accent-subtle);
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
 }
 
 .auth-header-signup-btn {
-    background: var(--accent-subtle);
-    border: 1.5px solid var(--border-primary);
-    color: var(--text-primary);
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    display: inline-block;
-    margin: 0;
-    transition: all 0.2s ease;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    background: linear-gradient(135deg, var(--accent-primary) 0%, #1d4ed8 100%);
+    color: var(--button-text);
+    border: none;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .auth-header-signup-btn:hover {
-    background: var(--accent-subtle-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px var(--accent-subtle-hover);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .auth-header-container {
+        padding: 0.75rem 1.5rem;
+        margin: 1rem auto 2rem;
+        border-radius: 12px;
+    }
+
+    .auth-header-title {
+        font-size: 1.3rem;
+        letter-spacing: 1px;
+    }
+
+    .auth-header-actions-fixed {
+        top: 1rem;
+        right: 1rem;
+        gap: 0.5rem;
+    }
+
+    .auth-header-login-btn,
+    .auth-header-signup-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-header-actions-fixed {
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .auth-header-login-btn,
+    .auth-header-signup-btn {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.8rem;
+    }
 }
