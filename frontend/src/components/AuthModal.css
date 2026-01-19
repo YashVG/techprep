@@ -66,11 +66,18 @@
     z-index: 10;
 }
 
+.auth-close svg {
+    stroke: var(--text-secondary);
+}
+
 .auth-close:hover {
     background: var(--danger);
     border-color: var(--danger);
     color: white;
-    transform: rotate(90deg);
+}
+
+.auth-close:hover svg {
+    stroke: white;
 }
 
 /* Header */

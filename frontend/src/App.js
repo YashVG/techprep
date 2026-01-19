@@ -29,6 +29,7 @@ function AppContent() {
   const [showGroups, setShowGroups] = useState(false);
   const [showCreateGroup, setShowCreateGroup] = useState(false);
   const [groups, setGroups] = useState([]);
+  const [userGroups, setUserGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const { user, token, isAuthenticated, logout } = useAuth();
 
@@ -36,6 +37,26 @@ function AppContent() {
     fetchCourses();
     fetchGroups();
   }, []);
+
+  // Fetch user's groups when authenticated
+  useEffect(() => {
+    const fetchUserGroups = async () => {
+      if (isAuthenticated && user) {
+        try {
+          const response = await fetch(API_ENDPOINTS.GROUPS.USER_GROUPS(user.id));
+          if (response.ok) {
+            const data = await response.json();
+            setUserGroups(data);
+          }
+        } catch (error) {
+          console.error('Failed to fetch user groups:', error);
+        }
+      } else {
+        setUserGroups([]);
+      }
+    };
+    fetchUserGroups();
+  }, [isAuthenticated, user]);
 
   const fetchCourses = async () => {
     try {
@@ -88,7 +109,8 @@ function AppContent() {
 
   const fetchAllPosts = async () => {
     try {
-      const response = await fetch(API_ENDPOINTS.POSTS.LIST);
+      const headers = isAuthenticated && token ? getAuthHeaders(token) : { 'Content-Type': 'application/json' };
+      const response = await fetch(API_ENDPOINTS.POSTS.LIST, { headers });
       if (response.ok) {
         const fetchedPosts = await response.json();
         setPosts(fetchedPosts);
@@ -101,15 +123,23 @@ function AppContent() {
     }
   };
 
+  // Fetch posts (with auth to see group posts)
   useEffect(() => {
-    fetch(API_ENDPOINTS.POSTS.LIST)
-      .then(res => res.json())
-      .then(data => {
-        setPosts(data);
-        setAllPosts(data);
-      })
-      .catch(err => console.error("Failed to fetch posts:", err));
-  }, []);
+    const fetchPosts = async () => {
+      try {
+        const headers = isAuthenticated && token ? getAuthHeaders(token) : { 'Content-Type': 'application/json' };
+        const response = await fetch(API_ENDPOINTS.POSTS.LIST, { headers });
+        if (response.ok) {
+          const data = await response.json();
+          setPosts(data);
+          setAllPosts(data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch posts:", err);
+      }
+    };
+    fetchPosts();
+  }, [isAuthenticated, token]);
 
   const handlePostClick = async (post) => {
     setSelectedPost(post);
@@ -308,6 +338,8 @@ function AppContent() {
       if (response.ok) {
         const result = await response.json();
         setGroups([...groups, result.group]);
+        // Creator is automatically a member, so add to userGroups
+        setUserGroups([...userGroups, result.group]);
         setShowCreateGroup(false);
         alert('Group created successfully!');
       } else {
@@ -407,6 +439,7 @@ function AppContent() {
         courseOptions={courseOptions}
         onAddCourse={handleAddCourse}
         token={token}
+        userGroups={userGroups}
       />
 
       {showCourses && (

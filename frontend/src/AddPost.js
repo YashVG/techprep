@@ -23,7 +23,7 @@ const LANGUAGE_LABELS = {
 /**
  * AddPost component - Modern post creation modal with code editor
  */
-const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }) => {
+const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token, userGroups = [] }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [tags, setTags] = useState('');
@@ -34,6 +34,8 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
     const [newCourseCode, setNewCourseCode] = useState('');
     const [newCourseName, setNewCourseName] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [visibility, setVisibility] = useState('public'); // 'public' or 'group'
+    const [selectedGroupId, setSelectedGroupId] = useState('');
 
     if (!show) return null;
 
@@ -94,6 +96,13 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Validate group selection if visibility is group-only
+        if (visibility === 'group' && !selectedGroupId) {
+            alert('Please select a group for group-only posts');
+            return;
+        }
+        
         setIsSubmitting(true);
         try {
             await onSubmit({
@@ -102,7 +111,8 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
                 tags: tags.split(',').map(tag => tag.trim()).filter(Boolean),
                 course,
                 code,
-                language
+                language,
+                group_id: visibility === 'group' ? parseInt(selectedGroupId) : null
             });
         } finally {
             setIsSubmitting(false);
@@ -257,6 +267,75 @@ const AddPost = ({ show, onCancel, onSubmit, courseOptions, onAddCourse, token }
                                             Cancel
                                         </button>
                                     </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Visibility Selection */}
+                        <div className="ap-field">
+                            <label className="ap-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                Visibility
+                            </label>
+                            <div className="ap-visibility-options">
+                                <label className={`ap-visibility-option ${visibility === 'public' ? 'ap-visibility-active' : ''}`}>
+                                    <input
+                                        type="radio"
+                                        name="visibility"
+                                        value="public"
+                                        checked={visibility === 'public'}
+                                        onChange={(e) => {
+                                            setVisibility(e.target.value);
+                                            setSelectedGroupId('');
+                                        }}
+                                    />
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="2" y1="12" x2="22" y2="12"/>
+                                        <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+                                    </svg>
+                                    <span>Public</span>
+                                    <small>Visible to everyone</small>
+                                </label>
+                                <label className={`ap-visibility-option ${visibility === 'group' ? 'ap-visibility-active' : ''} ${userGroups.length === 0 ? 'ap-visibility-disabled' : ''}`}>
+                                    <input
+                                        type="radio"
+                                        name="visibility"
+                                        value="group"
+                                        checked={visibility === 'group'}
+                                        onChange={(e) => setVisibility(e.target.value)}
+                                        disabled={userGroups.length === 0}
+                                    />
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                                        <circle cx="9" cy="7" r="4"/>
+                                        <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+                                        <path d="M16 3.13a4 4 0 010 7.75"/>
+                                    </svg>
+                                    <span>Group Only</span>
+                                    <small>{userGroups.length === 0 ? 'Join a group first' : 'Only group members can see'}</small>
+                                </label>
+                            </div>
+                            
+                            {/* Group Selection */}
+                            {visibility === 'group' && userGroups.length > 0 && (
+                                <div className="ap-group-select-wrapper">
+                                    <select
+                                        value={selectedGroupId}
+                                        onChange={(e) => setSelectedGroupId(e.target.value)}
+                                        className="ap-select"
+                                        required
+                                    >
+                                        <option value="">Select a group...</option>
+                                        {userGroups.map(group => (
+                                            <option key={group.id} value={group.id}>
+                                                {group.name}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                             )}
                         </div>

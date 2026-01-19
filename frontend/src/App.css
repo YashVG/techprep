@@ -150,11 +150,18 @@ select {
     line-height: 1;
 }
 
+.modal-close-btn svg {
+    stroke: var(--text-secondary);
+}
+
 .modal-close-btn:hover {
     background: var(--danger);
     border-color: var(--danger);
     color: white;
-    transform: rotate(90deg);
+}
+
+.modal-close-btn:hover svg {
+    stroke: white;
 }
 
 /* ============================================

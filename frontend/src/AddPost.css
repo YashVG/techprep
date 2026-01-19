@@ -69,11 +69,18 @@
     z-index: 10;
 }
 
+.ap-close svg {
+    stroke: var(--text-secondary);
+}
+
 .ap-close:hover {
     background: var(--danger);
     border-color: var(--danger);
     color: white;
-    transform: rotate(90deg);
+}
+
+.ap-close:hover svg {
+    stroke: white;
 }
 
 /* Form */
@@ -81,6 +88,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    overflow: hidden;
 }
 
 /* Header */
@@ -121,6 +129,7 @@
 /* Body */
 .ap-body {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
     padding: 1.5rem;
     display: flex;
@@ -245,6 +254,74 @@
 .ap-new-course-actions {
     display: flex;
     gap: 0.5rem;
+}
+
+/* Visibility Options */
+.ap-visibility-options {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.ap-visibility-option {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 2px solid var(--border-secondary);
+    border-radius: 12px;
+    background: var(--bg-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.ap-visibility-option input[type="radio"] {
+    display: none;
+}
+
+.ap-visibility-option svg {
+    color: var(--text-tertiary);
+    transition: color 0.2s ease;
+}
+
+.ap-visibility-option span {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.ap-visibility-option small {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+}
+
+.ap-visibility-option:hover:not(.ap-visibility-disabled) {
+    border-color: var(--accent-primary);
+    background: var(--accent-subtle);
+}
+
+.ap-visibility-option:hover:not(.ap-visibility-disabled) svg {
+    color: var(--accent-primary);
+}
+
+.ap-visibility-active {
+    border-color: var(--accent-primary);
+    background: var(--accent-subtle);
+}
+
+.ap-visibility-active svg {
+    color: var(--accent-primary);
+}
+
+.ap-visibility-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ap-group-select-wrapper {
+    margin-top: 0.75rem;
 }
 
 /* Editor Wrapper */

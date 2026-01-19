@@ -67,13 +67,14 @@
     justify-content: center;
     transition: all 0.2s ease;
     z-index: 10;
+    font-size: 1.5rem;
+    line-height: 1;
 }
 
 .pdm-close:hover {
     background: var(--danger);
     border-color: var(--danger);
     color: white;
-    transform: rotate(90deg);
 }
 
 /* Scroll Container */
@@ -172,9 +173,9 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%);
-    color: var(--success);
-    border: 1px solid var(--success);
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(168, 85, 247, 0.05) 100%);
+    color: #a855f7;
+    border: 1px solid rgba(168, 85, 247, 0.5);
     padding: 0.4rem 0.75rem;
     border-radius: 8px;
     font-size: 0.85rem;

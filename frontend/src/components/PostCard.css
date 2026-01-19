@@ -99,9 +99,9 @@
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%);
-    color: var(--success);
-    border: 1px solid var(--success);
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(168, 85, 247, 0.05) 100%);
+    color: #a855f7;
+    border: 1px solid rgba(168, 85, 247, 0.5);
     padding: 0.3rem 0.65rem;
     border-radius: 6px;
     font-size: 0.75rem;

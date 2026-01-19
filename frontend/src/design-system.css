@@ -320,11 +320,18 @@
     line-height: 1;
 }
 
+.ds-modal-close svg {
+    stroke: var(--text-secondary);
+}
+
 .ds-modal-close:hover {
     background: var(--danger);
     border-color: var(--danger);
     color: white;
-    transform: rotate(90deg);
+}
+
+.ds-modal-close:hover svg {
+    stroke: white;
 }
 
 .ds-modal-header {

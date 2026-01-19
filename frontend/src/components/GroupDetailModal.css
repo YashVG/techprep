@@ -69,11 +69,18 @@
     z-index: 10;
 }
 
+.gdm-close svg {
+    stroke: var(--text-secondary);
+}
+
 .gdm-close:hover {
     background: var(--danger);
     border-color: var(--danger);
     color: white;
-    transform: rotate(90deg);
+}
+
+.gdm-close:hover svg {
+    stroke: white;
 }
 
 /* Header */
